@@ -1,4 +1,4 @@
-package com.yestevezd.elsenderodeladuat.core;
+package com.yestevezd.elsenderodeladuat.core.game;
 
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;

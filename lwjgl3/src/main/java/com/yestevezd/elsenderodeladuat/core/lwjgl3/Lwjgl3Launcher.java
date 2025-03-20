@@ -2,7 +2,7 @@ package com.yestevezd.elsenderodeladuat.core.lwjgl3;
 
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3Application;
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3ApplicationConfiguration;
-import com.yestevezd.elsenderodeladuat.core.MainGame;
+import com.yestevezd.elsenderodeladuat.core.game.MainGame;
 
 /** Launches the desktop (LWJGL3) application. */
 public class Lwjgl3Launcher {
