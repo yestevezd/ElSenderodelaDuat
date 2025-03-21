@@ -7,7 +7,7 @@ public class AssetLoader {
     private static final AssetManager manager = new AssetManager();
 
     public static void load() {
-        manager.load("intro_logo.png", Texture.class);
+        manager.load("others/imagen_demonio.jpeg", Texture.class);
         manager.finishLoading();
     }
 
