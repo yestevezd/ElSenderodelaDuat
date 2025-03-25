@@ -1,33 +1,87 @@
-# ElSenderoDeLaDuat
+# El Sendero de la Duat 🦂🌅
 
-A [libGDX](https://libgdx.com/) project generated with [gdx-liftoff](https://github.com/libgdx/gdx-liftoff).
+**El Sendero de la Duat** es un videojuego narrativo en 2D, ambientado en el Antiguo Egipto, desarrollado con [libGDX](https://libgdx.com/) para PC.
 
-This project was generated with a template including simple application launchers and an `ApplicationAdapter` extension that draws libGDX logo.
+El jugador encarna a un artesano de Deir el-Medina que, al recibir una misteriosa carta, inicia un viaje espiritual que lo llevará desde Tebas hasta el inframundo egipcio (la Duat), enfrentándose a decisiones morales que afectarán su destino eterno.
 
-## Platforms
+---
 
-- `core`: Main module with the application logic shared by all platforms.
-- `lwjgl3`: Primary desktop platform using LWJGL3; was called 'desktop' in older docs.
+## 🛠️ Tecnologías y herramientas
 
-## Gradle
+- **Java 17**
+- **libGDX** (con LWJGL3)
+- **Gradle** para gestión de dependencias
+- **gdx-liftoff** como generador inicial
+- **Modularidad** y arquitectura escalable basada en pantallas y managers
 
-This project uses [Gradle](https://gradle.org/) to manage dependencies.
-The Gradle wrapper was included, so you can run Gradle tasks using `gradlew.bat` or `./gradlew` commands.
-Useful Gradle tasks and flags:
+---
 
-- `--continue`: when using this flag, errors will not stop the tasks from running.
-- `--daemon`: thanks to this flag, Gradle daemon will be used to run chosen tasks.
-- `--offline`: when using this flag, cached dependency archives will be used.
-- `--refresh-dependencies`: this flag forces validation of all dependencies. Useful for snapshot versions.
-- `build`: builds sources and archives of every project.
-- `cleanEclipse`: removes Eclipse project data.
-- `cleanIdea`: removes IntelliJ project data.
-- `clean`: removes `build` folders, which store compiled classes and built archives.
-- `eclipse`: generates Eclipse project data.
-- `idea`: generates IntelliJ project data.
-- `lwjgl3:jar`: builds application's runnable jar, which can be found at `lwjgl3/build/libs`.
-- `lwjgl3:run`: starts the application.
-- `test`: runs unit tests (if any).
+## 📁 Estructura del proyecto
 
-Note that most tasks that are not specific to a single project can be run with `name:` prefix, where the `name` should be replaced with the ID of a specific project.
-For example, `core:clean` removes `build` folder only from the `core` project.
+```
+/core
+│── /assets              # Recursos gráficos, sonidos, animaciones...
+│── /src
+│    ├── /core
+│    │   ├── /engine     # Carga de recursos, audio, input
+│    │   ├── /entities   # Jugador, NPCs, enemigos
+│    │   ├── /game       # MainGame, configuración global, gestores
+│    │   ├── /screens    # Pantallas del juego (Intro, Menú, Juego, etc.)
+│    │   ├── /systems    # Combate, exploración, puzzles, karma
+│    │   ├── /ui         # HUD, diálogos, inventario
+│    │   └── /utils      # Funciones comunes (textos, matemáticas, animaciones)
+│    └── /docs           # Documentación del juego
+/gradle                 # Configuración y scripts de Gradle
+/lwjgl3                # Plataforma desktop (PC)
+```
+
+---
+
+## ▶️ Cómo ejecutar el juego
+
+Requisitos:
+- Java 17 o superior
+- Gradle (ya incluido wrapper)
+
+Comando para ejecutar desde consola:
+```bash
+./gradlew lwjgl3:run
+```
+
+---
+
+## ✅ Estado actual
+
+- [x] Arquitectura modular y escalable
+- [x] Sistema de carga de assets dividido por bloques funcionales
+- [x] Pantalla de introducción animada con video (frames + audio)
+- [x] Transición a Menú Principal con texto parpadeante
+- [ ] Pantalla de menú principal interactiva
+- [ ] Implementación del inicio del juego (casa del artesano)
+- [ ] Sistema de decisiones y karma
+- [ ] Exploración en Karnak y Valle de los Reyes
+- [ ] Juicio de Osiris y finales múltiples
+
+---
+
+## 📌 Pendientes técnicos
+
+- Implementar navegación en menú principal
+- Cargar mapas reales con Tiled
+- Sistema de combate y puzzles
+- Guardado de progreso
+- Sistema de diálogos con elecciones
+
+---
+
+## 📚 Créditos
+
+Proyecto de TFG – Ingeniería Informática  
+Desarrollado por: Yago Estévez Davila  
+Año: 2025
+
+---
+
+## ✨ Licencia
+
+Este proyecto es de carácter académico y no comercial.
