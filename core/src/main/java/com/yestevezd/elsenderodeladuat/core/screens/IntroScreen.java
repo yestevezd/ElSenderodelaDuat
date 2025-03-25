@@ -3,7 +3,6 @@ package com.yestevezd.elsenderodeladuat.core.screens;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.g2d.Animation;
-import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.utils.ScreenUtils;
@@ -20,7 +19,6 @@ public class IntroScreen extends BaseScreen {
     private boolean showPressEnter = false;
 
     private BitmapFont font;
-    private GlyphLayout layout;
 
     public IntroScreen(MainGame game) {
         super(game);
@@ -28,6 +26,10 @@ public class IntroScreen extends BaseScreen {
 
     @Override
     public void show() {
+        // Cargar recursos de la intro
+        AssetLoader.loadIntroAssets();
+        AssetLoader.finishLoading();
+
         frames = AssetLoader.loadVideoFrames("video_intro", 105);
         animation = new Animation<>(1f / 15f, frames, Animation.PlayMode.NORMAL);
         stateTime = 0f;
@@ -36,7 +38,6 @@ public class IntroScreen extends BaseScreen {
         AudioManager.playMusic("sounds/musica_intro.mp3", false);
 
         font = new BitmapFont();
-        layout = new GlyphLayout();
     }
 
     @Override
@@ -65,6 +66,7 @@ public class IntroScreen extends BaseScreen {
         // Si ya terminó y se pulsa ENTER, pasamos de pantalla de menu
         if (showPressEnter && Gdx.input.isKeyJustPressed(Input.Keys.ENTER)) {
             AudioManager.stopMusic();
+            AssetLoader.unloadIntroAssets();
             game.setScreen(new MainMenuScreen(game));
         }
     }
@@ -76,6 +78,7 @@ public class IntroScreen extends BaseScreen {
             region.getTexture().dispose();
         }  
         
+        font.dispose();
         AudioManager.stopMusic();
     }
 }

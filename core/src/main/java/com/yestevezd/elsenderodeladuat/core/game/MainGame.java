@@ -11,7 +11,6 @@ public class MainGame extends Game {
     @Override
     public void create() {
         batch = new SpriteBatch();
-        AssetLoader.load();
         setScreen(new IntroScreen(this)); // Iniciar en la pantalla de introducción
     }
 

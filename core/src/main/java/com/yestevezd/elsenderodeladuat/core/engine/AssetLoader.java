@@ -2,23 +2,124 @@ package com.yestevezd.elsenderodeladuat.core.engine;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.utils.Array;
 
+/**
+ * AssetLoader centralizado para gestionar los recursos del juego de forma modular.
+ * Organizado por contexto: intro, menú, escenarios, etc.
+ */
 public class AssetLoader {
+
     private static final AssetManager manager = new AssetManager();
 
-    public static void load() {
-        manager.load("others/imagen_demonio.jpeg", Texture.class);
+    // INTRO
+
+    public static void loadIntroAssets() {
+        manager.load("sounds/musica_intro.mp3", Sound.class);
+    }
+
+    // MENÚ PRINCIPAL
+
+    public static void loadMenuAssets() {
+        
+    }
+
+    // CASA DEL ARTESANO
+
+    public static void loadHouseAssets() {
+        
+    }
+
+    // TEMPLO DE KARNAK
+
+    public static void loadKarnakAssets() {
+       
+    }
+
+    // VALLE DE LOS REYES
+
+    public static void loadValleyAssets() {
+        
+    }
+
+    // DUAT (INFIERNO EGIPCIO)
+
+    public static void loadDuatAssets() {
+        
+    }
+
+    // HUD / INTERFAZ
+
+    public static void loadHUDAssets() {
+        
+    }
+
+// MÉTODOS DE UNLOAD
+
+public static void unloadIntroAssets() {
+    unload("audio/musica_intro.mp3");
+}
+
+public static void unloadMenuAssets() {
+    
+}
+
+public static void unloadHouseAssets() {
+   
+}
+
+public static void unloadKarnakAssets() {
+    
+}
+
+public static void unloadValleyAssets() {
+    
+}
+
+public static void unloadDuatAssets() {
+    
+}
+
+public static void unloadHUDAssets() {
+    
+}
+
+    // MÉTODOS GENERALES
+
+    public static void finishLoading() {
         manager.finishLoading();
     }
 
-    public static Texture getTexture(String name) {
-        return manager.get(name, Texture.class);
+    public static <T> T get(String path, Class<T> type) {
+        return manager.get(path, type);
     }
 
-    //Cargar animaciones desde una secuencia de imágenes
+    public static boolean isLoaded(String path, Class<?> type) {
+        return manager.isLoaded(path, type);
+    }
+
+    public static void unload(String path) {
+        if (manager.isLoaded(path)) {
+            manager.unload(path);
+        }
+    }
+
+    public static void dispose() {
+        manager.dispose();
+    }
+
+    // VIDEO FRAMES (para intros animadas)
+
+    /**
+     * Carga una secuencia de imágenes desde una carpeta para animaciones tipo video.
+     *
+     * @param folder Carpeta donde están los frames (relativa a assets/)
+     * @param count  Número de imágenes (frame_001.png, frame_002.png...)
+     * @return Array con los frames como TextureRegion
+     */
     public static Array<TextureRegion> loadVideoFrames(String folder, int count) {
         Array<TextureRegion> frames = new Array<>();
 
@@ -30,9 +131,5 @@ public class AssetLoader {
         }
 
         return frames;
-    }
-
-    public static void dispose() {
-        manager.dispose();
     }
 }
