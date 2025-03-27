@@ -6,4 +6,5 @@ public class GameConfig {
     public static final boolean FULLSCREEN = true;
     public static final boolean VSYNC = true;
     public static final String GAME_TITLE = "El Sendero de la Duat";    
+    public static final boolean DEBUG = true;
 }
