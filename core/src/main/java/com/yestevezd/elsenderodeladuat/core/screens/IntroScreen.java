@@ -26,9 +26,6 @@ public class IntroScreen extends BaseScreen {
 
     @Override
     public void show() {
-        // Cargar recursos de la intro
-        AssetLoader.loadIntroAssets();
-        AssetLoader.finishLoading();
 
         frames = AssetLoader.loadVideoFrames("video_intro", 105);
         animation = new Animation<>(1f / 15f, frames, Animation.PlayMode.NORMAL);
@@ -66,7 +63,6 @@ public class IntroScreen extends BaseScreen {
         // Si ya terminó y se pulsa ENTER, pasamos de pantalla de menu
         if (showPressEnter && Gdx.input.isKeyJustPressed(Input.Keys.ENTER)) {
             AudioManager.stopMusic();
-            AssetLoader.unloadIntroAssets();
             game.setScreen(new MainMenuScreen(game));
         }
     }

@@ -23,4 +23,18 @@ public class TextUtils {
             font.draw(batch, layout, x, y);
         }
     }
+
+    /**
+     * Dibuja texto centrado horizontalmente.
+     *
+     * @param batch SpriteBatch activo
+     * @param font Fuente a usar
+     * @param message El texto a mostrar
+     * @param y Posición vertical (desde abajo)
+     */
+    public static void drawCenteredText(SpriteBatch batch, BitmapFont font, String message, float y) {
+        GlyphLayout layout = new GlyphLayout(font, message);
+        float x = (float) (com.badlogic.gdx.Gdx.graphics.getWidth() - layout.width) / 2f;
+        font.draw(batch, layout, x, y);
+    }
 }
