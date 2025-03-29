@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.utils.Array;
 
@@ -20,7 +21,19 @@ public class AssetLoader {
     public static void loadMenuAssets() {
         manager.load("menu/fondo_menu.jpg", Texture.class);
         manager.load("sounds/sonido_desplazarse_menu.mp3", Sound.class);
-        manager.load("sounds/click_menu.mp3", Sound.class);    
+        manager.load("sounds/click_menu.mp3", Sound.class); 
+        manager.load("fonts/ui_font.fnt", BitmapFont.class);
+        manager.load("fonts/ui_font.png", Texture.class);   
+    }
+
+    //CONFIGURACIÓN
+    public static void loadConfigAssets() {
+        manager.load("others/fondo_configuracion.jpg", Texture.class);
+        manager.load("sounds/sonido_desplazarse_menu.mp3", Sound.class);
+        manager.load("sounds/click_menu.mp3", Sound.class);
+        manager.load("sounds/musica_configuracion.mp3", Sound.class);     
+        manager.load("fonts/ui_font.fnt", BitmapFont.class);
+        manager.load("fonts/ui_font.png", Texture.class);  
     }
 
     // CASA DEL ARTESANO
@@ -59,6 +72,17 @@ public static void unloadMenuAssets() {
     unload("others/fondo_menu.jpg");
     unload("sounds/sonido_desplazarse_menu.mp3");  
     unload("sounds/click_menu.mp3");  
+    unload("fonts/ui_font.fnt");
+    unload("fonts/ui_font.png");
+}
+
+public static void unloadConfigAssets() {
+    unload("others/fondo_configuracion.jpg");
+    unload("sounds/sonido_desplazarse_menu.mp3");  
+    unload("sounds/click_menu.mp3");
+    unload("sounds/musica_configuracion.mp3");
+    unload("fonts/ui_font.fnt");
+    unload("fonts/ui_font.png");  
 }
 
 public static void unloadHouseAssets() {

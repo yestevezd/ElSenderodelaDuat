@@ -31,14 +31,16 @@ public class MainMenuScreen extends BaseScreen {
         AssetLoader.finishLoading();
 
         fondo = AssetLoader.get("menu/fondo_menu.jpg", Texture.class);
-        font = new BitmapFont();
-        font.getData().setScale(2f);
+        font = new BitmapFont(Gdx.files.internal("fonts/ui_font.fnt"));
+        font.getData().setScale(1f);
 
         menuUI = new MenuUIManager();
         menuUI.addButton(new MenuButton("JUGAR", 450f));
         menuUI.addButton(new MenuButton("CONFIGURACION", 350f));
         menuUI.addButton(new MenuButton("SALIR", 250f));
         menuUI.updateSelection();
+
+        AudioManager.playMusic("sounds/musica_menu.mp3", true);
     }
 
     @Override
@@ -81,7 +83,8 @@ public class MainMenuScreen extends BaseScreen {
                     // game.setScreen(new HouseScreen(game));
                     break;
                 case "CONFIGURACION":
-                    // game.setScreen(new ConfigurationScreen(game));
+                    AudioManager.stopMusic();
+                    game.setScreen(new ConfigurationScreen(game));
                     break;
                 case "SALIR":
                     Gdx.app.exit();

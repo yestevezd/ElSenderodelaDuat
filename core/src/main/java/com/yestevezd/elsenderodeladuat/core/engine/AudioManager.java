@@ -3,6 +3,7 @@ package com.yestevezd.elsenderodeladuat.core.engine;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
+import com.yestevezd.elsenderodeladuat.core.game.GameConfig;
 
 /**
  * Administra la reproducción de música y efectos de sonido.
@@ -21,7 +22,7 @@ public class AudioManager {
         stopMusic();
         currentMusic = Gdx.audio.newMusic(Gdx.files.internal(path));
         currentMusic.setLooping(looping);
-        currentMusic.setVolume(1f);
+        currentMusic.setVolume(GameConfig.MUSIC_VOLUME);
         currentMusic.play();
     }
 
@@ -51,7 +52,7 @@ public class AudioManager {
             sound = Gdx.audio.newSound(Gdx.files.internal(path));
         }
 
-        sound.play(1f);
+        sound.play(GameConfig.SOUND_VOLUME);
     }
 
     /**
