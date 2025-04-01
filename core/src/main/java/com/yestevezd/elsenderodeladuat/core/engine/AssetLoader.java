@@ -36,6 +36,19 @@ public class AssetLoader {
         manager.load("fonts/ui_font.png", Texture.class);  
     }
 
+    //CONTEXTUALIZACIÓN
+    public static void loadContextAssets() {
+        manager.load("others/fondo_contextualizacion.jpg", Texture.class); 
+        manager.load("fonts/ui_font.fnt", BitmapFont.class);
+        manager.load("fonts/ui_font.png", Texture.class);
+        manager.load("fonts/jeroglificos1_font.fnt", BitmapFont.class);
+        manager.load("fonts/jeroglificos1_font.png", Texture.class);
+        manager.load("fonts/jeroglificos2_font.fnt", BitmapFont.class);
+        manager.load("fonts/jeroglificos2_font.png", Texture.class);
+        manager.load("fonts/jeroglificos3_font.fnt", BitmapFont.class);
+        manager.load("fonts/jeroglificos3_font.png", Texture.class);
+    }
+
     // CASA DEL ARTESANO
 
     public static void loadHouseAssets() {
@@ -83,6 +96,18 @@ public static void unloadConfigAssets() {
     unload("sounds/musica_configuracion.mp3");
     unload("fonts/ui_font.fnt");
     unload("fonts/ui_font.png");  
+}
+
+public static void unloadContextAssets() {
+    unload("others/fondo_contextualizacion.jpg");
+    unload("fonts/ui_font.fnt");
+    unload("fonts/ui_font.png");
+    unload("fonts/jeroglificos1_font.fnt");
+    unload("fonts/jeroglificos1_font.png");
+    unload("fonts/jeroglificos2_font.fnt");
+    unload("fonts/jeroglificos2_font.png");
+    unload("fonts/jeroglificos3_font.fnt");
+    unload("fonts/jeroglificos3_font.png");
 }
 
 public static void unloadHouseAssets() {

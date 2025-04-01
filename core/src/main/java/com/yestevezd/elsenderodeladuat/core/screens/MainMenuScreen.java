@@ -80,7 +80,7 @@ public class MainMenuScreen extends BaseScreen {
 
             switch (menuUI.getSelectedOption()) {
                 case "JUGAR":
-                    // game.setScreen(new HouseScreen(game));
+                    game.setScreen(new ContextScreen(game));
                     break;
                 case "CONFIGURACION":
                     AudioManager.stopMusic();
