@@ -32,7 +32,7 @@ public class ConfigurationScreen extends BaseScreen {
         AssetLoader.finishLoading();
         fondo = AssetLoader.get("others/fondo_configuracion.jpg", Texture.class);
 
-        font = new BitmapFont(Gdx.files.internal("fonts/ui_font.fnt"));
+        font = AssetLoader.get("fonts/ui_font.fnt", BitmapFont.class);
         font.getData().setScale(2f);
 
         sliderUI = new SliderUIManager();

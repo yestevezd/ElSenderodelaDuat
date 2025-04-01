@@ -26,6 +26,8 @@ public class IntroScreen extends BaseScreen {
 
     @Override
     public void show() {
+        AssetLoader.loadIntroAssets();
+        AssetLoader.finishLoading();
 
         frames = AssetLoader.loadVideoFrames("video_intro", 105);
         animation = new Animation<>(1f / 15f, frames, Animation.PlayMode.NORMAL);
@@ -34,7 +36,8 @@ public class IntroScreen extends BaseScreen {
 
         AudioManager.playMusic("sounds/musica_intro.mp3", false);
 
-        font = new BitmapFont();
+        font = AssetLoader.get("fonts/ui_font.fnt", BitmapFont.class); 
+        font.getData().setScale(1.0f);
     }
 
     @Override
@@ -76,5 +79,6 @@ public class IntroScreen extends BaseScreen {
         
         font.dispose();
         AudioManager.stopMusic();
+        AssetLoader.unloadIntroAssets();
     }
 }

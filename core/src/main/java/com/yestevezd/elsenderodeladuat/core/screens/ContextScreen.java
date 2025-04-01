@@ -37,13 +37,13 @@ public class ContextScreen extends BaseScreen {
 
         fondo = AssetLoader.get("others/fondo_contextualizacion.jpg", Texture.class);
 
-        font = new BitmapFont(Gdx.files.internal("fonts/ui_font.fnt"));
+        font = AssetLoader.get("fonts/ui_font.fnt", BitmapFont.class);
         font.getData().setScale(0.9f);
 
         hieroFonts = new BitmapFont[] {
-            new BitmapFont(Gdx.files.internal("fonts/jeroglificos1_font.fnt")),
-            new BitmapFont(Gdx.files.internal("fonts/jeroglificos2_font.fnt")),
-            new BitmapFont(Gdx.files.internal("fonts/jeroglificos3_font.fnt"))
+            AssetLoader.get("fonts/jeroglificos1_font.fnt", BitmapFont.class),
+            AssetLoader.get("fonts/jeroglificos2_font.fnt", BitmapFont.class),
+            AssetLoader.get("fonts/jeroglificos3_font.fnt", BitmapFont.class)
         };
 
         for (BitmapFont f : hieroFonts) {

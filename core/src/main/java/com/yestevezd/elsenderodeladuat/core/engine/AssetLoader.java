@@ -16,6 +16,12 @@ public class AssetLoader {
 
     private static final AssetManager manager = new AssetManager();
 
+    //INTRODUYCCIÓN
+    public static void loadIntroAssets() {
+        manager.load("fonts/ui_font.fnt", BitmapFont.class);
+        manager.load("fonts/ui_font.png", Texture.class); 
+    }
+
     // MENÚ PRINCIPAL
 
     public static void loadMenuAssets() {
@@ -30,8 +36,7 @@ public class AssetLoader {
     public static void loadConfigAssets() {
         manager.load("others/fondo_configuracion.jpg", Texture.class);
         manager.load("sounds/sonido_desplazarse_menu.mp3", Sound.class);
-        manager.load("sounds/click_menu.mp3", Sound.class);
-        manager.load("sounds/musica_configuracion.mp3", Sound.class);     
+        manager.load("sounds/click_menu.mp3", Sound.class);    
         manager.load("fonts/ui_font.fnt", BitmapFont.class);
         manager.load("fonts/ui_font.png", Texture.class);  
     }
@@ -81,6 +86,11 @@ public class AssetLoader {
 
 // MÉTODOS DE UNLOAD
 
+public static void unloadIntroAssets() {
+    unload("fonts/ui_font.fnt");
+    unload("fonts/ui_font.png");
+}
+
 public static void unloadMenuAssets() {
     unload("others/fondo_menu.jpg");
     unload("sounds/sonido_desplazarse_menu.mp3");  
@@ -93,7 +103,6 @@ public static void unloadConfigAssets() {
     unload("others/fondo_configuracion.jpg");
     unload("sounds/sonido_desplazarse_menu.mp3");  
     unload("sounds/click_menu.mp3");
-    unload("sounds/musica_configuracion.mp3");
     unload("fonts/ui_font.fnt");
     unload("fonts/ui_font.png");  
 }

@@ -31,7 +31,7 @@ public class MainMenuScreen extends BaseScreen {
         AssetLoader.finishLoading();
 
         fondo = AssetLoader.get("menu/fondo_menu.jpg", Texture.class);
-        font = new BitmapFont(Gdx.files.internal("fonts/ui_font.fnt"));
+        font = AssetLoader.get("fonts/ui_font.fnt", BitmapFont.class);
         font.getData().setScale(1f);
 
         menuUI = new MenuUIManager();
