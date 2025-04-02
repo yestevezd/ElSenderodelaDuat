@@ -11,7 +11,7 @@ public class NarrativeManager {
 
     private final List<NarrativeLine> lines = new ArrayList<>();
     private final float charDelay = 0.07f;
-    private final float autoAdvanceDelay = 0.6f; // Tiempo tras mostrar línea antes de avanzar automáticamente
+    private final float autoAdvanceDelay = 0.3f; // Tiempo tras mostrar línea antes de avanzar automáticamente
 
     private int currentLineIndex = 0;
     private float timer = 0f;

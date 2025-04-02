@@ -37,7 +37,7 @@ public class IntroScreen extends BaseScreen {
         AudioManager.playMusic("sounds/musica_intro.mp3", false);
 
         font = AssetLoader.get("fonts/ui_font.fnt", BitmapFont.class); 
-        font.getData().setScale(1.0f);
+        font.getData().setScale(0.9f);
     }
 
     @Override
