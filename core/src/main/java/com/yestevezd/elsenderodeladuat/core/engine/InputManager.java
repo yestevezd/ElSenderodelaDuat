@@ -8,6 +8,8 @@ import com.badlogic.gdx.Input;
  */
 public class InputManager {
 
+    // === Menús ===
+
     public static boolean isNavigateUpPressed() {
         return Gdx.input.isKeyJustPressed(Input.Keys.UP);
     }
@@ -24,4 +26,27 @@ public class InputManager {
         return Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE);
     }
 
+    // === Movimiento continuo (mantener tecla) ===
+
+    public static boolean isMoveUpPressed() {
+        return Gdx.input.isKeyPressed(Input.Keys.W) || Gdx.input.isKeyPressed(Input.Keys.UP);
+    }
+
+    public static boolean isMoveDownPressed() {
+        return Gdx.input.isKeyPressed(Input.Keys.S) || Gdx.input.isKeyPressed(Input.Keys.DOWN);
+    }
+
+    public static boolean isMoveLeftPressed() {
+        return Gdx.input.isKeyPressed(Input.Keys.A) || Gdx.input.isKeyPressed(Input.Keys.LEFT);
+    }
+
+    public static boolean isMoveRightPressed() {
+        return Gdx.input.isKeyPressed(Input.Keys.D) || Gdx.input.isKeyPressed(Input.Keys.RIGHT);
+    }
+
+    // === Interacción ===
+
+    public static boolean isInteractPressed() {
+        return Gdx.input.isKeyJustPressed(Input.Keys.E);
+    }
 }

@@ -2,10 +2,13 @@ package com.yestevezd.elsenderodeladuat.core.engine;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.assets.loaders.resolvers.InternalFileHandleResolver;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.maps.tiled.TiledMap;
+import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.utils.Array;
 
 /**
@@ -16,7 +19,7 @@ public class AssetLoader {
 
     private static final AssetManager manager = new AssetManager();
 
-    //INTRODUYCCIÓN
+    //INTRODUCCIÓN
     public static void loadIntroAssets() {
         manager.load("fonts/ui_font.fnt", BitmapFont.class);
         manager.load("fonts/ui_font.png", Texture.class); 
@@ -57,7 +60,10 @@ public class AssetLoader {
     // CASA DEL ARTESANO
 
     public static void loadHouseAssets() {
-        
+        manager.setLoader(TiledMap.class, new TmxMapLoader(new InternalFileHandleResolver()));
+
+        manager.load("maps/casa_deir_el_medina.tmx", TiledMap.class);
+        manager.load("characters/personaje_principal.png", Texture.class);   
     }
 
     // TEMPLO DE KARNAK
@@ -120,7 +126,8 @@ public static void unloadContextAssets() {
 }
 
 public static void unloadHouseAssets() {
-   
+    unload("maps/casa_deir_el_medina.tmx");
+    unload("characters/personaje_principal.png");
 }
 
 public static void unloadKarnakAssets() {

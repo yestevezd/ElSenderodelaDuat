@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.yestevezd.elsenderodeladuat.core.engine.AssetLoader;
+import com.yestevezd.elsenderodeladuat.core.engine.AudioManager;
 import com.yestevezd.elsenderodeladuat.core.engine.InputManager;
 import com.yestevezd.elsenderodeladuat.core.game.MainGame;
 import com.yestevezd.elsenderodeladuat.core.narrative.NarrativeLine;
@@ -141,10 +142,14 @@ public class ContextScreen extends BaseScreen {
         batch.end();
 
         if (narrativeManager.isFinished() && InputManager.isSelectPressed()) {
-            // TODO: cambiar de pantalla
-            // game.setScreen(new HouseScreen(game));
+            game.setScreen(new HouseScreen(game));
+            AudioManager.stopMusic();
         }
-    }
+
+        if(InputManager.isBackPressed()) {
+            game.setScreen(new HouseScreen(game));}
+            AudioManager.stopMusic();
+        }
 
     @Override
     public void dispose() {
