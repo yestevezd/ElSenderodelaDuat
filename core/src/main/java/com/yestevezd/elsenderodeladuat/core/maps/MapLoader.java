@@ -7,101 +7,90 @@ import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.math.Polygon;
 import com.yestevezd.elsenderodeladuat.core.engine.AssetLoader;
 import com.yestevezd.elsenderodeladuat.core.interaction.InteractableObject;
+import com.yestevezd.elsenderodeladuat.core.interaction.DoorTrigger;
 
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Clase encargada de cargar mapas Tiled (.tmx) y extraer datos útiles como:
- * - Polígonos de colisión
- * - Objetos interactuables
- * 
- * Usa AssetLoader para una gestión consistente de recursos.
+ * Carga y procesa un mapa Tiled (.tmx), extrayendo información útil como:
+ * - Polígonos de colisión para el sistema físico
+ * - Objetos interactuables con los que el jugador puede interactuar
+ * - Triggers de puertas para cambiar de pantalla
+ *
+ * La información se extrae de la capa "colisiones".
  */
 public class MapLoader {
 
     private final TiledMap map;
-    private final List<Polygon> collisionPolygons;
-    private final List<InteractableObject> interactables;
+    private final List<Polygon> collisionPolygons = new ArrayList<>();
+    private final List<InteractableObject> interactables = new ArrayList<>();
+    private final List<DoorTrigger> doorTriggers = new ArrayList<>();
 
     /**
-     * Constructor que obtiene el mapa desde AssetLoader y extrae
-     * colisiones y objetos interactuables.
-     *
-     * @param mapPath Ruta relativa dentro de assets/ al archivo .tmx
+     * Crea un MapLoader y carga automáticamente el mapa especificado desde el AssetLoader.
+     * 
+     * @param mapPath ruta dentro de assets/ al archivo .tmx
      */
     public MapLoader(String mapPath) {
         this.map = AssetLoader.get(mapPath, TiledMap.class);
-        this.collisionPolygons = extractPolygons("colisiones");
-        this.interactables = extractInteractables("objetos");
+        processCollisionLayer("colisiones");
     }
 
     /**
-     * Extrae los polígonos de colisión de una capa de objetos del mapa.
-     * Estos se usan para comprobar colisiones con el jugador u otros elementos.
-     *
-     * @param layerName Nombre de la capa de objetos en el mapa que contiene las colisiones.
-     * @return Lista de polígonos que representan las áreas de colisión.
+     * Procesa la capa de colisiones del mapa, identificando polígonos de colisión,
+     * objetos interactivos y puertas según su nombre.
+     * 
+     * @param layerName nombre de la capa que contiene objetos de colisión
      */
-    private List<Polygon> extractPolygons(String layerName) {
-        List<Polygon> polygons = new ArrayList<>();
+    private void processCollisionLayer(String layerName) {
         MapObjects objects = map.getLayers().get(layerName).getObjects();
 
         for (MapObject obj : objects) {
             if (obj instanceof PolygonMapObject) {
-                polygons.add(((PolygonMapObject) obj).getPolygon());
-            }
-        }
+                Polygon polygon = ((PolygonMapObject) obj).getPolygon();
+                collisionPolygons.add(polygon);
 
-        return polygons;
-    }
-
-    /**
-     * Extrae objetos interactuables desde una capa específica del mapa.
-     * Los objetos deben ser PolygonMapObjects con nombre para ser válidos.
-     *
-     * @param layerName Nombre de la capa de objetos que contiene los elementos interactuables.
-     * @return Lista de objetos interactuables.
-     */
-    private List<InteractableObject> extractInteractables(String layerName) {
-        List<InteractableObject> result = new ArrayList<>();
-        MapObjects objects = map.getLayers().get(layerName).getObjects();
-
-        for (MapObject obj : objects) {
-            if (obj instanceof PolygonMapObject) {
                 String name = obj.getName();
                 if (name != null && !name.isEmpty()) {
-                    result.add(new InteractableObject(name, ((PolygonMapObject) obj).getPolygon()));
+                    if (name.startsWith("puerta_")) {
+                        // Si el nombre contiene "auto", se activa automáticamente sin pulsar tecla
+                        boolean isAuto = name.contains("auto");
+                        doorTriggers.add(new DoorTrigger(name, polygon, !isAuto));
+                    } else {
+                        // Si no es una puerta, lo tratamos como un objeto interactuable
+                        interactables.add(new InteractableObject(name, polygon));
+                    }
                 }
             }
         }
-
-        return result;
     }
 
     /**
-     * @return Lista de polígonos de colisión extraídos del mapa.
+     * @return lista de polígonos utilizados por el sistema de colisiones
      */
     public List<Polygon> getCollisionPolygons() {
         return collisionPolygons;
     }
 
     /**
-     * @return Lista de objetos interactuables extraídos del mapa.
+     * @return lista de objetos interactuables con nombre, extraídos del mapa
      */
     public List<InteractableObject> getInteractableObjects() {
         return interactables;
     }
 
     /**
-     * @return El objeto TiledMap completo cargado.
+     * @return lista de triggers de puertas definidos en el mapa
+     */
+    public List<DoorTrigger> getDoorTriggers() {
+        return doorTriggers;
+    }
+
+    /**
+     * @return el mapa Tiled cargado
      */
     public TiledMap getTiledMap() {
         return map;
-    }
-
-    
-    public void dispose() {
-        
     }
 }

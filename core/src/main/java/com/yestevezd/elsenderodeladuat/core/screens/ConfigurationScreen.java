@@ -11,7 +11,6 @@ import com.yestevezd.elsenderodeladuat.core.game.GameConfig;
 import com.yestevezd.elsenderodeladuat.core.game.MainGame;
 import com.yestevezd.elsenderodeladuat.core.ui.SliderOption;
 import com.yestevezd.elsenderodeladuat.core.ui.SliderUIManager;
-import com.yestevezd.elsenderodeladuat.core.utils.DebugUtils;
 import com.yestevezd.elsenderodeladuat.core.utils.TextUtils;
 import com.yestevezd.elsenderodeladuat.core.utils.TextureUtils;
 
@@ -109,13 +108,11 @@ public class ConfigurationScreen extends BaseScreen {
        if (label.equals("MÚSICA")) {
         GameConfig.MUSIC_VOLUME = selected.getValue();
         AudioManager.setVolume(GameConfig.MUSIC_VOLUME);
-        DebugUtils.log("Configuración", "Volumen MÚSICA: " + GameConfig.MUSIC_VOLUME);
         AudioManager.playSound("sounds/click_menu.mp3");
         }
 
         if (label.equals("EFECTOS")) {
             GameConfig.SOUND_VOLUME = selected.getValue();
-            DebugUtils.log("Configuración", "Volumen EFECTOS: " + GameConfig.SOUND_VOLUME);
             AudioManager.playSound("sounds/click_menu.mp3");
         }
     }

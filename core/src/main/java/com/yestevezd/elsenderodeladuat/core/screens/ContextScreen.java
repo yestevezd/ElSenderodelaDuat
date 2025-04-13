@@ -17,7 +17,10 @@ import com.yestevezd.elsenderodeladuat.core.narrative.hieroglyphics.Hieroglyphic
 import com.yestevezd.elsenderodeladuat.core.narrative.hieroglyphics.HieroglyphicRenderer;
 
 import java.util.List;
-
+/**
+ * Pantalla de contextualización histórica del juego.
+ * Muestra una introducción narrativa con jeroglíficos y su traducción.
+ */
 public class ContextScreen extends BaseScreen {
 
     private Texture fondo;
@@ -26,10 +29,18 @@ public class ContextScreen extends BaseScreen {
     private NarrativeManager narrativeManager;
     private float timeAccumulator = 0f;
 
+     /**
+     * Constructor de la pantalla de contexto histórico.
+     *
+     * @param game instancia principal del juego
+     */
     public ContextScreen(MainGame game) {
         super(game);
     }
 
+    /**
+     * Inicializa y carga recursos necesarios, incluyendo fuentes, fondo y líneas narrativas.
+     */
     @Override
     public void show() {
         AssetLoader.loadContextAssets();
@@ -49,10 +60,11 @@ public class ContextScreen extends BaseScreen {
         for (BitmapFont f : hieroFonts) {
             f.getData().setScale(0.9f);
         }
-
+        
         narrativeManager = new NarrativeManager();
         narrativeManager.setHieroglyphicFonts(hieroFonts);
 
+        // Añadir líneas narrativas (jeroglífico enriquecido + traducción)
         narrativeManager.addLine(new NarrativeLine(
             null,
             null,
@@ -96,6 +108,11 @@ public class ContextScreen extends BaseScreen {
         ));
     }
 
+     /**
+     * Lógica de dibujado y avance automático de texto.
+     *
+     * @param delta Tiempo desde el último frame
+     */
     @Override
     public void render(float delta) {
         ScreenUtils.clear(0, 0, 0, 1);
@@ -135,22 +152,28 @@ public class ContextScreen extends BaseScreen {
             }
         }
 
+         // Instrucción para avanzar
         if (narrativeManager.isFinished()) {
             TextUtils.drawBlinkingTextCentered(batch, font, "Pulsa ENTER para continuar", 700f, timeAccumulator, 1.0f);
         }
 
         batch.end();
 
+        // Entrada de usuario para continuar
         if (narrativeManager.isFinished() && InputManager.isSelectPressed()) {
             game.setScreen(new HouseScreen(game));
             AudioManager.stopMusic();
         }
-
+        
+        // Botón de salir anticipado
         if(InputManager.isBackPressed()) {
             game.setScreen(new HouseScreen(game));}
             AudioManager.stopMusic();
         }
 
+    /**
+     * Libera los recursos utilizados por esta pantalla.
+     */
     @Override
     public void dispose() {
         fondo.dispose();

@@ -63,7 +63,16 @@ public class AssetLoader {
         manager.setLoader(TiledMap.class, new TmxMapLoader(new InternalFileHandleResolver()));
 
         manager.load("maps/casa_deir_el_medina.tmx", TiledMap.class);
-        manager.load("characters/personaje_principal.png", Texture.class);   
+        manager.load("characters/personaje_principal.png", Texture.class);  
+        manager.load("sounds/sonido_puerta.mp3", Sound.class); 
+    }
+    // DEIR EL MEDINA
+    public static void loadDeirElMedinaAssets() {
+        manager.setLoader(TiledMap.class, new TmxMapLoader(new InternalFileHandleResolver()));
+
+        manager.load("maps/pueblo_deir_el_medina.tmx", TiledMap.class); 
+        manager.load("sounds/sonido_puerta.mp3", Sound.class);
+        manager.load("sounds/sonido_viento.mp3", Sound.class); 
     }
 
     // TEMPLO DE KARNAK
@@ -128,6 +137,13 @@ public static void unloadContextAssets() {
 public static void unloadHouseAssets() {
     unload("maps/casa_deir_el_medina.tmx");
     unload("characters/personaje_principal.png");
+    unload("sounds/sonido_puerta.mp3");
+}
+
+public static void unloadDeirElMedinaAssets() {
+    unload("maps/pueblo_deir_el_medina.tmx");
+    unload("sounds/sonido_puerta.mp3");
+    unload("sounds/sonido_viento.mp3");
 }
 
 public static void unloadKarnakAssets() {
