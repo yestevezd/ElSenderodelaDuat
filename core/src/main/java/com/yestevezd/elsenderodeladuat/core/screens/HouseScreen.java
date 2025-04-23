@@ -1,6 +1,7 @@
 package com.yestevezd.elsenderodeladuat.core.screens;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -9,6 +10,7 @@ import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import com.yestevezd.elsenderodeladuat.core.game.EventFlags;
 import com.yestevezd.elsenderodeladuat.core.game.MainGame;
 import com.yestevezd.elsenderodeladuat.core.engine.AssetLoader;
 import com.yestevezd.elsenderodeladuat.core.engine.AudioManager;
@@ -17,63 +19,44 @@ import com.yestevezd.elsenderodeladuat.core.interaction.*;
 import com.yestevezd.elsenderodeladuat.core.maps.MapLoader;
 import com.yestevezd.elsenderodeladuat.core.maps.MapUtils;
 import com.yestevezd.elsenderodeladuat.core.collision.CollisionSystem;
+import com.yestevezd.elsenderodeladuat.core.ui.LoreOverlayManager;
 
-/**
- * Pantalla correspondiente al interior de la casa en Deir el-Medina.
- * Controla la carga del mapa, el personaje, colisiones, interacción y transiciones por puertas.
- */
 public class HouseScreen extends BaseScreen {
 
-    // Cámara y vista
     private OrthographicCamera camera;
     private Viewport viewport;
 
-    // Mapa y renderizador
     private TiledMap map;
     private OrthogonalTiledMapRenderer mapRenderer;
 
-    // Jugador
     private PlayerCharacter player;
     private Texture playerTexture;
     private float mapWidth;
     private float mapHeight;
 
-    // Sistemas de colisiones, puertas e interacción
     private CollisionSystem collisionSystem;
     private DoorManager doorManager;
     private InteractionManager interactionManager;
     private ShapeRenderer shapeRenderer;
 
-    // Posición de entrada desde otra pantalla
     private float spawnX, spawnY;
 
-    /**
-     * Constructor sin posición inicial explícita (usa el centro del mapa por defecto).
-     */
+    private LoreOverlayManager loreOverlay;
+
     public HouseScreen(MainGame game) {
         super(game);
     }
 
-    /**
-     * Constructor con coordenadas de aparición personalizadas.
-     *
-     * @param game Instancia principal del juego
-     * @param spawnX Coordenada X de inicio del jugador
-     * @param spawnY Coordenada Y de inicio del jugador
-     */
     public HouseScreen(MainGame game, float spawnX, float spawnY) {
         super(game);
         this.spawnX = spawnX;
         this.spawnY = spawnY;
     }
 
-    /**
-     * Carga y configura todos los elementos de la pantalla.
-     */
     @Override
     public void show() {
-        AssetLoader.loadHouseAssets();                 
-        AssetLoader.loadDeirElMedinaAssets();         
+        AssetLoader.loadHouseAssets();
+        AssetLoader.loadDeirElMedinaAssets();
         AssetLoader.finishLoading();
 
         MapLoader mapLoader = new MapLoader("maps/casa_deir_el_medina.tmx");
@@ -85,7 +68,6 @@ public class HouseScreen extends BaseScreen {
 
         playerTexture = AssetLoader.get("characters/personaje_principal.png", Texture.class);
 
-        // Determinar punto de aparición del jugador
         float initialX = spawnX != 0 ? spawnX : mapWidth / 2f;
         float initialY = spawnY != 0 ? spawnY : mapHeight / 2f;
 
@@ -108,25 +90,65 @@ public class HouseScreen extends BaseScreen {
         shapeRenderer = new ShapeRenderer();
 
         AudioManager.stopMusic();
+
+        if (!EventFlags.lorePapiroArtesanoMostrado) {
+            loreOverlay = new LoreOverlayManager();
+            loreOverlay.trigger("others/papiro_hieratic.png",
+                "Mi querido familiar:\n" +
+                "El tiempo que los dioses te han concedido entre los vivos se acorta.\n" +
+                "Debes prepararte para tu viaje hacia el más allá. Para cruzar las puertas de la Duat y alcanzar los Campos de Aaru,\n" +
+                "deberás obrar con rectitud y reunir los artefactos que te servirán en el juicio ante Osiris.\n" +
+                "Las señales están claras: tu camino se entrelaza con fuerzas ocultas y decisiones que marcarán tu alma.\n" +
+                "Actúa con sabiduría y honor.\n" +
+                "Que tu alma llegue ligera ante el trono de Osiris."
+            );
+        }
     }
 
-    /**
-     * Lógica y renderizado de cada frame.
-     */
     @Override
     public void render(float delta) {
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-        Vector2 oldPosition = player.getPosition().cpy();
-        player.update(delta);
+        if (loreOverlay != null) {
+            loreOverlay.update(delta);
 
-        // Evita que el jugador atraviese colisiones
-        if (collisionSystem.isColliding(player.getCollisionBounds())) {
-            player.setPosition(oldPosition.x, oldPosition.y);
+            if (loreOverlay.isFinished()) {
+                if (!EventFlags.lorePapiroArtesanoMostrado) {
+                    EventFlags.lorePapiroArtesanoMostrado = true;
+                }
+                loreOverlay = null;
+            }
         }
 
-        interactionManager.update(player.getCollisionBounds());
+        if (loreOverlay == null || !loreOverlay.isBlocking()) {
+            Vector2 oldPosition = player.getPosition().cpy();
+            player.update(delta);
+
+            if (collisionSystem.isColliding(player.getCollisionBounds())) {
+                player.setPosition(oldPosition.x, oldPosition.y);
+            }
+
+            interactionManager.update(player.getCollisionBounds());
+
+            if (Gdx.input.isKeyJustPressed(Input.Keys.E) && loreOverlay == null) {
+                for (InteractableObject obj : interactionManager.getHighlightedObjects()) {
+                    if ("mesa_casa".equals(obj.getName())) {
+                        loreOverlay = new LoreOverlayManager();
+                        loreOverlay.trigger("others/papiro_hieratic.png",
+                            "Mi querido familiar:\n" +
+                            "El tiempo que los dioses te han concedido entre los vivos se acorta.\n" +
+                            "Debes prepararte para tu viaje hacia el más allá. Para cruzar las puertas de la Duat y alcanzar los Campos de Aaru,\n" +
+                            "deberás obrar con rectitud y reunir los artefactos que te servirán en el juicio ante Osiris.\n" +
+                            "Las señales están claras: tu camino se entrelaza con fuerzas ocultas y decisiones que marcarán tu alma.\n" +
+                            "Actúa con sabiduría y honor.\n" +
+                            "Que tu alma llegue ligera ante el trono de Osiris."
+                        );
+                        break;
+                    }
+                }
+            }
+        }
 
         camera.update();
         mapRenderer.setView(camera);
@@ -139,29 +161,27 @@ public class HouseScreen extends BaseScreen {
         player.render(batch);
         batch.end();
 
-        // Comprobación de transición de puerta mediante clase reutilizable DoorHandler
         if (DoorHandler.handleDoorTransition(getGame(), doorManager, player.getCollisionBounds())) {
-            return; // Si hay transición, no seguimos renderizando
+            return;
+        }
+
+        if (loreOverlay != null) {
+            loreOverlay.render(batch, shapeRenderer, camera);
         }
     }
 
-    /**
-     * Ajusta la vista si cambia el tamaño de pantalla.
-     */
     @Override
     public void resize(int width, int height) {
         viewport.update(width, height);
         camera.update();
     }
 
-    /**
-     * Libera todos los recursos de esta pantalla.
-     */
     @Override
     public void dispose() {
         map.dispose();
         mapRenderer.dispose();
         shapeRenderer.dispose();
         AssetLoader.unloadHouseAssets();
+        if (loreOverlay != null) loreOverlay.dispose();
     }
 }

@@ -1,0 +1,97 @@
+{
+    "fileStates": {
+        "": {
+            "scaleInDock": 0.125
+        },
+        "#Tebas_karnak": {
+            "scaleInDock": 0.0625
+        },
+        "#room_pixel050325": {
+            "scaleInDock": 0.0625
+        },
+        "#sala_hipostila_karnak": {
+            "scaleInDock": 0.0625
+        },
+        "F:/ESTUDIOS/TFG Videojuego Libro de los Muertos/codigo_ordenador/assets/initialRoom.tmx": {
+            "scale": 1,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 922,
+                "y": 532
+            }
+        },
+        "F:/ESTUDIOS/TFG Videojuego Libro de los Muertos/codigo_ordenador/assets/initialRoom.tmx#initial_room": {
+            "scaleInDock": 0.0625
+        },
+        "casa_deir_el_medina.tmx": {
+            "expandedObjectLayers": [
+                2
+            ],
+            "scale": 0.75,
+            "selectedLayer": 1,
+            "viewCenter": {
+                "x": 786.6666666666665,
+                "y": 420.66666666666663
+            }
+        },
+        "casa_deir_el_medina.tmx#room_pixel006_070425": {
+            "scaleInDock": 1
+        },
+        "casa_deir_el_medina.tmx#room_pixel050325": {
+            "scaleInDock": 0.0625
+        },
+        "casa_prueba.tmx": {
+            "scale": 0.75,
+            "selectedLayer": 2,
+            "viewCenter": {
+                "x": 633.3333333333333,
+                "y": 580
+            }
+        },
+        "casa_prueba.tmx#room_pixel050325": {
+            "scaleInDock": 0.0625
+        },
+        "karnak_templo.tmx": {
+            "expandedObjectLayers": [
+                2
+            ],
+            "scale": 0.5,
+            "selectedLayer": 1,
+            "viewCenter": {
+                "x": 756,
+                "y": 495
+            }
+        },
+        "karnak_templo.tmx#Tebas_karnak": {
+            "scaleInDock": 0.0625
+        },
+        "pueblo_deir_el_medina.tmx": {
+            "expandedObjectLayers": [
+                3
+            ],
+            "scale": 0.5,
+            "selectedLayer": 1,
+            "viewCenter": {
+                "x": 916,
+                "y": 629
+            }
+        },
+        "pueblo_deir_el_medina.tmx#mapa_deir_el_medina": {
+            "scaleInDock": 0.0625
+        },
+        "sala_hipostila.tmx": {
+            "expandedObjectLayers": [
+                2
+            ],
+            "scale": 0.5,
+            "selectedLayer": 1,
+            "viewCenter": {
+                "x": 679,
+                "y": 536
+            }
+        },
+        "sala_hipostila.tmx#sala_hipostila_karnak": {
+            "scaleInDock": 0.0625
+        }
+    }
+}
