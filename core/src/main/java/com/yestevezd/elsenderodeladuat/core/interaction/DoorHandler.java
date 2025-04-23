@@ -25,7 +25,9 @@ public class DoorHandler {
             var destinationScreen = DoorRegistry.getScreenForDoor(game, doorName);
 
             if (destinationScreen != null) {
-                AudioManager.playSound("sounds/sonido_puerta.mp3");
+                if (!triggeredDoor.requiresInteraction()) {
+                    AudioManager.playSound("sounds/sonido_puerta.mp3");
+                }
                 Gdx.app.postRunnable(() -> game.setScreen(destinationScreen));
             } else {
                 System.out.println("[WARN] Puerta detectada pero sin destino registrado: " + doorName);

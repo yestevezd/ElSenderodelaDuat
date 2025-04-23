@@ -10,7 +10,9 @@ import com.yestevezd.elsenderodeladuat.core.interaction.InteractableObject;
 import com.yestevezd.elsenderodeladuat.core.interaction.DoorTrigger;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Carga y procesa un mapa Tiled (.tmx), extrayendo información útil como:
@@ -26,6 +28,15 @@ public class MapLoader {
     private final List<Polygon> collisionPolygons = new ArrayList<>();
     private final List<InteractableObject> interactables = new ArrayList<>();
     private final List<DoorTrigger> doorTriggers = new ArrayList<>();
+    private static final Map<String, String> doorMessages = new HashMap<>();
+
+    static {
+        // Mensajes personalizados para puertas
+        doorMessages.put("puerta_camino_1", "¿Quieres ir al templo de Karnak? Pulsa E");
+        doorMessages.put("puerta_camino_3", "¿Quieres ir al pueblo Deir El Medina? Pulsa E");
+        doorMessages.put("puerta_templo_karnak", "¿Quieres entrar al templo de karnak? Pulsa E");
+        doorMessages.put("puerta_templo_karnak_dentro", "¿Quieres salir del templo de karnak? Pulsa E");
+    }
 
     /**
      * Crea un MapLoader y carga automáticamente el mapa especificado desde el AssetLoader.
@@ -45,20 +56,24 @@ public class MapLoader {
      */
     private void processCollisionLayer(String layerName) {
         MapObjects objects = map.getLayers().get(layerName).getObjects();
-
+    
         for (MapObject obj : objects) {
             if (obj instanceof PolygonMapObject) {
                 Polygon polygon = ((PolygonMapObject) obj).getPolygon();
                 collisionPolygons.add(polygon);
-
+    
                 String name = obj.getName();
                 if (name != null && !name.isEmpty()) {
                     if (name.startsWith("puerta_")) {
-                        // Si el nombre contiene "auto", se activa automáticamente sin pulsar tecla
                         boolean isAuto = name.contains("auto");
-                        doorTriggers.add(new DoorTrigger(name, polygon, !isAuto));
+    
+                        String interactionMessage = null;
+                        if (!isAuto) {
+                            interactionMessage = doorMessages.getOrDefault(name, "Pulsa E para entrar");
+                        }
+    
+                        doorTriggers.add(new DoorTrigger(name, polygon, !isAuto, interactionMessage));
                     } else {
-                        // Si no es una puerta, lo tratamos como un objeto interactuable
                         interactables.add(new InteractableObject(name, polygon));
                     }
                 }

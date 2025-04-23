@@ -1,0 +1,41 @@
+{
+  "dialogues": {
+    "dialogo_artesano": {
+      "lines": [
+        {
+          "id": "inicio",
+          "speaker": "Artesano",
+          "translation": "Imhotep, qué bueno verte. He oído algo que deberías saber.",
+          "type": "DIALOGUE",
+          "options": [
+            { "text": "¿De qué se trata?", "nextId": "respuesta1" },
+            { "text": "No es un buen momento. Hasta luego.", "nextId": "fin" }
+          ]
+        },
+        {
+          "id": "respuesta1",
+          "speaker": "Artesano",
+          "translation": "Dicen que han saqueado los templos de Karnak. Los dioses no estarán contentos.",
+          "type": "DIALOGUE",
+          "options": [
+            { "text": "Debo ir a ver qué ha ocurrido. Esos templos deben ser protegidos.", "nextId": "respuesta2" },
+            { "text": "Seguro que es solo un rumor. No me interesa.", "nextId": "fin" }
+          ]
+        },
+        {
+          "id": "respuesta2",
+          "speaker": "Artesano",
+          "translation": "Yo no quiero saber nada de eso. Volveré a mi taller antes de que empeore.",
+          "type": "DIALOGUE",
+          "nextId": "fin"
+        },
+        {
+          "id": "fin",
+          "speaker": "Artesano",
+          "translation": "Cuídate, Imhotep.",
+          "type": "DIALOGUE"
+        }
+      ]
+    }
+  }
+}

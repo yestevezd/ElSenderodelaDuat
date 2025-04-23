@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.assets.loaders.resolvers.InternalFileHandleResolver;
 import com.badlogic.gdx.audio.Sound;
+import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -71,14 +72,35 @@ public class AssetLoader {
         manager.setLoader(TiledMap.class, new TmxMapLoader(new InternalFileHandleResolver()));
 
         manager.load("maps/pueblo_deir_el_medina.tmx", TiledMap.class); 
+        manager.load("characters/personaje_aleatorio.png", Texture.class); 
         manager.load("sounds/sonido_puerta.mp3", Sound.class);
-        manager.load("sounds/sonido_viento.mp3", Sound.class); 
+        manager.load("sounds/sonido_viento.mp3", Sound.class);
+        manager.load("others/fondo_configuracion.jpg", Texture.class); 
+        manager.load("fonts/ui_font.fnt", BitmapFont.class);
+        manager.load("fonts/ui_font.png", Texture.class);
     }
 
     // TEMPLO DE KARNAK
 
     public static void loadKarnakAssets() {
-       
+        manager.setLoader(TiledMap.class, new TmxMapLoader(new InternalFileHandleResolver()));
+
+        manager.load("maps/karnak_templo.tmx", TiledMap.class);
+        manager.load("characters/personaje_principal.png", Texture.class);  
+        manager.load("sounds/sonido_viento.mp3", Sound.class);
+        manager.load("fonts/ui_font.fnt", BitmapFont.class);
+        manager.load("fonts/ui_font.png", Texture.class);
+
+    }
+
+    // TEMPLO DE KARNAK (SALA HIPOSTILA)
+    public static void loadKarnakSalaHipostilaAssets() {
+        manager.setLoader(TiledMap.class, new TmxMapLoader(new InternalFileHandleResolver()));
+
+        manager.load("maps/sala_hipostila.tmx", TiledMap.class);
+        manager.load("characters/personaje_principal.png", Texture.class);   
+        manager.load("fonts/ui_font.fnt", BitmapFont.class);
+        manager.load("fonts/ui_font.png", Texture.class);
     }
 
     // VALLE DE LOS REYES
@@ -142,12 +164,27 @@ public static void unloadHouseAssets() {
 
 public static void unloadDeirElMedinaAssets() {
     unload("maps/pueblo_deir_el_medina.tmx");
+    unload("characters/personaje_aleatorio.png");
     unload("sounds/sonido_puerta.mp3");
     unload("sounds/sonido_viento.mp3");
+    unload("others/fondo_configuracion.jpg");
+    unload("fonts/ui_font.fnt");
+    unload("fonts/ui_font.png");
 }
 
 public static void unloadKarnakAssets() {
-    
+    unload("maps/karnak_templo.tmx");
+    unload("characters/personaje_principal.png");
+    unload("sounds/sonido_viento.mp3");
+    unload("fonts/ui_font.fnt");
+    unload("fonts/ui_font.png");
+}
+
+public static void unloadKarnakSalaHipostilaAssets() {
+    unload("maps/sala_hipostila.tmx");
+    unload("characters/personaje_principal.png");
+    unload("fonts/ui_font.fnt");
+    unload("fonts/ui_font.png");
 }
 
 public static void unloadValleyAssets() {
@@ -206,5 +243,10 @@ public static void unloadHUDAssets() {
         }
 
         return frames;
+    }
+
+    public static String loadInternalText(String internalPath) {
+        FileHandle file = Gdx.files.internal(internalPath);
+        return file.readString("UTF-8");
     }
 }

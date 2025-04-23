@@ -10,12 +10,19 @@ import java.util.List;
  */
 public class NarrativeLine {
 
-    private final String speaker;                 
-    private final String hieroglyphic;        
-    private final String translation;           
-    private final NarrativeType type;          
-    private final String hieroglyphicRichText;    
+    private String speaker;                 
+    private String hieroglyphic;        
+    private String translation;           
+    private NarrativeType type;          
+    private String hieroglyphicRichText;    
     private List<HieroglyphicChar> parsedHieroglyphics;
+    private List<NarrativeOption> options;
+    private String nextId; 
+    private String id;
+
+    // Constructor 
+    public NarrativeLine() {
+    }
 
     /**
      * Constructor para líneas sin formato jeroglífico enriquecido.
@@ -55,6 +62,10 @@ public class NarrativeLine {
         return speaker;
     }
 
+    public void setSpeaker(String speaker) {
+        this.speaker = speaker;
+    }
+
     /**
      * Devuelve el texto jeroglífico plano (sin formato).
      *
@@ -62,6 +73,10 @@ public class NarrativeLine {
      */
     public String getHieroglyphic() {
         return hieroglyphic;
+    }
+
+    public void setHieroglyphic(String hieroglyphic) {
+        this.hieroglyphic = hieroglyphic;
     }
 
     /**
@@ -73,6 +88,10 @@ public class NarrativeLine {
         return translation;
     }
 
+    public void setTranslation(String translation) {
+        this.translation = translation;
+    }
+
     /**
      * Devuelve el tipo de narrativa (diálogo, narración, etc.).
      *
@@ -80,6 +99,10 @@ public class NarrativeLine {
      */
     public NarrativeType getType() {
         return type;
+    }
+
+    public void setType(NarrativeType type) {
+        this.type = type;
     }
 
     /**
@@ -108,5 +131,37 @@ public class NarrativeLine {
      */
     public List<HieroglyphicChar> getParsedHieroglyphics() {
         return parsedHieroglyphics;
+    }
+
+    public String getId() {
+        return id;
+    }
+    
+    public void setId(String id) {
+        this.id = id;
+    }
+    
+    public String getNextId() {
+        return nextId;
+    }
+    
+    public void setNextId(String nextId) {
+        this.nextId = nextId;
+    }
+    
+    public List<NarrativeOption> getOptions() {
+        return options;
+    }
+    
+    public void setOptions(List<NarrativeOption> options) {
+        this.options = options;
+    }
+
+    public void setHieroglyphicRichText(String hieroglyphicRichText) {
+        this.hieroglyphicRichText = hieroglyphicRichText;
+    }
+    
+    public boolean hasOptions() {
+        return options != null && !options.isEmpty();
     }
 }

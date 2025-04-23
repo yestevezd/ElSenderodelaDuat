@@ -210,4 +210,12 @@ public abstract class BaseCharacter {
     public float getHeight() {
         return (spriteSheet.getHeight() / 4f) * scale;
     }
+
+    public void setLastDx(float dx) {
+        this.lastDx = dx;
+    }
+    
+    public void setLastDy(float dy) {
+        this.lastDy = dy;
+    }
 }

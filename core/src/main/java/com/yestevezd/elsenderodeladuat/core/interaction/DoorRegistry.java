@@ -4,6 +4,8 @@ import com.badlogic.gdx.Screen;
 import com.yestevezd.elsenderodeladuat.core.game.MainGame;
 import com.yestevezd.elsenderodeladuat.core.screens.DeirElMedinaScreen;
 import com.yestevezd.elsenderodeladuat.core.screens.HouseScreen;
+import com.yestevezd.elsenderodeladuat.core.screens.KarnakScreen;
+import com.yestevezd.elsenderodeladuat.core.screens.SalaHipostilaScreen;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -49,5 +51,13 @@ public class DoorRegistry {
         register("puerta_auto_casa_dentro", game -> new DeirElMedinaScreen(game, 608, 300));
         // Pueblo → Casa
         register("puerta_auto_casa_fuera", game -> new HouseScreen(game, 620, 300));
+        // Pueblo → Karnak
+        register("puerta_camino_1", game -> new KarnakScreen(game, 595, 10, "puerta_camino_1"));
+        // Karnak → Pueblo
+        register("puerta_camino_3", game -> new DeirElMedinaScreen(game, 1880, 300, "puerta_camino_3"));
+        // Karnak → Sala_hipostila
+        register("puerta_templo_karnak", game -> new SalaHipostilaScreen(game, 300, 300, "puerta_templo_karnak"));
+        // Sala_hipostila → Karnak
+        register("puerta_templo_karnak_dentro", game -> new KarnakScreen(game, 700, 605, "puerta_templo_karnak_dentro"));
     }
 }

@@ -11,6 +11,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.yestevezd.elsenderodeladuat.core.game.MainGame;
 import com.yestevezd.elsenderodeladuat.core.engine.AssetLoader;
+import com.yestevezd.elsenderodeladuat.core.engine.AudioManager;
 import com.yestevezd.elsenderodeladuat.core.entities.PlayerCharacter;
 import com.yestevezd.elsenderodeladuat.core.interaction.*;
 import com.yestevezd.elsenderodeladuat.core.maps.MapLoader;
@@ -71,8 +72,8 @@ public class HouseScreen extends BaseScreen {
      */
     @Override
     public void show() {
-        AssetLoader.loadHouseAssets();                 // Recursos del interior de la casa
-        AssetLoader.loadDeirElMedinaAssets();         // (opcional) por si se usan elementos comunes
+        AssetLoader.loadHouseAssets();                 
+        AssetLoader.loadDeirElMedinaAssets();         
         AssetLoader.finishLoading();
 
         MapLoader mapLoader = new MapLoader("maps/casa_deir_el_medina.tmx");
@@ -105,6 +106,8 @@ public class HouseScreen extends BaseScreen {
         }
 
         shapeRenderer = new ShapeRenderer();
+
+        AudioManager.stopMusic();
     }
 
     /**
@@ -112,7 +115,7 @@ public class HouseScreen extends BaseScreen {
      */
     @Override
     public void render(float delta) {
-        Gdx.gl.glClearColor(0, 0, 0, 1); // Fondo negro
+        Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         Vector2 oldPosition = player.getPosition().cpy();
@@ -129,11 +132,11 @@ public class HouseScreen extends BaseScreen {
         mapRenderer.setView(camera);
         mapRenderer.render();
 
-        interactionManager.render(shapeRenderer); // Dibujo de contornos interactivos
+        interactionManager.render(shapeRenderer);
 
         batch.setProjectionMatrix(camera.combined);
         batch.begin();
-        player.render(batch); // Dibuja al jugador
+        player.render(batch);
         batch.end();
 
         // Comprobación de transición de puerta mediante clase reutilizable DoorHandler

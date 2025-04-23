@@ -11,18 +11,19 @@ public class DoorTrigger {
     private final String name;
     private final Polygon shape;
     private final boolean requiresInteraction;
+    private final String interactionMessage; 
 
-    /**
-     * Crea una nueva puerta (trigger de transición).
-     *
-     * @param name                Nombre de la puerta 
-     * @param shape               Forma de colisión de la puerta
-     * @param requiresInteraction Indica si se necesita pulsar tecla para activarla
-     */
-    public DoorTrigger(String name, Polygon shape, boolean requiresInteraction) {
+     // Constructor original (sin mensaje)
+     public DoorTrigger(String name, Polygon shape, boolean requiresInteraction) {
+        this(name, shape, requiresInteraction, null);
+    }
+
+    // Constructor extendido
+    public DoorTrigger(String name, Polygon shape, boolean requiresInteraction, String interactionMessage) {
         this.name = name;
         this.shape = shape;
         this.requiresInteraction = requiresInteraction;
+        this.interactionMessage = interactionMessage;
     }
 
     /** @return Nombre de la puerta. */
@@ -38,5 +39,9 @@ public class DoorTrigger {
     /** @return true si la puerta requiere interacción manual (tecla E, etc.), false si es automática. */
     public boolean requiresInteraction() {
         return requiresInteraction;
+    }
+
+    public String getInteractionMessage() {
+        return interactionMessage;
     }
 }
