@@ -121,7 +121,7 @@ public class AssetLoader {
     // HUD / INTERFAZ
 
     public static void loadHUDAssets() {
-        
+        manager.load("others/espada.jpg", Texture.class);
     }
 
 // MÉTODOS DE UNLOAD
@@ -202,7 +202,7 @@ public static void unloadDuatAssets() {
 }
 
 public static void unloadHUDAssets() {
-    
+    unload("others/espada.jpg");
 }
 
     // MÉTODOS GENERALES

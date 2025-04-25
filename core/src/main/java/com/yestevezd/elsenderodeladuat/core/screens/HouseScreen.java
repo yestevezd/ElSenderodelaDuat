@@ -156,18 +156,25 @@ public class HouseScreen extends BaseScreen {
 
         interactionManager.render(shapeRenderer);
 
+        // === DIBUJAR EL MUNDO (jugador, etc.) ===
         batch.setProjectionMatrix(camera.combined);
         batch.begin();
         player.render(batch);
         batch.end();
 
+        // === Transiciones ===
         if (DoorHandler.handleDoorTransition(getGame(), doorManager, player.getCollisionBounds())) {
             return;
         }
 
+        // === Renderizar LoreOverlay ===
         if (loreOverlay != null) {
             loreOverlay.render(batch, shapeRenderer, camera);
         }
+
+        // Proyección a pantalla para HUD
+        getGame().getHUD().render(batch); 
+        
     }
 
     @Override

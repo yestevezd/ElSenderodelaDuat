@@ -108,6 +108,9 @@ public class SalaHipostilaScreen extends BaseScreen {
         player.render(game.getBatch());
         doorManager.renderInteractionMessage(player.getCollisionBounds(), game.getBatch(), camera);
         game.getBatch().end();
+
+        // Proyección a pantalla para HUD
+        getGame().getHUD().render(batch); 
     }
 
     @Override

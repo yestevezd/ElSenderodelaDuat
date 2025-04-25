@@ -14,6 +14,7 @@ import com.yestevezd.elsenderodeladuat.core.engine.AssetLoader;
 import com.yestevezd.elsenderodeladuat.core.engine.AudioManager;
 import com.yestevezd.elsenderodeladuat.core.entities.NPCCharacter;
 import com.yestevezd.elsenderodeladuat.core.entities.Direction;
+import com.yestevezd.elsenderodeladuat.core.entities.Espada;
 import com.yestevezd.elsenderodeladuat.core.entities.NPCState;
 import com.yestevezd.elsenderodeladuat.core.entities.PlayerCharacter;
 import com.yestevezd.elsenderodeladuat.core.game.EventFlags;
@@ -203,9 +204,14 @@ public class DeirElMedinaScreen extends BaseScreen implements GameEventContext {
             npcArtesano.setLastDy(0);
             npcArtesano.getStateMachine().changeState(NPCState.ENTRAR_CASA);
             npcArtesano.update(0);
+
+            getGame().getInventory().addItem(new Espada());
         
             EventFlags.artesanoEventoCompletado = true; 
         }
+
+        // Proyección a pantalla para HUD
+        getGame().getHUD().render(batch); 
     }
 
     @Override

@@ -23,7 +23,6 @@ public class LoreOverlayManager {
     private BitmapFont font;
     private GlyphLayout layout;
 
-    private String translatedText;
     private float alpha = 0f;
     private float delayTimer = 0f;
     private float fadeSpeed = 1.5f;
@@ -39,7 +38,6 @@ public class LoreOverlayManager {
     public LoreOverlayManager() {}
 
     public void trigger(String texturePath, String text) {
-        this.translatedText = text;
         this.loreTexture = new Texture(Gdx.files.internal(texturePath));
         this.backgroundTexture = AssetLoader.get("others/fondo_configuracion.jpg", Texture.class);
         this.font = new BitmapFont(Gdx.files.internal("fonts/ui_font.fnt"));
@@ -65,7 +63,7 @@ public class LoreOverlayManager {
                     state = State.ACTIVE;
                 }
                 break;
-
+        
             case ACTIVE:
                 if (alpha < 1f) {
                     alpha += fadeSpeed * delta;
@@ -75,7 +73,7 @@ public class LoreOverlayManager {
                     state = State.CLOSING;
                 }
                 break;
-
+        
             case CLOSING:
                 alpha -= fadeSpeed * delta;
                 if (alpha <= 0f) {
@@ -83,6 +81,11 @@ public class LoreOverlayManager {
                     state = State.FINISHED;
                     dispose();
                 }
+                break;
+        
+            case INACTIVE:
+            case FINISHED:
+                // No hacer nada (ya se gestiona fuera del switch con el return)
                 break;
         }
     }

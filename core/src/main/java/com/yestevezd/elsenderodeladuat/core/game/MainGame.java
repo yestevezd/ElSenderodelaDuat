@@ -5,53 +5,53 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.yestevezd.elsenderodeladuat.core.engine.AssetLoader;
 import com.yestevezd.elsenderodeladuat.core.interaction.DoorRegistry;
 import com.yestevezd.elsenderodeladuat.core.screens.IntroScreen;
+import com.yestevezd.elsenderodeladuat.core.ui.HUD;
+import com.yestevezd.elsenderodeladuat.core.inventory.Inventory;
 
-/**
- * Clase principal del juego.
- * Se encarga de inicializar los recursos globales y gestionar las pantallas.
- */
 public class MainGame extends Game {
 
-    // SpriteBatch compartido para dibujar texturas en todo el juego
     private SpriteBatch batch;
+    private HUD hud;
+    private Inventory inventory;
 
-    /**
-     * Método llamado al iniciar el juego. Carga recursos globales, registra puertas y muestra la primera pantalla.
-     */
     @Override
     public void create() {
         batch = new SpriteBatch();
 
-        // Registrar las transiciones entre puertas y pantallas
+        AssetLoader.loadHUDAssets();
+        AssetLoader.finishLoading();
+
+        // Crear inventario con 5 slots y HUD que lo use
+        inventory = new Inventory(5);
+        hud = new HUD(inventory);
+
+        // Registrar transiciones
         DoorRegistry.registerDefaultDoors();
 
-        // Establecer la pantalla inicial (intro)
+        // Pantalla inicial
         setScreen(new IntroScreen(this));
     }
 
-    /**
-     * Llamado automáticamente por LibGDX en cada frame.
-     * Se delega al método render() de la pantalla actual.
-     */
     @Override
     public void render() {
         super.render();
     }
 
-    /**
-     * Libera recursos globales al cerrar el juego.
-     */
     @Override
     public void dispose() {
         batch.dispose();
         AssetLoader.dispose();
     }
 
-    /**
-     * Devuelve el SpriteBatch compartido para su uso en distintas pantallas.
-     * @return SpriteBatch global del juego
-     */
     public SpriteBatch getBatch() {
         return batch;
+    }
+
+    public HUD getHUD() {
+        return hud;
+    }
+
+    public Inventory getInventory() {
+        return inventory;
     }
 }

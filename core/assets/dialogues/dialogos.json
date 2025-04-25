@@ -9,7 +9,7 @@
           "type": "DIALOGUE",
           "options": [
             { "text": "¿De qué se trata?", "nextId": "respuesta1" },
-            { "text": "No es un buen momento. Hasta luego.", "nextId": "fin" }
+            { "text": "No es un buen momento. Hasta luego.", "nextId": "respuesta3" }
           ]
         },
         {
@@ -19,7 +19,7 @@
           "type": "DIALOGUE",
           "options": [
             { "text": "Debo ir a ver qué ha ocurrido. Esos templos deben ser protegidos.", "nextId": "respuesta2" },
-            { "text": "Seguro que es solo un rumor. No me interesa.", "nextId": "fin" }
+            { "text": "Seguro que es solo un rumor. No me interesa.", "nextId": "respuesta3" }
           ]
         },
         {
@@ -27,8 +27,26 @@
           "speaker": "Artesano",
           "translation": "Yo no quiero saber nada de eso. Volveré a mi taller antes de que empeore.",
           "type": "DIALOGUE",
-          "nextId": "fin"
+          "nextId": "respuesta4"
         },
+        {
+          "id": "respuesta3",
+          "speaker": "Artesano",
+          "translation": "Vale, pero antes de que te vayas, toma esta espada. Puede que te ayude en tu camino.",
+          "type": "DIALOGUE",
+          "options": [
+            { "text": "Gracias, amigo.", "nextId": "fin" }
+          ]
+        },
+        {
+          "id": "respuesta4",
+          "speaker": "Artesano",
+          "translation": "Toma esto, puede que te sea útil. Es una vieja espada de mi padre.",
+          "type": "DIALOGUE",
+          "options": [
+            { "text": "Gracias, amigo.", "nextId": "fin" }
+          ]
+        },        
         {
           "id": "fin",
           "speaker": "Artesano",
