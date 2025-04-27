@@ -54,6 +54,56 @@
           "type": "DIALOGUE"
         }
       ]
+    },
+    "dialogo_sacerdote": {
+      "lines": [
+        {
+          "id": "inicio",
+          "speaker": "Sacerdote",
+          "translation": "(Te mira nervioso mientras esconde algo bajo su túnica.) ¡Tú no has visto nada, viajero!",
+          "type": "DIALOGUE",
+          "options": [
+            { "text": "¿Qué escondes? ¡Eso pertenece al templo!", "nextId": "acusar" }
+          ]
+        },
+        {
+          "id": "acusar",
+          "speaker": "Sacerdote",
+          "translation": "Shhh... Podemos arreglar esto. Si me das una buena suma, estos artefactos serán tuyos.",
+          "type": "DIALOGUE",
+          "options": [
+            { "text": "Te pagaré para obtenerlos.", "nextId": "sobornar" },
+            { "text": "¡Jamás! Los devolverás aunque sea por la fuerza.", "nextId": "amenazar" }
+          ]
+        },
+        {
+          "id": "sobornar",
+          "speaker": "Sacerdote",
+          "translation": "(El sacerdote sonríe con codicia.) Bien, bien. Son tuyos. Ahora márchate.",
+          "type": "DIALOGUE",
+          "nextId": "fin_soborno"
+        },
+        {
+          "id": "amenazar",
+          "speaker": "Sacerdote",
+          "translation": "¡Insensato! ¡Te enseñaré a no entrometerte en los asuntos divinos!",
+          "type": "DIALOGUE",
+          "nextId": "combate"
+        },
+        {
+          "id": "fin_soborno",
+          "speaker": "Sistema",
+          "translation": "(Obtienes los artefactos sagrados mediante soborno.)",
+          "type": "DIALOGUE"
+        },
+        {
+          "id": "combate",
+          "speaker": "Sacerdote",
+          "translation": "(¡Prepárate para luchar!)",
+          "type": "DIALOGUE"
+        }
+      ]
     }
-  }
+
+  }  
 }

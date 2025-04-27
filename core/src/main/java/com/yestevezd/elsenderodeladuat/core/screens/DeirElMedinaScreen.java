@@ -60,6 +60,7 @@ public class DeirElMedinaScreen extends BaseScreen implements GameEventContext {
     private DialogueBox textBox;
     private DialogueManager dialogueManager;
     private boolean npcArtesanoEventoDisparado = false;
+    private boolean artesanoEnTransicionACasa = false;
 
     private String entradaDesdePuerta = null;
 
@@ -193,21 +194,31 @@ public class DeirElMedinaScreen extends BaseScreen implements GameEventContext {
         game.getBatch().end();
 
 
-        if (dialogueManager != null && !dialogueManager.isActive() && npcArtesanoEventoDisparado && !EventFlags.artesanoEventoCompletado) {
+        if (dialogueManager != null && !dialogueManager.isActive() && npcArtesanoEventoDisparado && !EventFlags.artesanoEventoCompletado && !artesanoEnTransicionACasa) {
             if (textBox.isVisible()) {
                 textBox.hide();
             }
-
-            freezePlayer = false;
         
             npcArtesano.setLastDx(0);
             npcArtesano.setLastDy(0);
-            npcArtesano.getStateMachine().changeState(NPCState.ENTRAR_CASA);
-            npcArtesano.update(0);
 
-            getGame().getInventory().addItem(new Espada());
+            npcArtesano.setSpeed(200f);
+
+            npcArtesano.getStateMachine().changeState(NPCState.ENTRAR_CASA);
         
-            EventFlags.artesanoEventoCompletado = true; 
+            Espada espada = new Espada();
+
+            getGame().getInventory().addItem(espada);
+            // Mostrar mensaje en HUD
+            getGame().getHUD().showPopupMessage("¡Has conseguido una espada antigua!", espada);
+        
+            artesanoEnTransicionACasa = true;
+        }
+
+        if (artesanoEnTransicionACasa && !npcArtesano.isVisible()) {
+            freezePlayer = false;
+            artesanoEnTransicionACasa = false; // Resetear flag
+            EventFlags.artesanoEventoCompletado = true;
         }
 
         // Proyección a pantalla para HUD

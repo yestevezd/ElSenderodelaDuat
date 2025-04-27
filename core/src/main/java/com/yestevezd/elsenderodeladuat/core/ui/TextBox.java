@@ -61,7 +61,9 @@ public class TextBox {
         // Medir speaker
         GlyphLayout speakerLayout = new GlyphLayout(font, speaker + ": ");
         float speakerWidth = speakerLayout.width;
-    
+        
+        font.setColor(new Color(0.2f, 0.1f, 0f, 1));
+        
         // Medir mensaje
         layout.setText(
             font,

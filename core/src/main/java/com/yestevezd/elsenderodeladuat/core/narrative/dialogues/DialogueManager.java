@@ -10,6 +10,7 @@ public class DialogueManager {
     private final DialogueBox dialogueBox;
     private boolean active = false;
     private boolean waitingForAdvance = false;
+    private String lastNodeId = null;
 
     public DialogueManager(DialogueTree tree, DialogueBox box) {
         this.dialogueTree = tree;
@@ -34,6 +35,8 @@ public class DialogueManager {
             active = false;
             return;
         }
+
+        lastNodeId = current.getId();
     
         if (dialogueBox.isOptionsVisible()) {
             if (InputManager.isInteractPressed()) {
@@ -74,5 +77,9 @@ public class DialogueManager {
 
     public boolean isActive() {
         return active;
+    }
+
+    public String getCurrentNodeId() {
+        return lastNodeId;
     }
 }

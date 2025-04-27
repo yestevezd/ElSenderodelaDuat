@@ -13,8 +13,8 @@ import com.yestevezd.elsenderodeladuat.core.engine.AssetLoader;
  */
 public enum NPCState implements State<NPCCharacter> {
     PATRULLAR {
-        private Vector2 pointA = new Vector2(300, 750);
-        private Vector2 pointB = new Vector2(600, 750);
+        private Vector2 pointA = new Vector2(1400, 300);
+        private Vector2 pointB = new Vector2(1400, 100);
         private boolean toB = true;
     
         @Override
@@ -83,7 +83,15 @@ public enum NPCState implements State<NPCCharacter> {
                 return;
             }
 
-            npc.setVelocity(toPlayer.nor().scl(npc.getSpeed()));
+            Vector2 velocity = new Vector2();
+
+            if (Math.abs(toPlayer.x) > 5f) {
+                velocity.x = Math.signum(toPlayer.x) * npc.getSpeed();
+            } else if (Math.abs(toPlayer.y) > 5f) {
+                velocity.y = Math.signum(toPlayer.y) * npc.getSpeed();
+            }
+
+            npc.setVelocity(velocity);
         }
     
         @Override

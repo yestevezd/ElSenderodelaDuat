@@ -101,7 +101,8 @@ public class AssetLoader {
         manager.setLoader(TiledMap.class, new TmxMapLoader(new InternalFileHandleResolver()));
 
         manager.load("maps/sala_hipostila.tmx", TiledMap.class);
-        manager.load("characters/personaje_principal.png", Texture.class);   
+        manager.load("characters/personaje_principal.png", Texture.class);
+        manager.load("characters/sacerdote.png", Texture.class);   
         manager.load("fonts/ui_font.fnt", BitmapFont.class);
         manager.load("fonts/ui_font.png", Texture.class);
     }
