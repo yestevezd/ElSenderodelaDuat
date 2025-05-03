@@ -17,6 +17,6 @@ public class Espada implements Item {
 
     @Override
     public Texture getTexture() {
-        return AssetLoader.get("others/espada.jpg", Texture.class);
+        return AssetLoader.get("items/espada.png", Texture.class);
     }
 }

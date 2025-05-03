@@ -1,4 +1,12 @@
 {
+    "Map/SizeTest": {
+        "height": 4300,
+        "width": 2
+    },
+    "activeFile": "",
+    "expandedProjectPaths": [
+    ],
+    "file.lastUsedOpenFilter": "Todos los archivos (*)",
     "fileStates": {
         "": {
             "scaleInDock": 0.125
@@ -31,7 +39,7 @@
             "selectedLayer": 1,
             "viewCenter": {
                 "x": 786.6666666666665,
-                "y": 420.66666666666663
+                "y": 580.6666666666665
             }
         },
         "casa_deir_el_medina.tmx#room_pixel006_070425": {
@@ -58,8 +66,8 @@
             "scale": 0.5,
             "selectedLayer": 1,
             "viewCenter": {
-                "x": 756,
-                "y": 495
+                "x": 354,
+                "y": 479
             }
         },
         "karnak_templo.tmx#Tebas_karnak": {
@@ -93,5 +101,10 @@
         "sala_hipostila.tmx#sala_hipostila_karnak": {
             "scaleInDock": 0.0625
         }
-    }
+    },
+    "openFiles": [
+    ],
+    "project": "",
+    "recentFiles": [
+    ]
 }

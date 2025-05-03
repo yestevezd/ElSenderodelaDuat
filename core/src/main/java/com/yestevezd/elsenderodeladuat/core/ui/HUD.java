@@ -22,7 +22,7 @@ public class HUD {
 
     private String popupMessage;
     private float popupTimer = 0f;
-    private Item[] popupItems; // << Añadimos esto
+    private Item[] popupItems;
 
     public HUD(Inventory inventory) {
         this.inventory = inventory;
@@ -30,7 +30,6 @@ public class HUD {
         font = new BitmapFont();
     }
 
-    // Ahora el showPopup recibe objetos también
     public void showPopupMessage(String message, Item... items) {
         this.popupMessage = message;
         this.popupTimer = 3f;
@@ -105,13 +104,12 @@ public class HUD {
             BitmapFont popupFont = AssetLoader.get("fonts/ui_font.fnt", BitmapFont.class);
             popupFont.getData().setScale(0.8f);
         
-            // Calculamos dinámicamente el tamaño
             float textMargin = 30f;
             float iconSize = 48f;
             float iconSpacing = 20f;
             int numberOfIcons = (popupItems != null) ? popupItems.length : 0;
         
-            float textWidth = 400f; // Ancho máximo razonable para texto
+            float textWidth = 400f;
             float titleHeight = 40f;
             float textHeight = 60f;
             float iconsHeight = (numberOfIcons > 0) ? (iconSize + 20f) : 0f;
@@ -141,11 +139,13 @@ public class HUD {
         
             batch.begin();
         
-            // Título
-            popupFont.setColor(new Color(0.35f, 0.22f, 0.1f, 1f));
-            popupFont.draw(batch, "¡Objetos Conseguidos!",
-                    popupX + popupWidth / 2f - 120f,
-                    popupY + popupHeight - 20f);
+            // Título (solo si hay objetos)
+            if (popupItems != null && popupItems.length > 0) {
+                popupFont.setColor(new Color(0.35f, 0.22f, 0.1f, 1f));
+                popupFont.draw(batch, "¡Objetos Conseguidos!",
+                        popupX + popupWidth / 2f - 120f,
+                        popupY + popupHeight - 20f);
+            }
         
             // Texto principal
             popupFont.setColor(new Color(0.35f, 0.22f, 0.1f, 1f));
@@ -167,6 +167,7 @@ public class HUD {
                     }
                 }
             }
+            popupFont.setColor(Color.WHITE);
         
             batch.end();
         }

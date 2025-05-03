@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.11.0" orientation="orthogonal" renderorder="right-down" width="48" height="27" tilewidth="40" tileheight="40" infinite="0" nextlayerid="3" nextobjectid="37">
+<map version="1.10" tiledversion="1.11.0" orientation="orthogonal" renderorder="right-down" width="48" height="27" tilewidth="40" tileheight="40" infinite="0" nextlayerid="3" nextobjectid="40">
  <tileset firstgid="1" name="Tebas_karnak" tilewidth="40" tileheight="40" tilecount="1296" columns="48">
   <image source="Tebas_karnak.png" width="1920" height="1080"/>
  </tileset>
@@ -142,6 +142,9 @@
   </object>
   <object id="36" name="puerta_templo_karnak" x="830.5" y="409">
    <polygon points="0,0 0,62.5 51,63 48.5,0"/>
+  </object>
+  <object id="39" x="158.5" y="-1">
+   <polygon points="0,0 492,0 492,2.5 -1,4.5"/>
   </object>
  </objectgroup>
 </map>

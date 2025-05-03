@@ -11,13 +11,25 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 import com.yestevezd.elsenderodeladuat.core.collision.CollisionSystem;
 import com.yestevezd.elsenderodeladuat.core.engine.AssetLoader;
 import com.yestevezd.elsenderodeladuat.core.engine.AudioManager;
+import com.yestevezd.elsenderodeladuat.core.engine.InputManager;
 import com.yestevezd.elsenderodeladuat.core.entities.PlayerCharacter;
+import com.yestevezd.elsenderodeladuat.core.game.EventFlags;
 import com.yestevezd.elsenderodeladuat.core.game.MainGame;
 import com.yestevezd.elsenderodeladuat.core.interaction.DoorHandler;
 import com.yestevezd.elsenderodeladuat.core.interaction.DoorManager;
+import com.yestevezd.elsenderodeladuat.core.entities.BaseCharacter;
 import com.yestevezd.elsenderodeladuat.core.entities.Direction;
+import com.yestevezd.elsenderodeladuat.core.entities.NPCCharacter;
+import com.yestevezd.elsenderodeladuat.core.entities.NPCState;
 import com.yestevezd.elsenderodeladuat.core.maps.MapLoader;
 import com.yestevezd.elsenderodeladuat.core.maps.MapUtils;
+import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.yestevezd.elsenderodeladuat.core.ui.DialogueBox;
+import com.yestevezd.elsenderodeladuat.core.ui.FloatingTextPrompt;
+import com.yestevezd.elsenderodeladuat.core.narrative.dialogues.DialogueManager;
+import com.yestevezd.elsenderodeladuat.core.narrative.dialogues.DialogueLoader;
+import com.yestevezd.elsenderodeladuat.core.narrative.dialogues.DialogueTree;
 
 public class KarnakScreen extends BaseScreen {
 
@@ -33,6 +45,13 @@ public class KarnakScreen extends BaseScreen {
 
     private float spawnX, spawnY;
     private String entradaDesdePuerta = null;
+
+    private NPCCharacter npcGuardian;
+    private DialogueBox textBox;
+    private DialogueManager dialogueManager;
+    private boolean freezePlayer = false;
+    private boolean guardiaDialogoIniciado = false;
+    private FloatingTextPrompt guardianPrompt;
 
     public KarnakScreen(MainGame game, float spawnX, float spawnY) {
         super(game);
@@ -61,9 +80,17 @@ public class KarnakScreen extends BaseScreen {
         viewport = MapUtils.setupCameraAndViewport(map, camera, 1920, 1080);
 
         // Jugador
-        Texture playerTexture = AssetLoader.get("characters/personaje_principal.png", Texture.class);
-        player = new PlayerCharacter(playerTexture, spawnX, spawnY, 200f);
-        player.setScale(2.5f);
+        player = game.getPlayer();
+        player.setPosition(spawnX, spawnY);
+
+        // Crear NPC guardian en estado HABLAR
+        Texture guardianTexture = AssetLoader.get("characters/guardian.png", Texture.class);
+        npcGuardian = new NPCCharacter(guardianTexture, 480, 650, 0f);
+        npcGuardian.setName("Guardián de Karnak");
+        npcGuardian.setScale(2.5f);
+        npcGuardian.getStateMachine().changeState(NPCState.HABLAR);
+
+        guardianPrompt = new FloatingTextPrompt("Pulsa E para hablar", npcGuardian.getPosition().cpy().add(0, 60));
 
         if ("puerta_camino_1".equals(entradaDesdePuerta)) {
             player.setDirection(Direction.UP);
@@ -78,6 +105,8 @@ public class KarnakScreen extends BaseScreen {
         // Puertas
         doorManager = new DoorManager(mapLoader.getDoorTriggers());
 
+        textBox = new DialogueBox();
+
         // Música de fondo
         AudioManager.playMusic("sounds/sonido_viento.mp3", true);
     }
@@ -89,10 +118,37 @@ public class KarnakScreen extends BaseScreen {
 
         // Movimiento del jugador y colisión
         Vector2 oldPosition = player.getPosition().cpy();
-        player.update(delta);
+        if (!freezePlayer && (textBox == null || !textBox.isVisible())) {
+            player.update(delta);
+        }
 
         if (collisionSystem.isColliding(player.getCollisionBounds())) {
             player.setPosition(oldPosition.x, oldPosition.y);
+        }
+        if (npcGuardian.getCollisionBounds().overlaps(player.getCollisionBounds())) {
+            player.setPosition(oldPosition.x, oldPosition.y);
+        }
+
+        // Iniciar diálogo con el guardia al pulsar E si está cerca
+        float distancia = player.getPosition().dst(npcGuardian.getPosition());
+
+        if (!guardiaDialogoIniciado && !EventFlags.dialogoGuardiaKarnakinicialMostrado && distancia < 60f) { // Ajusta el rango si quieres
+            if (InputManager.isInteractPressed()) {
+                DialogueTree tree = DialogueLoader.load("dialogues/dialogos.json", "dialogo_guardia_entrada_karnak");
+                dialogueManager = new DialogueManager(tree, textBox);
+                dialogueManager.start();
+                guardiaDialogoIniciado = true;
+                freezePlayer = true;
+                EventFlags.dialogoGuardiaKarnakinicialMostrado = true; 
+            }
+        }
+
+        if (dialogueManager != null) {
+            dialogueManager.update(delta);
+            if (!dialogueManager.isActive()) {
+                dialogueManager = null;
+                freezePlayer = false;
+            }
         }
 
         if (DoorHandler.handleDoorTransition(getGame(), doorManager, player.getCollisionBounds())) {
@@ -105,9 +161,22 @@ public class KarnakScreen extends BaseScreen {
         mapRenderer.render();
 
         game.getBatch().setProjectionMatrix(camera.combined);
+        npcGuardian.update(delta);
         game.getBatch().begin();
-        player.render(game.getBatch());
+        Array<BaseCharacter> characters = new Array<>();
+        characters.add(player);
+        characters.add(npcGuardian);
+
+        // Ordenar por Y (de arriba a abajo)
+        characters.sort((a, b) -> Float.compare(b.getPosition().y, a.getPosition().y));
+
+        for (BaseCharacter character : characters) {
+            character.render(game.getBatch());
+        }
         doorManager.renderInteractionMessage(player.getCollisionBounds(), game.getBatch(), camera);
+        textBox.render(game.getBatch());
+        guardianPrompt.setVisible(!guardiaDialogoIniciado && distancia < 60f);
+        guardianPrompt.render(game.getBatch(), AssetLoader.get("fonts/ui_font.fnt", BitmapFont.class), camera);
         game.getBatch().end();
 
         // Proyección a pantalla para HUD

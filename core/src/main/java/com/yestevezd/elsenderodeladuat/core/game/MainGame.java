@@ -1,8 +1,10 @@
 package com.yestevezd.elsenderodeladuat.core.game;
 
 import com.badlogic.gdx.Game;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.yestevezd.elsenderodeladuat.core.engine.AssetLoader;
+import com.yestevezd.elsenderodeladuat.core.entities.PlayerCharacter;
 import com.yestevezd.elsenderodeladuat.core.interaction.DoorRegistry;
 import com.yestevezd.elsenderodeladuat.core.screens.IntroScreen;
 import com.yestevezd.elsenderodeladuat.core.ui.HUD;
@@ -13,11 +15,13 @@ public class MainGame extends Game {
     private SpriteBatch batch;
     private HUD hud;
     private Inventory inventory;
+    private PlayerCharacter player;
 
     @Override
     public void create() {
         batch = new SpriteBatch();
 
+        AssetLoader.loadGlobalAssets();
         AssetLoader.loadHUDAssets();
         AssetLoader.finishLoading();
 
@@ -27,6 +31,10 @@ public class MainGame extends Game {
 
         // Registrar transiciones
         DoorRegistry.registerDefaultDoors();
+
+        Texture playerTexture = AssetLoader.get("characters/personaje_principal.png", Texture.class);
+        player = new PlayerCharacter(playerTexture, 0, 0, 200f);
+        player.setScale(2.5f);
 
         // Pantalla inicial
         setScreen(new IntroScreen(this));
@@ -53,5 +61,9 @@ public class MainGame extends Game {
 
     public Inventory getInventory() {
         return inventory;
+    }
+
+    public PlayerCharacter getPlayer() {
+        return player;
     }
 }

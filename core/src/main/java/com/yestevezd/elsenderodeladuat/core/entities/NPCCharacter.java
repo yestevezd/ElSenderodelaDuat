@@ -9,7 +9,7 @@ import com.yestevezd.elsenderodeladuat.core.game.GameEventContext;
 /**
  * Representa un NPC con comportamiento autónomo usando gdx-ai.
  */
-public class NPCCharacter extends BaseCharacter {
+public class NPCCharacter extends BaseCharacter implements CombatEntity{
 
     private DefaultStateMachine<NPCCharacter, NPCState> stateMachine;
     private Vector2 velocity;
@@ -17,12 +17,15 @@ public class NPCCharacter extends BaseCharacter {
     private Vector2 targetPosition;
     private GameEventContext gameContext;
     private boolean visible = true;
+    private Vector2 customDestination;
+    private String name = "NPC";
+    private int currentHealth = 100;
+    private int maxHealth = 100;
 
     public NPCCharacter(Texture texture, float x, float y, float speed) {
         super(texture, x, y, speed);
         this.velocity = new Vector2();
 
-        // Comienza en estado de patrullaje
         stateMachine = new DefaultStateMachine<>(this, NPCState.PATRULLAR);
     }
 
@@ -122,4 +125,58 @@ public class NPCCharacter extends BaseCharacter {
         if (!visible) return;
         super.render(batch);
     }
+
+    public void receiveDamage(int amount, Vector2 attackerPos) {
+        currentHealth -= amount;
+        if (currentHealth < 0) currentHealth = 0;
+    
+        float retroceso = 70f;
+        Vector2 directionFromAttacker = this.position.cpy().sub(attackerPos).nor();
+        Vector2 newPosition = this.position.cpy().add(directionFromAttacker.scl(retroceso));
+    
+        this.position.set(newPosition);
+    
+        blinkingTimer = 0.8f;
+    }
+
+    public boolean isAlive() {
+        return currentHealth > 0;
+    }
+
+    public int getCurrentHealth() {
+        return currentHealth;
+    }
+
+    public int getMaxHealth() {
+        return maxHealth;
+    }
+
+    public Rectangle getAttackBounds() {
+        Rectangle base = getCollisionBounds();
+        float attackWidth = base.width + 60f;
+        return new Rectangle(
+            direction == Direction.LEFT ? base.x - (attackWidth - base.width) : base.x,
+            base.y,
+            attackWidth,
+            base.height
+        );
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+    
+    @Override
+    public String getName() {
+        return name;
+    }
+
+    public void setCustomDestination(Vector2 dest) {
+        this.customDestination = dest;
+    }
+    
+    public Vector2 getCustomDestination() {
+        return customDestination;
+    }
+
 }

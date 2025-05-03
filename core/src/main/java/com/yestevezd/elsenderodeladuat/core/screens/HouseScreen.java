@@ -4,7 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
@@ -19,6 +19,7 @@ import com.yestevezd.elsenderodeladuat.core.interaction.*;
 import com.yestevezd.elsenderodeladuat.core.maps.MapLoader;
 import com.yestevezd.elsenderodeladuat.core.maps.MapUtils;
 import com.yestevezd.elsenderodeladuat.core.collision.CollisionSystem;
+import com.yestevezd.elsenderodeladuat.core.ui.FloatingTextPrompt;
 import com.yestevezd.elsenderodeladuat.core.ui.LoreOverlayManager;
 
 public class HouseScreen extends BaseScreen {
@@ -30,7 +31,6 @@ public class HouseScreen extends BaseScreen {
     private OrthogonalTiledMapRenderer mapRenderer;
 
     private PlayerCharacter player;
-    private Texture playerTexture;
     private float mapWidth;
     private float mapHeight;
 
@@ -42,6 +42,9 @@ public class HouseScreen extends BaseScreen {
     private float spawnX, spawnY;
 
     private LoreOverlayManager loreOverlay;
+
+    private FloatingTextPrompt mesaCasaPrompt;
+    private FloatingTextPrompt cocinaCasaPrompt;
 
     public HouseScreen(MainGame game) {
         super(game);
@@ -66,13 +69,11 @@ public class HouseScreen extends BaseScreen {
         mapWidth = MapUtils.getMapPixelWidth(map);
         mapHeight = MapUtils.getMapPixelHeight(map);
 
-        playerTexture = AssetLoader.get("characters/personaje_principal.png", Texture.class);
-
         float initialX = spawnX != 0 ? spawnX : mapWidth / 2f;
         float initialY = spawnY != 0 ? spawnY : mapHeight / 2f;
 
-        player = new PlayerCharacter(playerTexture, initialX, initialY, 200f);
-        player.setScale(2.5f);
+        player = game.getPlayer();
+        player.setPosition(initialX, initialY);
 
         camera = new OrthographicCamera();
         viewport = MapUtils.setupCameraAndViewport(map, camera, 1920, 1080);
@@ -86,6 +87,9 @@ public class HouseScreen extends BaseScreen {
         for (InteractableObject obj : mapLoader.getInteractableObjects()) {
             interactionManager.addInteractable(obj);
         }
+
+        mesaCasaPrompt = new FloatingTextPrompt("Pulsa E para abrir el papiro", new Vector2());
+        cocinaCasaPrompt = new FloatingTextPrompt("Pulsa E para comer y curarte", new Vector2());
 
         shapeRenderer = new ShapeRenderer();
 
@@ -131,9 +135,41 @@ public class HouseScreen extends BaseScreen {
 
             interactionManager.update(player.getCollisionBounds());
 
+            boolean mesaCerca = false;
+            boolean cocinaCerca = false;
+
+            for (InteractableObject obj : interactionManager.getHighlightedObjects()) {
+                Vector2 pos = new Vector2(obj.getShape().getX(), obj.getShape().getY());
+
+                if ("mesa_casa".equals(obj.getName())) {
+                    mesaCasaPrompt.setPosition(pos.add(0, 80));
+                    mesaCasaPrompt.setVisible(true);
+                    mesaCerca = true;
+                }
+
+                if ("cocina_casa".equals(obj.getName())) {
+                    cocinaCasaPrompt.setPosition(pos.add(-20, 80));
+
+                    if (player.getCurrentHealth() < 100) {
+                        cocinaCasaPrompt.setText("Pulsa E para comer y curarte");
+                    } else {
+                        cocinaCasaPrompt.setText("Pulsa E para comer");
+                    }
+
+                    cocinaCasaPrompt.setVisible(true);
+                    cocinaCerca = true;
+                }
+            }
+
+            if (!mesaCerca) mesaCasaPrompt.setVisible(false);
+            if (!cocinaCerca) cocinaCasaPrompt.setVisible(false);
+
+            // Activar el lore al pulsar E
             if (Gdx.input.isKeyJustPressed(Input.Keys.E) && loreOverlay == null) {
                 for (InteractableObject obj : interactionManager.getHighlightedObjects()) {
-                    if ("mesa_casa".equals(obj.getName())) {
+                    String name = obj.getName();
+            
+                    if ("mesa_casa".equals(name)) {
                         loreOverlay = new LoreOverlayManager();
                         loreOverlay.trigger("others/papiro_hieratic.png",
                             "Mi querido familiar:\n" +
@@ -144,6 +180,19 @@ public class HouseScreen extends BaseScreen {
                             "Actúa con sabiduría y honor.\n" +
                             "Que tu alma llegue ligera ante el trono de Osiris."
                         );
+                        break;
+            
+                    } else if ("cocina_casa".equals(name)) {
+                        boolean estabaHerido = player.getCurrentHealth() < 100;
+
+                        player.restoreFullHealth();
+                        getGame().getHUD().setHealth(player.getCurrentHealth());
+                        
+                        if (estabaHerido) {
+                            getGame().getHUD().showPopupMessage("Has comido y recuperado toda la vida.");
+                        } else {
+                            getGame().getHUD().showPopupMessage("Has comido. ¡Qué rico!");
+                        }
                         break;
                     }
                 }
@@ -156,25 +205,24 @@ public class HouseScreen extends BaseScreen {
 
         interactionManager.render(shapeRenderer);
 
-        // === DIBUJAR EL MUNDO (jugador, etc.) ===
         batch.setProjectionMatrix(camera.combined);
         batch.begin();
         player.render(batch);
+        
+        mesaCasaPrompt.render(batch, AssetLoader.get("fonts/ui_font.fnt", BitmapFont.class), camera);
+        cocinaCasaPrompt.render(batch, AssetLoader.get("fonts/ui_font.fnt", BitmapFont.class), camera);
         batch.end();
 
-        // === Transiciones ===
         if (DoorHandler.handleDoorTransition(getGame(), doorManager, player.getCollisionBounds())) {
             return;
         }
 
-        // === Renderizar LoreOverlay ===
         if (loreOverlay != null) {
             loreOverlay.render(batch, shapeRenderer, camera);
         }
 
         // Proyección a pantalla para HUD
         getGame().getHUD().render(batch); 
-        
     }
 
     @Override

@@ -9,10 +9,14 @@ import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.yestevezd.elsenderodeladuat.core.collision.CollisionSystem;
+import com.yestevezd.elsenderodeladuat.core.combat.CombatManager;
+import com.yestevezd.elsenderodeladuat.core.combat.CombatState;
 import com.yestevezd.elsenderodeladuat.core.engine.AssetLoader;
 import com.yestevezd.elsenderodeladuat.core.engine.AudioManager;
+import com.yestevezd.elsenderodeladuat.core.entities.Amuleto_estatua;
 import com.yestevezd.elsenderodeladuat.core.entities.BaseCharacter;
 import com.yestevezd.elsenderodeladuat.core.entities.Direction;
+import com.yestevezd.elsenderodeladuat.core.entities.Escarabajo;
 import com.yestevezd.elsenderodeladuat.core.entities.NPCCharacter;
 import com.yestevezd.elsenderodeladuat.core.entities.NPCState;
 import com.yestevezd.elsenderodeladuat.core.entities.PlayerCharacter;
@@ -27,8 +31,7 @@ import com.yestevezd.elsenderodeladuat.core.narrative.dialogues.DialogueTree;
 import com.yestevezd.elsenderodeladuat.core.ui.DialogueBox;
 import com.badlogic.gdx.utils.Array;
 import com.yestevezd.elsenderodeladuat.core.game.EventFlags;
-import com.yestevezd.elsenderodeladuat.core.game.GameEventContext; // Ensure this is the correct package
-import com.yestevezd.elsenderodeladuat.core.entities.Espada; // Replace with the correct package for Espada
+import com.yestevezd.elsenderodeladuat.core.game.GameEventContext; 
 
 public class SalaHipostilaScreen extends BaseScreen implements GameEventContext {
 
@@ -51,6 +54,8 @@ public class SalaHipostilaScreen extends BaseScreen implements GameEventContext 
     private DialogueManager dialogueManager;
     private boolean freezePlayer = false;
     private boolean sacerdoteEventoDisparado = false;
+
+    private CombatManager combatManager;
 
 
     public SalaHipostilaScreen(MainGame game, float spawnX, float spawnY) {
@@ -82,10 +87,9 @@ public class SalaHipostilaScreen extends BaseScreen implements GameEventContext 
         viewport = MapUtils.setupCameraAndViewport(map, camera, 1920, 1080);
 
         // Jugador
-        Texture playerTexture = AssetLoader.get("characters/personaje_principal.png", Texture.class);
-        player = new PlayerCharacter(playerTexture, spawnX, spawnY, 200f);
-        player.setScale(2.5f);
-        player.setDirection(Direction.DOWN); // Dirección inicial
+        player = game.getPlayer();
+        player.setPosition(spawnX, spawnY);
+        player.setDirection(Direction.DOWN);
 
         if ("puerta_templo_karnak".equals(entradaDesdePuerta)) {
             player.setDirection(Direction.RIGHT);
@@ -97,13 +101,16 @@ public class SalaHipostilaScreen extends BaseScreen implements GameEventContext 
 
         doorManager = new DoorManager(mapLoader.getDoorTriggers());
 
-        // === Sacerdote patrullando ===
+        // Sacerdote patrullando
         Texture sacerdoteTexture = AssetLoader.get("characters/sacerdote.png", Texture.class);
-        sacerdote = new NPCCharacter(sacerdoteTexture, 1400, 300, 100f); // posición inicial
+        sacerdote = new NPCCharacter(sacerdoteTexture, 1400, 300, 100f);
+        sacerdote.setName("Sacerdote de Karnak");
         sacerdote.setScale(2.5f);
         sacerdote.setGameContext(this);
-        if (EventFlags.sacerdoteEventoCompletado) {
-            sacerdote.getStateMachine().changeState(NPCState.PATRULLAR);
+        if (EventFlags.sacerdoteDerrotado) {
+            sacerdote.setPosition(1550, 280);
+            sacerdote.setDirection(Direction.DOWN);
+            sacerdote.getStateMachine().changeState(NPCState.HABLAR);
         } else {
             sacerdote.getStateMachine().changeState(NPCState.PATRULLAR);
         }
@@ -119,13 +126,66 @@ public class SalaHipostilaScreen extends BaseScreen implements GameEventContext 
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
+        // COMBATE
+        if (combatManager != null) {
+            combatManager.update(delta);
+
+            if (combatManager.getState() == CombatState.VICTORY) {
+                EventFlags.sacerdoteEventoCompletado = true;
+                player.setEnCombate(false);
+
+                sacerdote.setVelocity(Vector2.Zero);
+                sacerdote.getStateMachine().changeState(NPCState.HABLAR);
+            
+                player.setPosition(900, 300);
+                sacerdote.setPosition(960, 300);
+                player.setDirection(Direction.RIGHT);
+                sacerdote.setDirection(Direction.LEFT);
+
+                getGame().getHUD().setHealth(player.getCurrentHealth());
+            
+                DialogueTree tree = DialogueLoader.load("dialogues/dialogos.json", "dialogo_postcombate_sacerdote_victoria");
+                dialogueManager = new DialogueManager(tree, textBox);
+                dialogueManager.start();
+                textBox.setFadeInActive(true);
+            
+                combatManager = null;
+                freezePlayer = true;
+            
+            } else if (combatManager.getState() == CombatState.DEFEAT) {
+                // Derrota
+                EventFlags.sacerdoteEventoCompletado = false;
+                player.setEnCombate(false);
+                sacerdote.getStateMachine().changeState(NPCState.PATRULLAR);
+
+                player.restoreFullHealth();
+                getGame().getHUD().setHealth(player.getCurrentHealth());
+
+                game.setScreen(new DefeatScreen(game));
+
+                combatManager = null;
+                freezePlayer = false;
+                return;
+            } else {
+                camera.update();
+                mapRenderer.setView(camera);
+                mapRenderer.render();
+
+                game.getBatch().setProjectionMatrix(camera.combined);
+                combatManager.render(game.getBatch(), mapRenderer, camera);
+
+                return; 
+            }
+        }
+
+        // NORMAL
         Vector2 oldPosition = player.getPosition().cpy();
         if (!freezePlayer && (textBox == null || !textBox.isVisible())) {
             player.update(delta);
         }
 
         if (dialogueManager != null) {
-            dialogueManager.update();
+            dialogueManager.update(delta);
         }
 
         if (collisionSystem.isColliding(player.getCollisionBounds())) {
@@ -139,10 +199,10 @@ public class SalaHipostilaScreen extends BaseScreen implements GameEventContext 
         // Actualizar NPC
         sacerdote.updateConColision(delta, player.getCollisionBounds());
 
-        // Comprobar distancia al jugador
+        // Comprobar distancia para que el sacerdote nos persiga
         Vector2 playerPos = player.getPosition();
         if (!EventFlags.sacerdoteEventoCompletado && sacerdote.getStateMachine().getCurrentState() == NPCState.PATRULLAR) {
-            if (sacerdote.getPosition().dst(playerPos) < 300f) {
+            if (sacerdote.getPosition().dst(playerPos) < 800f) {
                 sacerdote.setTargetPosition(playerPos.cpy());
                 sacerdote.getStateMachine().changeState(NPCState.ACERCARSE_AL_JUGADOR);
                 freezePlayer = true;
@@ -150,40 +210,60 @@ public class SalaHipostilaScreen extends BaseScreen implements GameEventContext 
             }
         }
 
+        // Puertas
         if (DoorHandler.handleDoorTransition(getGame(), doorManager, player.getCollisionBounds())) {
             return;
         }
 
+        // Eventos de final de diálogo
         if (dialogueManager != null && !dialogueManager.isActive() && sacerdoteEventoDisparado) {
-            String lastNodeId = dialogueManager.getCurrentNodeId(); 
-        
+            String lastNodeId = dialogueManager.getCurrentNodeId();
+            
             if ("fin_soborno".equals(lastNodeId)) {
-                Espada espada1 = new Espada();
-                Espada espada2 = new Espada();
-        
-                getGame().getInventory().addItem(espada1);
-                getGame().getInventory().addItem(espada2);
-        
-                getGame().getHUD().showPopupMessage("¡Has conseguido recuperar objetos sagrados sobornando!", espada1, espada2);
-        
+                Amuleto_estatua estatua = new Amuleto_estatua();
+                Escarabajo escarabajo = new Escarabajo();
+                getGame().getInventory().addItem(estatua);
+                getGame().getInventory().addItem(escarabajo);
+                getGame().getHUD().showPopupMessage("¡Has conseguido recuperar objetos sagrados sobornando!", estatua, escarabajo);
                 EventFlags.sacerdoteEventoCompletado = true;
                 sacerdote.getStateMachine().changeState(NPCState.PATRULLAR);
-            } else if ("fin_pelea".equals(lastNodeId)) {
-                // iniciar combate aquí
-                EventFlags.sacerdoteEventoCompletado = true;
-                // si pierdes o ganas, al terminar el combate, volveremos también a PATRULLAR
+                freezePlayer = false;
+                dialogueManager = null;
+
+            }else if ("fin_pelea".equals(lastNodeId)) {
+                // CREAR EL COMBAT MANAGER
+                player.setCombatSpriteSheet(AssetLoader.get("characters/personaje_principal_espada.png", Texture.class));
+                sacerdote.setCombatSpriteSheet(AssetLoader.get("characters/sacerdote_baston.png", Texture.class));
+                combatManager = new CombatManager(player, sacerdote,collisionSystem);
+                player.setEnCombate(true);
+                AudioManager.stopMusic();
+                freezePlayer = true;
+                dialogueManager = null;
+
+                return; 
+            }else if ("fin_postcombate_victoria".equals(lastNodeId)) {
+                Amuleto_estatua estatua = new Amuleto_estatua();
+                Escarabajo escarabajo = new Escarabajo();
+                getGame().getInventory().addItem(estatua);
+                getGame().getInventory().addItem(escarabajo);
+            
+                getGame().getHUD().showPopupMessage("¡Has recuperado los objetos sagrados!", estatua, escarabajo);
+            
+                sacerdote.setCustomDestination(new Vector2(1600, 280));
+                sacerdote.getStateMachine().changeState(NPCState.DESAPARECER);
+                dialogueManager = null;
+                freezePlayer = false;
             }
-        
-            freezePlayer = false;
-            dialogueManager = null;
         }
 
+        // RENDERIZADO NORMAL
         camera.update();
         mapRenderer.setView(camera);
         mapRenderer.render();
 
         game.getBatch().setProjectionMatrix(camera.combined);
         game.getBatch().begin();
+
         Array<BaseCharacter> characters = new Array<>();
         characters.add(player);
         characters.add(sacerdote);
@@ -192,9 +272,11 @@ public class SalaHipostilaScreen extends BaseScreen implements GameEventContext 
 
         for (BaseCharacter character : characters) {
             character.render(game.getBatch());
-        } 
+        }
+
         textBox.render(game.getBatch());
         doorManager.renderInteractionMessage(player.getCollisionBounds(), game.getBatch(), camera);
+
         game.getBatch().end();
 
         getGame().getHUD().render(game.getBatch());
@@ -216,6 +298,11 @@ public class SalaHipostilaScreen extends BaseScreen implements GameEventContext 
         dialogueManager.start();
 
         sacerdoteEventoDisparado = true;
+    }
+
+    @Override
+    public PlayerCharacter getPlayer() {
+        return player;
     }
 
     @Override

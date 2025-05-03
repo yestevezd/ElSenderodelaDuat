@@ -16,7 +16,7 @@ public class Inventory {
                 return true;
             }
         }
-        return false; // inventario lleno
+        return false;
     }
 
     public boolean removeItem(Class<? extends Item> itemType) {

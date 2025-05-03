@@ -18,8 +18,8 @@ public class GameConfig {
     public static final String GAME_TITLE = "El Sendero de la Duat";
 
     // Volumen global (valores entre 0.0 y 1.0)
-    public static float MUSIC_VOLUME = 0.2f;  // Volumen de la música
-    public static float SOUND_VOLUME = 0.2f;  // Volumen de efectos de sonido
+    public static float MUSIC_VOLUME = 0.5f;  // Volumen de la música
+    public static float SOUND_VOLUME = 0.5f;  // Volumen de efectos de sonido
 
     // Habilitar o deshabilitar herramientas de depuración visual
     public static final boolean DEBUG = true;

@@ -98,9 +98,8 @@ public class DeirElMedinaScreen extends BaseScreen implements GameEventContext {
         viewport = MapUtils.setupCameraAndViewport(map, camera, 1920, 1080);
 
         // Crear personaje
-        Texture playerTexture = AssetLoader.get("characters/personaje_principal.png", Texture.class);
-        player = new PlayerCharacter(playerTexture, spawnX, spawnY, 200f);
-        player.setScale(2.5f);
+        player = game.getPlayer();
+        player.setPosition(spawnX, spawnY);
 
         if ("puerta_camino_3".equals(entradaDesdePuerta)) {
             player.setDirection(Direction.LEFT);
@@ -146,7 +145,7 @@ public class DeirElMedinaScreen extends BaseScreen implements GameEventContext {
         }
 
         if (dialogueManager != null) {
-            dialogueManager.update();
+            dialogueManager.update(delta);
         }
 
         if (collisionSystem.isColliding(player.getCollisionBounds())) {
@@ -210,14 +209,14 @@ public class DeirElMedinaScreen extends BaseScreen implements GameEventContext {
 
             getGame().getInventory().addItem(espada);
             // Mostrar mensaje en HUD
-            getGame().getHUD().showPopupMessage("¡Has conseguido una espada antigua!", espada);
+            getGame().getHUD().showPopupMessage("¡Has conseguido una " + espada.getDisplayName() + "!", espada);
         
             artesanoEnTransicionACasa = true;
         }
 
         if (artesanoEnTransicionACasa && !npcArtesano.isVisible()) {
             freezePlayer = false;
-            artesanoEnTransicionACasa = false; // Resetear flag
+            artesanoEnTransicionACasa = false;
             EventFlags.artesanoEventoCompletado = true;
         }
 
@@ -239,6 +238,11 @@ public class DeirElMedinaScreen extends BaseScreen implements GameEventContext {
         DialogueTree tree = DialogueLoader.load("dialogues/dialogos.json", "dialogo_artesano");
         dialogueManager = new DialogueManager(tree, textBox);
         dialogueManager.start();
+    }
+
+    @Override
+    public PlayerCharacter getPlayer() {
+        return player;
     }
 
     /**

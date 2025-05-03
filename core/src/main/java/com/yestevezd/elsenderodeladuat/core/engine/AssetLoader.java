@@ -58,13 +58,16 @@ public class AssetLoader {
         manager.load("fonts/jeroglificos3_font.png", Texture.class);
     }
 
-    // CASA DEL ARTESANO
+    //GLOBAL
+    public static void loadGlobalAssets(){
+        manager.load("characters/personaje_principal.png", Texture.class); 
+    }
 
+    // CASA DEL ARTESANO
     public static void loadHouseAssets() {
         manager.setLoader(TiledMap.class, new TmxMapLoader(new InternalFileHandleResolver()));
 
-        manager.load("maps/casa_deir_el_medina.tmx", TiledMap.class);
-        manager.load("characters/personaje_principal.png", Texture.class);  
+        manager.load("maps/casa_deir_el_medina.tmx", TiledMap.class);  
         manager.load("sounds/sonido_puerta.mp3", Sound.class); 
         manager.load("others/papiro_hieratic.png", Texture.class);
         manager.load("fonts/ui_font.fnt", BitmapFont.class);
@@ -88,11 +91,11 @@ public class AssetLoader {
     public static void loadKarnakAssets() {
         manager.setLoader(TiledMap.class, new TmxMapLoader(new InternalFileHandleResolver()));
 
-        manager.load("maps/karnak_templo.tmx", TiledMap.class);
-        manager.load("characters/personaje_principal.png", Texture.class);  
+        manager.load("maps/karnak_templo.tmx", TiledMap.class); 
         manager.load("sounds/sonido_viento.mp3", Sound.class);
         manager.load("fonts/ui_font.fnt", BitmapFont.class);
         manager.load("fonts/ui_font.png", Texture.class);
+        manager.load("characters/guardian.png", Texture.class);
 
     }
 
@@ -101,10 +104,22 @@ public class AssetLoader {
         manager.setLoader(TiledMap.class, new TmxMapLoader(new InternalFileHandleResolver()));
 
         manager.load("maps/sala_hipostila.tmx", TiledMap.class);
-        manager.load("characters/personaje_principal.png", Texture.class);
         manager.load("characters/sacerdote.png", Texture.class);   
         manager.load("fonts/ui_font.fnt", BitmapFont.class);
         manager.load("fonts/ui_font.png", Texture.class);
+        manager.load("characters/characterAnimations/personajePrincipal/atac_prin_001.png",Texture.class);
+        manager.load("characters/characterAnimations/personajePrincipal/atac_prin_002.png",Texture.class);
+        manager.load("characters/characterAnimations/personajePrincipal/atac_prin_003.png",Texture.class);
+        manager.load("characters/characterAnimations/personajePrincipal/atac_prin_004.png",Texture.class);
+        manager.load("characters/characterAnimations/personajePrincipal/atac_prin_005.png",Texture.class);
+        manager.load("characters/characterAnimations/sacerdote/atac_sac_001.png",Texture.class);
+        manager.load("characters/characterAnimations/sacerdote/atac_sac_002.png",Texture.class);
+        manager.load("characters/characterAnimations/sacerdote/atac_sac_003.png",Texture.class);
+        manager.load("characters/characterAnimations/sacerdote/atac_sac_004.png",Texture.class);
+        manager.load("characters/characterAnimations/sacerdote/atac_sac_005.png",Texture.class);
+        manager.load("characters/characterAnimations/sacerdote/atac_sac_006.png",Texture.class);
+        manager.load("characters/sacerdote_baston.png",Texture.class);
+        manager.load("characters/personaje_principal_espada.png",Texture.class);
     }
 
     // VALLE DE LOS REYES
@@ -122,7 +137,12 @@ public class AssetLoader {
     // HUD / INTERFAZ
 
     public static void loadHUDAssets() {
-        manager.load("others/espada.jpg", Texture.class);
+        manager.load("items/espada.png", Texture.class);
+        manager.load("items/escarabajo.png", Texture.class);
+        manager.load("items/anj.png", Texture.class);
+        manager.load("items/estatua.png", Texture.class);
+        manager.load("items/sandalias.png", Texture.class);
+
     }
 
 // MÉTODOS DE UNLOAD
@@ -162,7 +182,6 @@ public static void unloadContextAssets() {
 
 public static void unloadHouseAssets() {
     unload("maps/casa_deir_el_medina.tmx");
-    unload("characters/personaje_principal.png");
     unload("sounds/sonido_puerta.mp3");
     unload("otehrs/papiro_hieratic.png");
     unload("fonts/ui_font.fnt");
@@ -181,17 +200,30 @@ public static void unloadDeirElMedinaAssets() {
 
 public static void unloadKarnakAssets() {
     unload("maps/karnak_templo.tmx");
-    unload("characters/personaje_principal.png");
     unload("sounds/sonido_viento.mp3");
     unload("fonts/ui_font.fnt");
     unload("fonts/ui_font.png");
+    unload("characters/guardian.png");
 }
 
 public static void unloadKarnakSalaHipostilaAssets() {
     unload("maps/sala_hipostila.tmx");
-    unload("characters/personaje_principal.png");
     unload("fonts/ui_font.fnt");
     unload("fonts/ui_font.png");
+    unload("characters/sacerdote.png");
+    unload("characters/characterAnimations/personajePrincipal/atac_prin_001.png");
+    unload("characters/characterAnimations/personajePrincipal/atac_prin_002.png");
+    unload("characters/characterAnimations/personajePrincipal/atac_prin_003.png");
+    unload("characters/characterAnimations/personajePrincipal/atac_prin_004.png");
+    unload("characters/characterAnimations/personajePrincipal/atac_prin_005.png");
+    unload("characters/characterAnimations/sacerdote/atac_sac_001.png");
+    unload("characters/characterAnimations/sacerdote/atac_sac_002.png");
+    unload("characters/characterAnimations/sacerdote/atac_sac_003.png");
+    unload("characters/characterAnimations/sacerdote/atac_sac_004.png");
+    unload("characters/characterAnimations/sacerdote/atac_sac_005.png");
+    unload("characters/characterAnimations/sacerdote/atac_sac_006.png");
+    unload("characters/sacerdote_baston.png");
+    unload("characters/personaje_principal_espada.png");
 }
 
 public static void unloadValleyAssets() {
@@ -203,7 +235,11 @@ public static void unloadDuatAssets() {
 }
 
 public static void unloadHUDAssets() {
-    unload("others/espada.jpg");
+    unload("items/espada.png");
+    unload("items/escarabajo.png");
+    unload("items/anj.png");
+    unload("items/estatua.png");
+    unload("items/sandalias.png");
 }
 
     // MÉTODOS GENERALES

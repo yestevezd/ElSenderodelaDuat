@@ -7,6 +7,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.yestevezd.elsenderodeladuat.core.game.EventFlags;
 import com.yestevezd.elsenderodeladuat.core.game.GameConfig;
 import com.yestevezd.elsenderodeladuat.core.engine.AssetLoader;
+import com.badlogic.gdx.Gdx;
 
 /**
  * Estados posibles para un NPC.
@@ -44,6 +45,8 @@ public enum NPCState implements State<NPCCharacter> {
         @Override
         public void enter(NPCCharacter npc) {
             npc.setVelocity(Vector2.Zero); 
+            npc.setLastDx(0f);
+            npc.setLastDy(0f);
         }
 
         @Override
@@ -53,14 +56,47 @@ public enum NPCState implements State<NPCCharacter> {
     },
 
     COMBATIR {
+        private float decisionTimer = 0f;
+        private boolean escaping = false;
+    
         @Override
         public void enter(NPCCharacter npc) {
-            System.out.println("NPC entra en combate");
+            decisionTimer = 1.5f;
         }
-
+    
         @Override
         public void update(NPCCharacter npc) {
-            // lógica de persecución o ataque
+            PlayerCharacter player = npc.getGameContext().getPlayer();
+            Vector2 toPlayer = player.getPosition().cpy().sub(npc.getPosition());
+            float distance = toPlayer.len();
+    
+            decisionTimer -= Gdx.graphics.getDeltaTime();
+    
+            // IA básica: decidir si escapar o atacar
+            if (decisionTimer <= 0f) {
+                escaping = Math.random() < 0.2f; // 20% de probabilidad de escapar
+                decisionTimer = 1.5f;
+            }
+    
+            Vector2 velocity = new Vector2();
+    
+            if (escaping) {
+                if (distance < 250f) {
+                    velocity = npc.getPosition().cpy().sub(player.getPosition()).nor().scl(npc.getSpeed());
+                } else {
+                    velocity.setZero();
+                }
+            } else {
+                if (distance > 60f) {
+                    velocity = toPlayer.nor().scl(npc.getSpeed());
+                    velocity.y = 0f;
+                } else {
+                    velocity.setZero();
+                }
+            }
+    
+            velocity.y = 0;
+            npc.setVelocity(velocity);
         }
     },
 
@@ -133,6 +169,36 @@ public enum NPCState implements State<NPCCharacter> {
         @Override
         public void exit(NPCCharacter npc) {
             sonidoReproducido = false;
+        }
+    },
+    DESAPARECER {
+        @Override
+        public void enter(NPCCharacter npc) {
+            npc.setVelocity(Vector2.Zero);
+        }
+    
+        @Override
+        public void update(NPCCharacter npc) {
+            Vector2 destino = npc.getCustomDestination();
+            if (destino == null) return; 
+    
+            Vector2 toTarget = destino.cpy().sub(npc.getPosition());
+    
+            if (toTarget.len2() <= 4f) {
+                npc.setPosition(destino.x, destino.y);
+                npc.setVelocity(Vector2.Zero);
+                npc.setVisible(false);  
+                return;
+            }
+    
+            Vector2 velocity = toTarget.nor().scl(npc.getSpeed());
+            npc.setVelocity(velocity);
+    
+            float delta = com.badlogic.gdx.Gdx.graphics.getDeltaTime();
+            npc.setPosition(
+                npc.getPosition().x + velocity.x * delta,
+                npc.getPosition().y + velocity.y * delta
+            );
         }
     };
 

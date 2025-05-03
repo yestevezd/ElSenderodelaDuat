@@ -1,13 +1,19 @@
 package com.yestevezd.elsenderodeladuat.core.entities;
 
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.math.Vector2;
 import com.yestevezd.elsenderodeladuat.core.engine.InputManager;
 
 /**
  * Representa al personaje principal controlado por el jugador.
  * Hereda de {@link BaseCharacter} y gestiona el movimiento mediante InputManager.
  */
-public class PlayerCharacter extends BaseCharacter {
+public class PlayerCharacter extends BaseCharacter implements CombatEntity {
+
+    private boolean enCombate = false;
+    private int currentHealth = 100;
+    private int maxHealth = 100;
 
     /**
      * Constructor del personaje principal.
@@ -35,13 +41,16 @@ public class PlayerCharacter extends BaseCharacter {
         float dy = 0;
 
         // Movimiento vertical
-        if (InputManager.isMoveUpPressed()) {
-            dy += speed * delta;
-            direction = Direction.UP;
-        }
-        if (InputManager.isMoveDownPressed()) {
-            dy -= speed * delta;
-            direction = Direction.DOWN;
+        if (!enCombate) {
+            if (InputManager.isMoveUpPressed()) {
+                dy += speed * delta;
+                direction = Direction.UP;
+            }
+    
+            if (InputManager.isMoveDownPressed()) {
+                dy -= speed * delta;
+                direction = Direction.DOWN;
+            }
         }
 
         // Movimiento horizontal
@@ -59,4 +68,62 @@ public class PlayerCharacter extends BaseCharacter {
         lastDx = dx;
         lastDy = dy;
     }
+
+    public Rectangle getAttackBounds() {
+        Rectangle base = getCollisionBounds();
+        float attackWidth = base.width + 40f;
+        return new Rectangle(
+            direction == Direction.RIGHT ? base.x : (base.x + base.width - attackWidth),
+            base.y,
+            attackWidth,
+            base.height
+        );
+    }
+    
+    public void receiveDamage(int amount, Vector2 attackerPos) {
+        currentHealth -= amount;
+        if (currentHealth < 0) currentHealth = 0;
+
+        float retroceso = 70f;
+        Vector2 directionFromAttacker = this.position.cpy().sub(attackerPos).nor();
+        Vector2 newPosition = this.position.cpy().add(directionFromAttacker.scl(retroceso));
+
+        this.position.set(newPosition); 
+
+        blinkingTimer = 0.8f;
+    }
+    
+    public boolean isAlive() {
+        return currentHealth > 0;
+    }
+    
+    public int getCurrentHealth() {
+        return currentHealth;
+    }
+    
+    public int getMaxHealth() {
+        return maxHealth;
+    }
+
+    @Override
+    public String getName() {
+        return "Imhotep";
+    }
+
+    public float getSpeed() {
+        return speed;
+    }
+
+    public void setSpeed(float speed) {
+        this.speed = speed;
+    }
+
+    public void setEnCombate(boolean valor) {
+        this.enCombate = valor;
+    }
+
+    public void restoreFullHealth() {
+        this.currentHealth = this.maxHealth;
+    }
+    
 }

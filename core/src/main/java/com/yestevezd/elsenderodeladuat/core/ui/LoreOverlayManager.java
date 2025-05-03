@@ -84,8 +84,7 @@ public class LoreOverlayManager {
                 break;
         
             case INACTIVE:
-            case FINISHED:
-                // No hacer nada (ya se gestiona fuera del switch con el return)
+            case FINISHED: 
                 break;
         }
     }
@@ -129,7 +128,6 @@ public class LoreOverlayManager {
             batch.draw(backgroundTexture, boxX, boxY, boxWidth, boxHeight);
             batch.setColor(1, 1, 1, 1);
 
-            // Texto en color correcto
             font.setColor(dialogueColor.r, dialogueColor.g, dialogueColor.b, alpha);
             float textX = boxX + padding;
             float textY = boxY + boxHeight - padding;

@@ -5,6 +5,7 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.utils.Array;
 
@@ -30,6 +31,11 @@ public abstract class BaseCharacter {
 
     protected float lastDx = 0;
     protected float lastDy = 0;
+
+    protected float blinkingTimer = 0f;
+
+    protected Texture combatSpriteSheet;
+    protected Texture originalSpriteSheet;
 
     /**
      * Constructor del personaje base.
@@ -84,12 +90,22 @@ public abstract class BaseCharacter {
         if (isMoving()) {
             frame = currentAnimation.getKeyFrame(animationTimer, true);
         } else {
-            frame = currentAnimation.getKeyFrames()[0]; // frame estático
+            frame = currentAnimation.getKeyFrames()[0];
+        }
+
+        if (blinkingTimer > 0f) {
+            blinkingTimer -= Gdx.graphics.getDeltaTime();
+    
+            // Alternar visibilidad: opaco ↔ semi-transparente
+            float alpha = ((int)(blinkingTimer * 10) % 2 == 0) ? 1f : 0.3f;
+            batch.setColor(1f, 1f, 1f, alpha);
         }
 
         batch.draw(frame, position.x, position.y,
                 frame.getRegionWidth() * scale,
                 frame.getRegionHeight() * scale);
+
+        batch.setColor(1f, 1f, 1f, 1f);
     }
 
     /**
@@ -129,6 +145,14 @@ public abstract class BaseCharacter {
      */
     public void setScale(float scale) {
         this.scale = scale;
+    }
+
+    public float getScaleX() {
+        return this.scale;
+    }
+    
+    public float getScaleY() {
+        return this.scale;
     }
 
     /**
@@ -185,9 +209,9 @@ public abstract class BaseCharacter {
         float height = getHeight();
 
         float collisionWidth = width * 0.6f;
-        float collisionHeight = height * 0.25f; // solo pies
+        float collisionHeight = height * 0.25f;
         float offsetX = (width - collisionWidth) / 2f;
-        float offsetY = 10; // altura desde la base
+        float offsetY = 10;
 
         return new Rectangle(
             position.x + offsetX,
@@ -211,6 +235,14 @@ public abstract class BaseCharacter {
         return (spriteSheet.getHeight() / 4f) * scale;
     }
 
+    public float getLastDx() {
+        return lastDx;
+    }
+    
+    public float getLastDy() {
+        return lastDy;
+    }
+
     public void setLastDx(float dx) {
         this.lastDx = dx;
     }
@@ -218,4 +250,31 @@ public abstract class BaseCharacter {
     public void setLastDy(float dy) {
         this.lastDy = dy;
     }
+
+    public void changeSpriteSheet(Texture newSpriteSheet) {
+        this.spriteSheet = newSpriteSheet;
+        initializeAnimations();
+    }
+
+    public void setCombatSpriteSheet(Texture texture) {
+        this.combatSpriteSheet = texture;
+    }
+    
+    public void storeOriginalSpriteSheet() {
+        this.originalSpriteSheet = this.spriteSheet;
+    }
+    
+    public void switchToCombatSprite() {
+        if (combatSpriteSheet != null) {
+            storeOriginalSpriteSheet();
+            changeSpriteSheet(combatSpriteSheet);
+        }
+    }
+    
+    public void restoreOriginalSprite() {
+        if (originalSpriteSheet != null) {
+            changeSpriteSheet(originalSpriteSheet);
+        }
+    }
+    
 }

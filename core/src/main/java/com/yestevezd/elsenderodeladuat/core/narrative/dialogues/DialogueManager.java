@@ -12,6 +12,9 @@ public class DialogueManager {
     private boolean waitingForAdvance = false;
     private String lastNodeId = null;
 
+    private float inputCooldown = 0.2f;
+    private float elapsedSinceStart = 0f;
+
     public DialogueManager(DialogueTree tree, DialogueBox box) {
         this.dialogueTree = tree;
         this.dialogueBox = box;
@@ -19,23 +22,26 @@ public class DialogueManager {
 
     public void start() {
         active = true;
+        elapsedSinceStart = 0f;
+        waitingForAdvance = false;
         showCurrentLine();
     }
 
-    public void update() {
+    public void update(float delta) {
         if (!active || !dialogueBox.isVisible()) return;
+    
+        elapsedSinceStart += delta;
+        if (elapsedSinceStart < inputCooldown) return;
     
         dialogueBox.update();
     
         NarrativeLine current = dialogueTree.getCurrentLine();
-    
-        // Si ya no hay línea activa, cerramos
         if (current == null) {
             dialogueBox.hide();
             active = false;
             return;
         }
-
+    
         lastNodeId = current.getId();
     
         if (dialogueBox.isOptionsVisible()) {
@@ -45,13 +51,11 @@ public class DialogueManager {
                 showCurrentLine();
             }
         } else if (waitingForAdvance && InputManager.isInteractPressed()) {
-            // Solo avanzamos si hay nextId
             if (current.getNextId() != null) {
-                dialogueTree.selectOption(0); // usamos el nextId directamente
+                dialogueTree.selectOption(0);
                 showCurrentLine();
             } else {
-                // No hay más líneas que mostrar, fin
-                dialogueTree.selectOption(0); // nos aseguramos de llegar a null
+                dialogueTree.selectOption(0);
                 dialogueBox.hide();
                 active = false;
             }

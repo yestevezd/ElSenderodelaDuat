@@ -88,7 +88,7 @@
           "speaker": "Sacerdote",
           "translation": "¡Insensato! ¡Te enseñaré a no entrometerte en los asuntos divinos!",
           "type": "DIALOGUE",
-          "nextId": "combate"
+          "nextId": "fin_pelea"
         },
         {
           "id": "fin_soborno",
@@ -97,10 +97,133 @@
           "type": "DIALOGUE"
         },
         {
-          "id": "combate",
+          "id": "fin_pelea",
           "speaker": "Sacerdote",
           "translation": "(¡Prepárate para luchar!)",
           "type": "DIALOGUE"
+        }
+      ]
+    },
+    "dialogo_postcombate_sacerdote_victoria": {
+      "lines": [
+        {
+          "id": "inicio",
+          "speaker": "Sacerdote",
+          "translation": "(Jadeando) Has ganado... Me rindo.",
+          "type": "DIALOGUE",
+          "nextId": "entregar"
+        },
+        {
+          "id": "entregar",
+          "speaker": "Sacerdote",
+          "translation": "Toma los objetos sagrados. No quiero más problemas.",
+          "type": "DIALOGUE",
+          "nextId": "fin_postcombate_victoria"
+        },
+        {
+          "id": "fin_postcombate_victoria",
+          "speaker": "Sistema",
+          "translation": "(Recuperas los objetos sagrados tras vencer en combate.)",
+          "type": "DIALOGUE"
+        }
+      ]
+    },
+    "dialogo_guardia_entrada_karnak": {
+      "lines": [
+        {
+          "id": "inicio",
+          "speaker": "Guardia",
+          "translation": "Estamos teniendo muchos problemas últimamente. Hay saqueadores y corrupción en los templos.",
+          "type": "DIALOGUE",
+          "options": [
+            { "text": "¡Qué sacrilegio! Eso no puede permitirse.", "nextId": "respuesta_honor" },
+            { "text": "No es asunto mío.", "nextId": "respuesta_indiferente" }
+          ]
+        },
+        {
+          "id": "respuesta_honor",
+          "speaker": "Guardia",
+          "translation": "Gracias por tu preocupación. Ojalá más gente pensara como tú. Ten cuidado si entras.",
+          "type": "DIALOGUE",
+          "nextId": "fin"
+        },
+        {
+          "id": "respuesta_indiferente",
+          "speaker": "Guardia",
+          "translation": "Hmm... Cada quien con sus prioridades. Pero no digas que no te advertí.",
+          "type": "DIALOGUE",
+          "nextId": "fin"
+        },
+        {
+          "id": "fin",
+          "speaker": "Guardia",
+          "translation": "Que los dioses te protejan en el templo.",
+          "type": "DIALOGUE"
+        }
+      ]
+    },
+    "dialogo_guardia_post_evento_karnak": {
+      "lines": [
+        {
+          "id": "inicio",
+          "speaker": "Guardia",
+          "translation": "Has regresado... ¿Qué ocurrió dentro del templo?",
+          "type": "DIALOGUE",
+          "options": [
+            { "text": "Derroté al sacerdote corrupto y recuperé estos objetos sagrados.", "nextId": "respuesta_combate" },
+            { "text": "He charlado con un sacerdote y parecia nervioso, podrías ser corrupto.", "nextId": "respuesta_soborno" }
+          ]
+        },
+        {
+          "id": "respuesta_combate",
+          "speaker": "Guardia",
+          "translation": "Increíble... No solo lo enfrentaste, sino que salvaste parte del legado sagrado.",
+          "type": "DIALOGUE",
+          "nextId": "entregar_objetos"
+        },
+        {
+          "id": "entregar_objetos",
+          "speaker": "Sistema",
+          "translation": "(Le entregas al guardia la estatua del dios Amón y el amuleto con forma de escarabajo.)",
+          "type": "DIALOGUE",
+          "nextId": "recompensa_verdadera"
+        },
+        {
+          "id": "recompensa_verdadera",
+          "speaker": "Guardia",
+          "translation": "Este escarabajo... es un amuleto protector. Te lo devuelvo. Que su poder te proteja cuando tu alma sea juzgada en el Duat.",
+          "type": "DIALOGUE",
+          "nextId": "mision"
+        },
+        {
+          "id": "respuesta_soborno",
+          "speaker": "Guardia",
+          "translation": "Gracias por el aviso.",
+          "type": "DIALOGUE",
+          "nextId": "mision"
+        },
+        {
+          "id": "mision",
+          "speaker": "Guardia",
+          "translation": "Antes de que te vayas... Encontré un papiro extraño roto en pedazos en la sala principal. Está lleno de cartuchos.",
+          "type": "DIALOGUE",
+          "nextId": "invitar_mision"
+        },
+        {
+          "id": "invitar_mision",
+          "speaker": "Guardia",
+          "translation": "¿Podrías ayudarme a ordenarlos? Podría darnos pistas sobre el origen de los saqueos.",
+          "type": "DIALOGUE",
+          "options": [
+            { "text": "Claro. Déjame echarle un vistazo.", "nextId": "aceptar" }
+          ]
+        },
+        {
+          "id": "aceptar",
+          "speaker": "Guardia",
+          "translation": "Aquí tienes los pedazos, espero que lo consigas.",
+          "type": "DIALOGUE",
+          "nextId": "descubrimiento"
         }
       ]
     }
