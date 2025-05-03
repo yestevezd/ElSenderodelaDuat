@@ -209,8 +209,10 @@ public class HouseScreen extends BaseScreen {
         batch.begin();
         player.render(batch);
         
-        mesaCasaPrompt.render(batch, AssetLoader.get("fonts/ui_font.fnt", BitmapFont.class), camera);
-        cocinaCasaPrompt.render(batch, AssetLoader.get("fonts/ui_font.fnt", BitmapFont.class), camera);
+        if (loreOverlay == null || !loreOverlay.isBlocking()) {
+            mesaCasaPrompt.render(batch, AssetLoader.get("fonts/ui_font.fnt", BitmapFont.class), camera);
+            cocinaCasaPrompt.render(batch, AssetLoader.get("fonts/ui_font.fnt", BitmapFont.class), camera);
+        }
         batch.end();
 
         if (DoorHandler.handleDoorTransition(getGame(), doorManager, player.getCollisionBounds())) {

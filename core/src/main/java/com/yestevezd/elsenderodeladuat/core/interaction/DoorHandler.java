@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.yestevezd.elsenderodeladuat.core.engine.AudioManager;
 import com.yestevezd.elsenderodeladuat.core.game.MainGame;
 import com.badlogic.gdx.math.Rectangle;
+import com.yestevezd.elsenderodeladuat.core.game.EventFlags;
 
 /**
  * Clase utilitaria para gestionar transiciones de puerta entre pantallas.
@@ -22,6 +23,13 @@ public class DoorHandler {
         DoorTrigger triggeredDoor = doorManager.checkForTransition(playerBounds);
         if (triggeredDoor != null) {
             String doorName = triggeredDoor.getName();
+
+            // NO PUEDES ENTRAR SI NO HABLASTE CON EL GUARDIÁN
+            if ("puerta_templo_karnak".equals(doorName) && !EventFlags.dialogoGuardiaKarnakinicialMostrado) {
+                game.getHUD().showPopupMessage("Habla con el guardián antes de entrar al templo.");
+                return false;
+            }
+
             var destinationScreen = DoorRegistry.getScreenForDoor(game, doorName);
 
             if (destinationScreen != null) {

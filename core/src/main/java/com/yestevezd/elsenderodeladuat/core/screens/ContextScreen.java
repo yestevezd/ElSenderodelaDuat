@@ -106,6 +106,9 @@ public class ContextScreen extends BaseScreen {
             NarrativeType.CONTEXTUALIZED,
             "[1]E[2]s [3]h[1]o[2]r[1]a [3]d[2]e [1]p[1]r[2]e[3]p[1]a[2]r[3]a[1]r[1]s[2]e [3]p[1]a[2]r[1]a [1]e[2]l [3]ú[1]l[3]t[3]i[2]m[2]o [3]v[1]i[2]a[3]j[2]e[1].[1].[1]. [3]a[1]q[3]u[2]e[1]l [2]q[3]u[3]e [3]l[1]o [1]l[2]l[2]e[3]v[2]a[2]r[1]á [1]m[2]á[1]s [1]a[3]l[2]l[2]á [2]d[3]e [1]l[2]a [3]m[2]u[1]e[3]r[3]t[2]e[1]."
         ));
+
+        // Iniciar la música del context
+        AudioManager.playMusic("sounds/musica_context.mp3", true);
     }
 
      /**
@@ -167,9 +170,10 @@ public class ContextScreen extends BaseScreen {
         
         // Botón de salir anticipado
         if(InputManager.isBackPressed()) {
-            game.setScreen(new HouseScreen(game));}
+            game.setScreen(new HouseScreen(game));
             AudioManager.stopMusic();
         }
+    }
 
     /**
      * Libera los recursos utilizados por esta pantalla.
@@ -178,6 +182,7 @@ public class ContextScreen extends BaseScreen {
     public void dispose() {
         fondo.dispose();
         font.dispose();
+        AudioManager.stopMusic();
         for (BitmapFont f : hieroFonts) f.dispose();
         AssetLoader.unloadContextAssets();
     }
