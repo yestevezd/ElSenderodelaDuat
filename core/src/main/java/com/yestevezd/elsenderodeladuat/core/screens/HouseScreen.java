@@ -21,6 +21,7 @@ import com.yestevezd.elsenderodeladuat.core.maps.MapUtils;
 import com.yestevezd.elsenderodeladuat.core.collision.CollisionSystem;
 import com.yestevezd.elsenderodeladuat.core.ui.FloatingTextPrompt;
 import com.yestevezd.elsenderodeladuat.core.ui.LoreOverlayManager;
+import com.yestevezd.elsenderodeladuat.core.ui.PauseOverlay;
 
 public class HouseScreen extends BaseScreen {
 
@@ -46,6 +47,8 @@ public class HouseScreen extends BaseScreen {
     private FloatingTextPrompt mesaCasaPrompt;
     private FloatingTextPrompt cocinaCasaPrompt;
 
+    private PauseOverlay pauseOverlay;
+
     public HouseScreen(MainGame game) {
         super(game);
     }
@@ -61,6 +64,8 @@ public class HouseScreen extends BaseScreen {
         AssetLoader.loadHouseAssets();
         AssetLoader.loadDeirElMedinaAssets();
         AssetLoader.finishLoading();
+
+        pauseOverlay = new PauseOverlay(game);
 
         MapLoader mapLoader = new MapLoader("maps/casa_deir_el_medina.tmx");
         map = mapLoader.getTiledMap();
@@ -113,6 +118,19 @@ public class HouseScreen extends BaseScreen {
     public void render(float delta) {
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+
+        if (pauseOverlay.isVisible()) {
+            pauseOverlay.update();
+            batch.begin();
+            pauseOverlay.render(batch);
+            batch.end();
+            return;
+        }
+    
+        if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
+            pauseOverlay.show();
+            return;
+        }
 
         if (loreOverlay != null) {
             loreOverlay.update(delta);

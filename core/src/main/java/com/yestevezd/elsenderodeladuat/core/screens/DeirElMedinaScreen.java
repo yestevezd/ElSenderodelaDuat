@@ -3,6 +3,7 @@ package com.yestevezd.elsenderodeladuat.core.screens;
 import java.util.ArrayList;
 import java.util.List;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -29,6 +30,7 @@ import com.yestevezd.elsenderodeladuat.core.narrative.dialogues.DialogueLoader;
 import com.yestevezd.elsenderodeladuat.core.narrative.dialogues.DialogueManager;
 import com.yestevezd.elsenderodeladuat.core.narrative.dialogues.DialogueTree;
 import com.yestevezd.elsenderodeladuat.core.ui.DialogueBox;
+import com.yestevezd.elsenderodeladuat.core.ui.PauseOverlay;
 
 /**
  * Pantalla del exterior del pueblo de Deir el-Medina.
@@ -64,6 +66,8 @@ public class DeirElMedinaScreen extends BaseScreen implements GameEventContext {
 
     private String entradaDesdePuerta = null;
 
+    private PauseOverlay pauseOverlay;
+
 
     /**
      * Constructor con posición inicial personalizada.
@@ -88,6 +92,9 @@ public class DeirElMedinaScreen extends BaseScreen implements GameEventContext {
      */
     @Override
     public void show() {
+
+        pauseOverlay = new PauseOverlay(getGame());
+
         // Cargar mapa y colisiones
         MapLoader mapLoader = new MapLoader("maps/pueblo_deir_el_medina.tmx");
         map = mapLoader.getTiledMap();
@@ -138,6 +145,18 @@ public class DeirElMedinaScreen extends BaseScreen implements GameEventContext {
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
+        if (pauseOverlay.isVisible()) {
+            pauseOverlay.update();
+            batch.begin();
+            pauseOverlay.render(batch);
+            batch.end();
+            return;
+        }
+    
+        if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
+            pauseOverlay.show();
+            return;
+        }
 
         Vector2 oldPosition = player.getPosition().cpy();
         if (!freezePlayer && !textBox.isVisible()) {

@@ -1,6 +1,7 @@
 package com.yestevezd.elsenderodeladuat.core.screens;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -32,6 +33,7 @@ import com.yestevezd.elsenderodeladuat.core.ui.DialogueBox;
 import com.badlogic.gdx.utils.Array;
 import com.yestevezd.elsenderodeladuat.core.game.EventFlags;
 import com.yestevezd.elsenderodeladuat.core.game.GameEventContext; 
+import com.yestevezd.elsenderodeladuat.core.ui.PauseOverlay;
 
 public class SalaHipostilaScreen extends BaseScreen implements GameEventContext {
 
@@ -57,6 +59,8 @@ public class SalaHipostilaScreen extends BaseScreen implements GameEventContext 
 
     private CombatManager combatManager;
 
+    private PauseOverlay pauseOverlay;
+
 
     public SalaHipostilaScreen(MainGame game, float spawnX, float spawnY) {
         super(game);
@@ -76,6 +80,8 @@ public class SalaHipostilaScreen extends BaseScreen implements GameEventContext 
         // Cargar recursos
         AssetLoader.loadKarnakSalaHipostilaAssets();
         AssetLoader.finishLoading();
+
+        pauseOverlay = new PauseOverlay(game);
 
         // Cargar mapa
         MapLoader mapLoader = new MapLoader("maps/sala_hipostila.tmx");
@@ -125,6 +131,19 @@ public class SalaHipostilaScreen extends BaseScreen implements GameEventContext 
     public void render(float delta) {
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+
+        if (pauseOverlay.isVisible()) {
+            pauseOverlay.update();
+            batch.begin();
+            pauseOverlay.render(batch);
+            batch.end();
+            return;
+        }
+    
+        if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
+            pauseOverlay.show();
+            return;
+        }
 
         // COMBATE
         if (combatManager != null) {

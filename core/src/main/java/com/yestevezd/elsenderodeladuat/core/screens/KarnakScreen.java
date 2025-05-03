@@ -1,6 +1,7 @@
 package com.yestevezd.elsenderodeladuat.core.screens;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -26,6 +27,7 @@ import com.yestevezd.elsenderodeladuat.core.maps.MapUtils;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.yestevezd.elsenderodeladuat.core.ui.DialogueBox;
+import com.yestevezd.elsenderodeladuat.core.ui.PauseOverlay;
 import com.yestevezd.elsenderodeladuat.core.ui.FloatingTextPrompt;
 import com.yestevezd.elsenderodeladuat.core.narrative.dialogues.DialogueManager;
 import com.yestevezd.elsenderodeladuat.core.narrative.dialogues.DialogueLoader;
@@ -53,6 +55,8 @@ public class KarnakScreen extends BaseScreen {
     private boolean guardiaDialogoIniciado = false;
     private FloatingTextPrompt guardianPrompt;
 
+    private PauseOverlay pauseOverlay;
+
     public KarnakScreen(MainGame game, float spawnX, float spawnY) {
         super(game);
         this.spawnX = spawnX;
@@ -69,6 +73,8 @@ public class KarnakScreen extends BaseScreen {
         // Cargar recursos específicos de Karnak
         AssetLoader.loadKarnakAssets(); 
         AssetLoader.finishLoading();
+
+        pauseOverlay = new PauseOverlay(getGame());
 
         // Cargar mapa
         MapLoader mapLoader = new MapLoader("maps/karnak_templo.tmx");
@@ -115,6 +121,19 @@ public class KarnakScreen extends BaseScreen {
     public void render(float delta) {
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+
+        if (pauseOverlay.isVisible()) {
+            pauseOverlay.update();
+            batch.begin();
+            pauseOverlay.render(batch);
+            batch.end();
+            return;
+        }
+    
+        if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
+            pauseOverlay.show();
+            return;
+        }
 
         // Movimiento del jugador y colisión
         Vector2 oldPosition = player.getPosition().cpy();
