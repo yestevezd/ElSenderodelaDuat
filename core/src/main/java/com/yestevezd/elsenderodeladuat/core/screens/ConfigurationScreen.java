@@ -1,25 +1,29 @@
 package com.yestevezd.elsenderodeladuat.core.screens;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.yestevezd.elsenderodeladuat.core.engine.AssetLoader;
 import com.yestevezd.elsenderodeladuat.core.engine.AudioManager;
 import com.yestevezd.elsenderodeladuat.core.engine.InputManager;
-import com.yestevezd.elsenderodeladuat.core.game.GameConfig;
 import com.yestevezd.elsenderodeladuat.core.game.MainGame;
-import com.yestevezd.elsenderodeladuat.core.ui.SliderOption;
-import com.yestevezd.elsenderodeladuat.core.ui.SliderUIManager;
+import com.yestevezd.elsenderodeladuat.core.ui.ControlsPopup;
+import com.yestevezd.elsenderodeladuat.core.ui.SoundPopup;
 import com.yestevezd.elsenderodeladuat.core.utils.TextUtils;
 import com.yestevezd.elsenderodeladuat.core.utils.TextureUtils;
 
 public class ConfigurationScreen extends BaseScreen {
 
     private Texture fondo;
-    private SliderUIManager sliderUI;
     private BitmapFont font;
-    private boolean onBackOption = false;
+    private ControlsPopup controlsPopup;
+    private SoundPopup soundPopup;
+
+    private int selectedIndex = 0;
+    private final String[] options = {"CONFIGURAR SONIDO", "CONTROLES", "VOLVER"};
 
     public ConfigurationScreen(MainGame game) {
         super(game);
@@ -34,9 +38,8 @@ public class ConfigurationScreen extends BaseScreen {
         font = AssetLoader.get("fonts/ui_font.fnt", BitmapFont.class);
         font.getData().setScale(2f);
 
-        sliderUI = new SliderUIManager();
-        sliderUI.addSlider(new SliderOption("MÚSICA", GameConfig.MUSIC_VOLUME, 0.1f));
-        sliderUI.addSlider(new SliderOption("EFECTOS", GameConfig.SOUND_VOLUME, 0.1f));
+        controlsPopup = new ControlsPopup();
+        soundPopup = new SoundPopup();
 
         AudioManager.playMusic("sounds/musica_configuracion.mp3", true);
     }
@@ -48,15 +51,24 @@ public class ConfigurationScreen extends BaseScreen {
 
         TextureUtils.drawFullScreen(fondo, batch);
 
-        String configurationTitle = "CONFIGURAR SONIDO";
-        font.setColor(com.badlogic.gdx.graphics.Color.RED);
-        TextUtils.drawCenteredText(batch, font, configurationTitle, 650f);
+        font.setColor(Color.RED);
+        TextUtils.drawCenteredText(batch, font, "CONFIGURACIÓN", 650f);
 
-        sliderUI.render(batch, font, 500f, 100f, sliderUI.getSelectedIndex(), !onBackOption);
+        float baseY = 450f;
+        float spacing = 100f;
 
-        String volverText = onBackOption ? "> VOLVER <" : "VOLVER";
-        font.setColor(onBackOption ? com.badlogic.gdx.graphics.Color.YELLOW : com.badlogic.gdx.graphics.Color.WHITE);
-        TextUtils.drawCenteredText(batch, font, volverText, 250f);
+        for (int i = 0; i < options.length; i++) {
+            boolean selected = i == selectedIndex;
+            font.setColor(selected ? Color.YELLOW : Color.WHITE);
+            String text = selected ? "> " + options[i] + " <" : options[i];
+            TextUtils.drawCenteredText(batch, font, text, baseY - i * spacing);
+        }
+
+        if (controlsPopup.isVisible()) {
+            controlsPopup.render(batch);
+        } else if (soundPopup.isVisible()) {
+            soundPopup.render(batch);
+        }
 
         batch.end();
 
@@ -64,56 +76,43 @@ public class ConfigurationScreen extends BaseScreen {
     }
 
     private void manejarInput() {
-        if (InputManager.isNavigateUpPressed()) {
-            if (onBackOption) {
-                onBackOption = false;
-                sliderUI.resetSelection();
-            } else {
-                sliderUI.navigateUp();
+        // Si algún popup está abierto, primero gestionamos su cierre
+        if (controlsPopup.isVisible()) {
+            if (InputManager.isSelectPressed() || Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
+                controlsPopup.hide();
             }
+            return;
+        }
+
+        if (soundPopup.isVisible()) {
+            soundPopup.handleInput();
+            return;
+        }
+
+        // Navegación entre opciones
+        if (InputManager.isNavigateUpPressed()) {
+            selectedIndex = (selectedIndex - 1 + options.length) % options.length;
             AudioManager.playSound("sounds/sonido_desplazarse_menu.mp3");
         }
 
         if (InputManager.isNavigateDownPressed()) {
-            if (sliderUI.getSelectedIndex() == sliderUI.getSliderCount() - 1 && !onBackOption) {
-                onBackOption = true;
-            } else if (!onBackOption) {
-                sliderUI.navigateDown();
-            }
+            selectedIndex = (selectedIndex + 1) % options.length;
             AudioManager.playSound("sounds/sonido_desplazarse_menu.mp3");
         }
 
         if (InputManager.isSelectPressed()) {
-            if (onBackOption) {
-                AudioManager.playSound("sounds/click_menu.mp3");
-                game.setScreen(new MainMenuScreen(game));
-            }
-        }
-
-        if (Gdx.input.isKeyJustPressed(com.badlogic.gdx.Input.Keys.LEFT) && !onBackOption) {
-            sliderUI.decreaseValue();
-            updateGameConfig();
-        }
-
-        if (Gdx.input.isKeyJustPressed(com.badlogic.gdx.Input.Keys.RIGHT) && !onBackOption) {
-            sliderUI.increaseValue();
-            updateGameConfig();
-        }
-    }
-
-    private void updateGameConfig() {
-        SliderOption selected = sliderUI.getSelectedSlider();
-        String label = selected.getLabel();
-
-       if (label.equals("MÚSICA")) {
-        GameConfig.MUSIC_VOLUME = selected.getValue();
-        AudioManager.setVolume(GameConfig.MUSIC_VOLUME);
-        AudioManager.playSound("sounds/click_menu.mp3");
-        }
-
-        if (label.equals("EFECTOS")) {
-            GameConfig.SOUND_VOLUME = selected.getValue();
             AudioManager.playSound("sounds/click_menu.mp3");
+            switch (options[selectedIndex]) {
+                case "CONFIGURAR SONIDO":
+                    soundPopup.show();
+                    break;
+                case "CONTROLES":
+                    controlsPopup.show();
+                    break;
+                case "VOLVER":
+                    game.setScreen(new MainMenuScreen(game));
+                    break;
+            }
         }
     }
 
