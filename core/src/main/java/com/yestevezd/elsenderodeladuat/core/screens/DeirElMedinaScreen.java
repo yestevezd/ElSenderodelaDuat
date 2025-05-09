@@ -102,7 +102,7 @@ public class DeirElMedinaScreen extends BaseScreen implements GameEventContext {
 
         // Configurar cámara
         camera = new OrthographicCamera();
-        viewport = MapUtils.setupCameraAndViewport(map, camera, 1920, 1080);
+        viewport = MapUtils.setupCameraAndViewport(map, camera);
 
         // Crear personaje
         player = game.getPlayer();
@@ -147,9 +147,7 @@ public class DeirElMedinaScreen extends BaseScreen implements GameEventContext {
 
         if (pauseOverlay.isVisible()) {
             pauseOverlay.update();
-            batch.begin();
             pauseOverlay.render(batch);
-            batch.end();
             return;
         }
     
@@ -207,7 +205,9 @@ public class DeirElMedinaScreen extends BaseScreen implements GameEventContext {
         for (NPCCharacter npc : npcs) {
             npc.render(game.getBatch());
         }
+        game.getBatch().setProjectionMatrix(game.getUiCamera().combined); 
         textBox.render(game.getBatch());
+        game.getBatch().setProjectionMatrix(camera.combined);
         doorManager.renderInteractionMessage(player.getCollisionBounds(), game.getBatch(), camera);
         game.getBatch().end();
 
@@ -271,6 +271,7 @@ public class DeirElMedinaScreen extends BaseScreen implements GameEventContext {
     public void resize(int width, int height) {
         viewport.update(width, height);
         camera.update();
+        game.getUiCamera().setToOrtho(false, width, height);
     }
 
     /**

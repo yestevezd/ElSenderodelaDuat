@@ -28,7 +28,7 @@ public class SoundPopup {
         sliderUI.addSlider(new SliderOption("EFECTOS", GameConfig.SOUND_VOLUME, 0.1f));
 
         camera = new OrthographicCamera();
-        camera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        camera.setToOrtho(false, GameConfig.VIRTUAL_WIDTH, GameConfig.VIRTUAL_HEIGHT);
 
         shapeRenderer = new ShapeRenderer();
     }
@@ -68,13 +68,16 @@ public class SoundPopup {
     public void render(SpriteBatch batch) {
         if (!visible) return;
 
-        batch.end();
+        boolean wasDrawing = batch.isDrawing();
+        if (wasDrawing) {
+            batch.end();
+        }
 
         camera.update();
         shapeRenderer.setProjectionMatrix(camera.combined);
 
-        float screenWidth = Gdx.graphics.getWidth();
-        float screenHeight = Gdx.graphics.getHeight();
+        float screenWidth = GameConfig.VIRTUAL_WIDTH;
+        float screenHeight = GameConfig.VIRTUAL_HEIGHT;
         float lineHeight = 80f;
         float padding = 40f;
         int totalLines = sliderUI.getSliderCount() + 2;
@@ -96,6 +99,7 @@ public class SoundPopup {
         shapeRenderer.rect(popupX, popupY, popupWidth, popupHeight);
         shapeRenderer.end();
 
+        batch.setProjectionMatrix(camera.combined);
         batch.begin();
 
         float contentY = popupY + popupHeight - 30f;
@@ -108,6 +112,12 @@ public class SoundPopup {
 
         font.setColor(Color.RED);
         TextUtils.drawCenteredText(batch, font, "ESC o ENTER para volver", popupY + padding);
+
+        batch.end();
+
+        if (wasDrawing) {
+            batch.begin();
+        }
     }
 
     private void updateGameConfig() {

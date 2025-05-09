@@ -157,7 +157,16 @@ public class ContextScreen extends BaseScreen {
 
          // Instrucción para avanzar
         if (narrativeManager.isFinished()) {
-            TextUtils.drawBlinkingTextCentered(batch, font, "Pulsa ENTER para continuar", 700f, timeAccumulator, 1.0f);
+            float blinkY = camera.viewportHeight * 0.60f + font.getCapHeight();
+                TextUtils.drawBlinkingTextCentered(
+                    batch,
+                    font,
+                    "Pulsa ENTER para continuar",
+                    camera,
+                    blinkY,
+                    timeAccumulator,
+                    1.0f
+                );
         }
 
         batch.end();

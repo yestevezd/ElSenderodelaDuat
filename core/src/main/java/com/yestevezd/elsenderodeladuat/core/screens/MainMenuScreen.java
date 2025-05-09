@@ -14,8 +14,6 @@ import com.yestevezd.elsenderodeladuat.core.utils.TextureUtils;
 
 /**
  * Pantalla principal del menú del juego.
- * Muestra un fondo y botones para navegar entre las opciones principales:
- * jugar, configuración y salir del juego.
  */
 public class MainMenuScreen extends BaseScreen {
 
@@ -26,18 +24,10 @@ public class MainMenuScreen extends BaseScreen {
     private float inputCooldown = 0.2f;
     private float tiempoDesdeInput = 0;
 
-    /**
-     * Constructor del menú principal.
-     *
-     * @param game Instancia principal del juego
-     */
     public MainMenuScreen(MainGame game) {
         super(game);
     }
 
-    /**
-     * Carga los recursos visuales y sonoros del menú.
-     */
     @Override
     public void show() {
         AssetLoader.loadMenuAssets();
@@ -47,42 +37,31 @@ public class MainMenuScreen extends BaseScreen {
         font = AssetLoader.get("fonts/ui_font.fnt", BitmapFont.class);
         font.getData().setScale(1f);
 
-        // Crear los botones del menú con su posición Y
         menuUI = new MenuUIManager();
-        menuUI.addButton(new MenuButton("JUGAR", 450f));
-        menuUI.addButton(new MenuButton("CONFIGURACION", 350f));
-        menuUI.addButton(new MenuButton("SALIR", 250f));
-        menuUI.updateSelection(); 
+        menuUI.addButton(new MenuButton("JUGAR", 600f));
+        menuUI.addButton(new MenuButton("CONFIGURACION", 500f));
+        menuUI.addButton(new MenuButton("SALIR", 400f));
+        menuUI.updateSelection();
 
-        // Iniciar la música del menú
         AudioManager.playMusic("sounds/musica_menu.mp3", true);
     }
 
-    /**
-     * Dibuja la pantalla del menú y gestiona la entrada de usuario.
-     *
-     * @param delta Tiempo transcurrido desde el último frame
-     */
     @Override
     public void render(float delta) {
         tiempoDesdeInput += delta;
-
-        // Limpiar pantalla
         ScreenUtils.clear(0, 0, 0, 1);
 
-        // Dibujar fondo y menú
+        camera.update();
+        batch.setProjectionMatrix(camera.combined);
+
         batch.begin();
         TextureUtils.drawFullScreen(fondo, batch);
         menuUI.render(batch, font);
         batch.end();
 
-        // Procesar entradas del usuario
         manejarInput();
     }
 
-    /**
-     * Lógica de navegación del menú con input del usuario.
-     */
     private void manejarInput() {
         if (tiempoDesdeInput < inputCooldown) return;
 
@@ -103,22 +82,19 @@ public class MainMenuScreen extends BaseScreen {
 
             switch (menuUI.getSelectedOption()) {
                 case "JUGAR":
-                    game.setScreen(new ContextScreen(game)); // Ir a pantalla de contextualización
+                    game.setScreen(new ContextScreen(game));
                     break;
                 case "CONFIGURACION":
-                    AudioManager.stopMusic(); // Parar música del menú
+                    AudioManager.stopMusic();
                     game.setScreen(new ConfigurationScreen(game));
                     break;
                 case "SALIR":
-                    Gdx.app.exit(); // Cierra el juego
+                    Gdx.app.exit();
                     break;
             }
         }
     }
 
-    /**
-     * Libera los recursos usados por esta pantalla.
-     */
     @Override
     public void dispose() {
         font.dispose();

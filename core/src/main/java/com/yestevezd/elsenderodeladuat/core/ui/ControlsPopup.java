@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.yestevezd.elsenderodeladuat.core.game.GameConfig;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 
 public class ControlsPopup {
@@ -35,7 +36,7 @@ public class ControlsPopup {
         font.getData().setScale(1.1f);
 
         camera = new OrthographicCamera();
-        camera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        camera.setToOrtho(false, GameConfig.VIRTUAL_WIDTH, GameConfig.VIRTUAL_HEIGHT);
 
         shapeRenderer = new ShapeRenderer();
     }
@@ -55,13 +56,16 @@ public class ControlsPopup {
     public void render(SpriteBatch batch) {
         if (!visible) return;
 
-        batch.end();
+        boolean wasDrawing = batch.isDrawing();
+        if (wasDrawing) {
+            batch.end();
+        }
 
         camera.update();
         shapeRenderer.setProjectionMatrix(camera.combined);
 
-        float screenWidth = Gdx.graphics.getWidth();
-        float screenHeight = Gdx.graphics.getHeight();
+        float screenWidth = GameConfig.VIRTUAL_WIDTH;
+        float screenHeight = GameConfig.VIRTUAL_HEIGHT;
         float lineHeight = 36f;
         float padding = 40f;
         float textAreaHeight = lines.length * lineHeight;
@@ -83,6 +87,7 @@ public class ControlsPopup {
         shapeRenderer.rect(popupX, popupY, popupWidth, popupHeight);
         shapeRenderer.end();
 
+        batch.setProjectionMatrix(camera.combined);
         batch.begin();
 
         float currentY = popupY + popupHeight - 30f;
@@ -98,11 +103,16 @@ public class ControlsPopup {
             drawCentered(batch, font, line, currentY);
             currentY -= lineHeight;
         }
+        batch.end();
+
+        if (wasDrawing) {
+            batch.begin();
+        }
     }
 
     private void drawCentered(SpriteBatch batch, BitmapFont font, String text, float y) {
         GlyphLayout layout = new GlyphLayout(font, text);
-        float x = (Gdx.graphics.getWidth() - layout.width) / 2f;
+        float x = (GameConfig.VIRTUAL_WIDTH - layout.width) / 2f;
         font.draw(batch, layout, x, y);
     }
 

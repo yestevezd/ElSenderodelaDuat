@@ -69,22 +69,27 @@ public class IntroScreen extends BaseScreen {
         stateTime += delta;
         ScreenUtils.clear(0, 0, 0, 1);
 
+        camera.update();
+        batch.setProjectionMatrix(camera.combined);
+
         TextureRegion currentFrame = animation.getKeyFrame(stateTime, false);
 
         batch.begin();
-        batch.draw(currentFrame, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        batch.draw(currentFrame, 0, 0, camera.viewportWidth, camera.viewportHeight);
 
         // Si la animación ha finalizado, mostrar texto para continuar
         if (animation.isAnimationFinished(stateTime)) {
             showPressEnter = true;
 
+            float y = camera.viewportHeight * 0.10f + font.getCapHeight();
             TextUtils.drawBlinkingTextCentered(
                 batch,
                 font,
                 "PULSA ENTER PARA CONTINUAR",
-                80f,
+                camera,
+                y,
                 stateTime,
-                1.0f // Parpadeo cada 1 segundo
+                1.0f
             );
         }
         batch.end();

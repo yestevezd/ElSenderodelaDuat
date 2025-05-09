@@ -5,6 +5,7 @@ import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import com.yestevezd.elsenderodeladuat.core.game.GameConfig;
 
 /**
  * Clase de utilidades para trabajar con mapas Tiled (.tmx).
@@ -56,5 +57,9 @@ public class MapUtils {
         camera.update();
 
         return new FitViewport(virtualWidth, virtualHeight, camera);
+    }
+
+    public static Viewport setupCameraAndViewport(TiledMap map, OrthographicCamera camera) {
+        return setupCameraAndViewport(map, camera, GameConfig.VIRTUAL_WIDTH, GameConfig.VIRTUAL_HEIGHT);
     }
 }

@@ -28,11 +28,13 @@ public class CombatManager {
     private BitmapFont transitionFont;
     private Texture espadaTexture;
     private boolean musicStarted = false;
+    private OrthographicCamera camera;
 
-    public CombatManager(PlayerCharacter player, NPCCharacter enemy, CollisionSystem collisionSystem) {
+    public CombatManager(PlayerCharacter player, NPCCharacter enemy, CollisionSystem collisionSystem, OrthographicCamera camera) {
         this.player = player;
         this.enemy = enemy;
         this.collisionSystem = collisionSystem;
+        this.camera = camera;
         this.state = CombatState.PREPARING;
         this.preparationTimer = 3f;
         this.transitionFont = new BitmapFont(Gdx.files.internal("fonts/ui_font.fnt"));
@@ -40,7 +42,7 @@ public class CombatManager {
         this.espadaTexture = AssetLoader.get("items/espada.png", Texture.class);
 
         this.controller = new CombatController(player, enemy, collisionSystem);
-        this.hud = new CombatHUD(player, enemy);
+        this.hud = new CombatHUD(player, enemy, camera);
 
         float centerX = 960;
         float centerY = 300;
@@ -95,8 +97,8 @@ public class CombatManager {
         
             transitionFont.setColor(Color.WHITE);
             String text = "¡COMBATE!";
-            float centerX = Gdx.graphics.getWidth() / 2f;
-            float centerY = Gdx.graphics.getHeight() / 2f;
+            float centerX = camera.viewportWidth / 2f;
+            float centerY = camera.viewportHeight / 2f;
         
             GlyphLayout layout = new GlyphLayout(transitionFont, text);
             float textWidth = layout.width;

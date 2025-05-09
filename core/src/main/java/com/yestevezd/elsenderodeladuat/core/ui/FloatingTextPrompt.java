@@ -1,11 +1,11 @@
 package com.yestevezd.elsenderodeladuat.core.ui;
 
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.math.Vector3;
 
 public class FloatingTextPrompt {
 
@@ -35,12 +35,15 @@ public class FloatingTextPrompt {
     }
 
     public void render(SpriteBatch batch, BitmapFont font, OrthographicCamera camera) {
-    if (!visible) return;
+        if (!visible) return;
 
-    Vector3 world3 = new Vector3(worldPosition.x, worldPosition.y, 0);
-    camera.project(world3);
+        font.setColor(Color.WHITE);
 
-    font.setColor(Color.WHITE);
-    font.draw(batch, text, world3.x - text.length() * 3f, world3.y + 25);
-}
+        // Centrar texto midiendo su ancho real
+        GlyphLayout layout = new GlyphLayout(font, text);
+        float drawX = worldPosition.x - layout.width / 2f;
+        float drawY = worldPosition.y + 25;
+
+        font.draw(batch, layout, drawX, drawY);
+    }
 }

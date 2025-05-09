@@ -6,7 +6,9 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.yestevezd.elsenderodeladuat.core.engine.AssetLoader;
+import com.yestevezd.elsenderodeladuat.core.game.GameConfig;
 import com.yestevezd.elsenderodeladuat.core.game.MainGame;
 
 public class DefeatScreen extends ScreenAdapter {
@@ -31,10 +33,18 @@ public class DefeatScreen extends ScreenAdapter {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         game.getBatch().setProjectionMatrix(camera.combined);
-        game.getBatch().begin();
+
+        // Centrado con GlyphLayout
+        String message = "Has sido derrotado!";
         font.getData().setScale(2f);
         font.setColor(Color.WHITE);
-        font.draw(game.getBatch(), "Has sido derrotado!", Gdx.graphics.getWidth() / 2f - 150, Gdx.graphics.getHeight() / 2f);
+        GlyphLayout layout = new GlyphLayout(font, message);
+
+        float x = (Gdx.graphics.getWidth() - layout.width) / 2f;
+        float y = (Gdx.graphics.getHeight() + layout.height) / 2f;
+
+        game.getBatch().begin();
+        font.draw(game.getBatch(), layout, x, y);
         game.getBatch().end();
 
         if (timer >= DURATION) {

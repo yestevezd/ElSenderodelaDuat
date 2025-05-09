@@ -1,6 +1,8 @@
 package com.yestevezd.elsenderodeladuat.core.game;
 
 import com.badlogic.gdx.Game;
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.yestevezd.elsenderodeladuat.core.engine.AssetLoader;
@@ -16,6 +18,7 @@ public class MainGame extends Game {
     private HUD hud;
     private Inventory inventory;
     private PlayerCharacter player;
+    private OrthographicCamera uiCamera;
 
     @Override
     public void create() {
@@ -25,9 +28,12 @@ public class MainGame extends Game {
         AssetLoader.loadHUDAssets();
         AssetLoader.finishLoading();
 
+        uiCamera = new OrthographicCamera();
+        uiCamera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+
         // Crear inventario con 5 slots y HUD que lo use
         inventory = new Inventory(5);
-        hud = new HUD(inventory);
+        hud = new HUD(inventory,uiCamera);
 
         // Registrar transiciones
         DoorRegistry.registerDefaultDoors();
@@ -65,5 +71,9 @@ public class MainGame extends Game {
 
     public PlayerCharacter getPlayer() {
         return player;
+    }
+
+    public OrthographicCamera getUiCamera() {
+        return uiCamera;
     }
 }

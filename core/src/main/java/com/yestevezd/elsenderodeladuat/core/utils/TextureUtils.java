@@ -1,8 +1,8 @@
 package com.yestevezd.elsenderodeladuat.core.utils;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.yestevezd.elsenderodeladuat.core.game.GameConfig;
 
 /**
  * Utilidades gráficas para dibujar texturas centradas o a pantalla completa.
@@ -20,8 +20,8 @@ public class TextureUtils {
         float imageWidth = texture.getWidth();
         float imageHeight = texture.getHeight();
 
-        float screenWidth = Gdx.graphics.getWidth();
-        float screenHeight = Gdx.graphics.getHeight();
+        float screenWidth = GameConfig.SCREEN_WIDTH;
+        float screenHeight = GameConfig.SCREEN_HEIGHT;
 
         float scale = Math.min(screenWidth / imageWidth, screenHeight / imageHeight);
 
@@ -42,6 +42,6 @@ public class TextureUtils {
      * @param batch El SpriteBatch activo sobre el que se dibuja.
      */
     public static void drawFullScreen(Texture texture, SpriteBatch batch) {
-        batch.draw(texture, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        batch.draw(texture, 0, 0, GameConfig.SCREEN_WIDTH, GameConfig.SCREEN_HEIGHT);
     }
 }

@@ -9,6 +9,7 @@ import com.badlogic.gdx.utils.ScreenUtils;
 import com.yestevezd.elsenderodeladuat.core.engine.AssetLoader;
 import com.yestevezd.elsenderodeladuat.core.engine.AudioManager;
 import com.yestevezd.elsenderodeladuat.core.engine.InputManager;
+import com.yestevezd.elsenderodeladuat.core.game.GameConfig;
 import com.yestevezd.elsenderodeladuat.core.game.MainGame;
 import com.yestevezd.elsenderodeladuat.core.ui.ControlsPopup;
 import com.yestevezd.elsenderodeladuat.core.ui.SoundPopup;
@@ -47,14 +48,18 @@ public class ConfigurationScreen extends BaseScreen {
     @Override
     public void render(float delta) {
         ScreenUtils.clear(0, 0, 0, 1);
+
+        camera.update();
+        batch.setProjectionMatrix(camera.combined);        
+        
         batch.begin();
 
         TextureUtils.drawFullScreen(fondo, batch);
 
         font.setColor(Color.RED);
-        TextUtils.drawCenteredText(batch, font, "CONFIGURACIÓN", 650f);
+        TextUtils.drawCenteredText(batch, font, "CONFIGURACIÓN", GameConfig.VIRTUAL_HEIGHT * 0.8f);
 
-        float baseY = 450f;
+        float baseY = GameConfig.VIRTUAL_HEIGHT * 0.55f;
         float spacing = 100f;
 
         for (int i = 0; i < options.length; i++) {

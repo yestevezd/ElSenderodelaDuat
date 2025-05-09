@@ -1,74 +1,48 @@
 package com.yestevezd.elsenderodeladuat.core.screens;
 
 import com.badlogic.gdx.Screen;
-import com.yestevezd.elsenderodeladuat.core.game.MainGame;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.utils.viewport.FitViewport;
+import com.badlogic.gdx.utils.viewport.Viewport;
+import com.yestevezd.elsenderodeladuat.core.game.GameConfig;
+import com.yestevezd.elsenderodeladuat.core.game.MainGame;
 
 /**
  * Clase base abstracta para todas las pantallas del juego.
- * Proporciona acceso directo al juego principal y al SpriteBatch global.
- * 
- * Heredar de esta clase permite unificar comportamientos comunes entre pantallas
- * como acceso al batch o al juego, así como métodos vacíos opcionales de ciclo de vida.
+ * Proporciona cámara, viewport y SpriteBatch común.
  */
 public abstract class BaseScreen implements Screen {
 
     protected final MainGame game;
     protected final SpriteBatch batch;
 
-    /**
-     * Constructor base que inicializa referencias comunes.
-     *
-     * @param game Instancia principal del juego que maneja esta pantalla.
-     */
+    protected OrthographicCamera camera;
+    protected Viewport viewport;
+
     public BaseScreen(MainGame game) {
         this.game = game;
         this.batch = game.getBatch();
+
+        this.camera = new OrthographicCamera();
+        this.viewport = new FitViewport(GameConfig.VIRTUAL_WIDTH, GameConfig.VIRTUAL_HEIGHT, camera);
+        this.viewport.apply();
+        this.camera.position.set(GameConfig.VIRTUAL_WIDTH / 2f, GameConfig.VIRTUAL_HEIGHT / 2f, 0);
+        this.camera.update();
     }
 
-    /**
-     * Devuelve la instancia del juego principal.
-     * 
-     * @return Objeto MainGame
-     */
     public MainGame getGame() {
         return game;
     }
 
-    /**
-     * Se llama cuando cambia el tamaño de la ventana o del viewport.
-     * Puede ser sobreescrito por subclases si es necesario.
-     *
-     * @param width  Nuevo ancho en píxeles
-     * @param height Nuevo alto en píxeles
-     */
     @Override
     public void resize(int width, int height) {
-        // Opcionalmente implementado en subclases
+        viewport.update(width, height, true);
+        camera.update();
     }
 
-    /**
-     * Llamado cuando el juego se pausa (por ejemplo al minimizar).
-     */
-    @Override
-    public void pause() {}
-
-    /**
-     * Llamado cuando el juego se reanuda tras una pausa.
-     */
-    @Override
-    public void resume() {}
-
-    /**
-     * Llamado cuando esta pantalla deja de estar activa.
-     */
-    @Override
-    public void hide() {}
-
-    /**
-     * Libera recursos utilizados por la pantalla.
-     * Debe ser implementado por subclases si cargan recursos manualmente.
-     */
-    @Override
-    public void dispose() {}
+    @Override public void pause() {}
+    @Override public void resume() {}
+    @Override public void hide() {}
+    @Override public void dispose() {}
 }

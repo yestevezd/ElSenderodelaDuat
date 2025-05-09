@@ -3,6 +3,7 @@ package com.yestevezd.elsenderodeladuat.core.narrative.hieroglyphics;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.yestevezd.elsenderodeladuat.core.game.GameConfig;
 
 import java.util.List;
 
@@ -36,7 +37,7 @@ public class HieroglyphicRenderer {
         }
 
         // 2. Calcular la posición inicial en X para centrar el texto horizontalmente
-        float x = (Gdx.graphics.getWidth() - totalWidth) / 2f;
+        float x = (GameConfig.VIRTUAL_WIDTH - totalWidth) / 2f;
 
         // 3. Dibujar cada carácter, uno al lado del otro, alineados por línea base
         for (int i = 0; i < chars.size(); i++) {

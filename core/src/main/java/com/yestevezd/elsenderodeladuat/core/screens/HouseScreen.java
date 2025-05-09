@@ -11,6 +11,7 @@ import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.yestevezd.elsenderodeladuat.core.game.EventFlags;
+import com.yestevezd.elsenderodeladuat.core.game.GameConfig;
 import com.yestevezd.elsenderodeladuat.core.game.MainGame;
 import com.yestevezd.elsenderodeladuat.core.engine.AssetLoader;
 import com.yestevezd.elsenderodeladuat.core.engine.AudioManager;
@@ -81,7 +82,7 @@ public class HouseScreen extends BaseScreen {
         player.setPosition(initialX, initialY);
 
         camera = new OrthographicCamera();
-        viewport = MapUtils.setupCameraAndViewport(map, camera, 1920, 1080);
+        viewport = MapUtils.setupCameraAndViewport(map, camera, GameConfig.SCREEN_WIDTH, GameConfig.SCREEN_HEIGHT);
 
         collisionSystem = new CollisionSystem();
         collisionSystem.setPolygons(mapLoader.getCollisionPolygons());
@@ -121,9 +122,7 @@ public class HouseScreen extends BaseScreen {
 
         if (pauseOverlay.isVisible()) {
             pauseOverlay.update();
-            batch.begin();
             pauseOverlay.render(batch);
-            batch.end();
             return;
         }
     
@@ -157,16 +156,16 @@ public class HouseScreen extends BaseScreen {
             boolean cocinaCerca = false;
 
             for (InteractableObject obj : interactionManager.getHighlightedObjects()) {
-                Vector2 pos = new Vector2(obj.getShape().getX(), obj.getShape().getY());
+                Vector2 center = obj.getCenter();
 
                 if ("mesa_casa".equals(obj.getName())) {
-                    mesaCasaPrompt.setPosition(pos.add(0, 80));
+                    mesaCasaPrompt.setPosition(new Vector2(center.x, center.y + 40));
                     mesaCasaPrompt.setVisible(true);
                     mesaCerca = true;
                 }
 
                 if ("cocina_casa".equals(obj.getName())) {
-                    cocinaCasaPrompt.setPosition(pos.add(-20, 80));
+                    cocinaCasaPrompt.setPosition(new Vector2(center.x, center.y + 40));
 
                     if (player.getCurrentHealth() < 100) {
                         cocinaCasaPrompt.setText("Pulsa E para comer y curarte");
@@ -221,6 +220,8 @@ public class HouseScreen extends BaseScreen {
         mapRenderer.setView(camera);
         mapRenderer.render();
 
+        shapeRenderer.setProjectionMatrix(camera.combined);
+
         interactionManager.render(shapeRenderer);
 
         batch.setProjectionMatrix(camera.combined);
@@ -249,6 +250,7 @@ public class HouseScreen extends BaseScreen {
     public void resize(int width, int height) {
         viewport.update(width, height);
         camera.update();
+        game.getUiCamera().setToOrtho(false, width, height);
     }
 
     @Override

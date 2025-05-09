@@ -1,5 +1,6 @@
 package com.yestevezd.elsenderodeladuat.core.ui;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -16,7 +17,6 @@ public class TextBox {
 
     private final int padding = 30;
     private final int boxWidth = 800;
-    private final int screenWidth = 1920;
 
     private float boxHeight;
     private BitmapFont font;
@@ -96,10 +96,12 @@ public class TextBox {
     public void render(SpriteBatch batch) {
         if (!visible) return;
 
-        int x = (screenWidth - boxWidth) / 2;
+        int x = getBoxX();
         int y = 50;
 
         batch.end();
+
+        shapeRenderer.setProjectionMatrix(batch.getProjectionMatrix());
 
         // Bordes
         shapeRenderer.begin(ShapeType.Filled);
@@ -149,7 +151,7 @@ public class TextBox {
     }
 
     public int getScreenWidth() {
-        return screenWidth;
+        return Gdx.graphics.getWidth();
     }
     
     public float getBoxHeight() {
@@ -157,7 +159,7 @@ public class TextBox {
     }
 
     public int getBoxX() {
-        return (screenWidth - boxWidth) / 2;
+        return (Gdx.graphics.getWidth() - boxWidth) / 2;
     }
     
     public int getBoxY() {

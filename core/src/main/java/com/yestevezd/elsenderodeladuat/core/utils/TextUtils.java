@@ -1,8 +1,10 @@
 package com.yestevezd.elsenderodeladuat.core.utils;
 
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.yestevezd.elsenderodeladuat.core.game.GameConfig;
 
 public class TextUtils {
 
@@ -16,10 +18,10 @@ public class TextUtils {
      * @param stateTime Tiempo acumulado (delta sumado)
      * @param blinkSpeed En segundos: cuánto dura cada ciclo (por ejemplo 1.0f)
      */
-    public static void drawBlinkingTextCentered(SpriteBatch batch, BitmapFont font, String message, float y, float stateTime, float blinkSpeed) {
+    public static void drawBlinkingTextCentered(SpriteBatch batch,BitmapFont font,String message,OrthographicCamera camera,float y,float stateTime,float blinkSpeed) {
         if ((stateTime % blinkSpeed) < (blinkSpeed / 2f)) {
             GlyphLayout layout = new GlyphLayout(font, message);
-            float x = (float) (com.badlogic.gdx.Gdx.graphics.getWidth() - layout.width) / 2f;
+            float x = (camera.viewportWidth - layout.width) / 2f;
             font.draw(batch, layout, x, y);
         }
     }
@@ -34,7 +36,7 @@ public class TextUtils {
      */
     public static void drawCenteredText(SpriteBatch batch, BitmapFont font, String message, float y) {
         GlyphLayout layout = new GlyphLayout(font, message);
-        float x = (float) (com.badlogic.gdx.Gdx.graphics.getWidth() - layout.width) / 2f;
+        float x = (float) (GameConfig.VIRTUAL_WIDTH - layout.width) / 2f;
         font.draw(batch, layout, x, y);
     }
 }

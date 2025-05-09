@@ -90,7 +90,7 @@ public class SalaHipostilaScreen extends BaseScreen implements GameEventContext 
 
         // Cámara
         camera = new OrthographicCamera();
-        viewport = MapUtils.setupCameraAndViewport(map, camera, 1920, 1080);
+        viewport = MapUtils.setupCameraAndViewport(map, camera);
 
         // Jugador
         player = game.getPlayer();
@@ -134,9 +134,7 @@ public class SalaHipostilaScreen extends BaseScreen implements GameEventContext 
 
         if (pauseOverlay.isVisible()) {
             pauseOverlay.update();
-            batch.begin();
             pauseOverlay.render(batch);
-            batch.end();
             return;
         }
     
@@ -253,7 +251,7 @@ public class SalaHipostilaScreen extends BaseScreen implements GameEventContext 
                 // CREAR EL COMBAT MANAGER
                 player.setCombatSpriteSheet(AssetLoader.get("characters/personaje_principal_espada.png", Texture.class));
                 sacerdote.setCombatSpriteSheet(AssetLoader.get("characters/sacerdote_baston.png", Texture.class));
-                combatManager = new CombatManager(player, sacerdote,collisionSystem);
+                combatManager = new CombatManager(player, sacerdote,collisionSystem, camera);
                 player.setEnCombate(true);
                 AudioManager.stopMusic();
                 freezePlayer = true;
@@ -293,7 +291,9 @@ public class SalaHipostilaScreen extends BaseScreen implements GameEventContext 
             character.render(game.getBatch());
         }
 
+        game.getBatch().setProjectionMatrix(game.getUiCamera().combined); 
         textBox.render(game.getBatch());
+        game.getBatch().setProjectionMatrix(camera.combined);
         doorManager.renderInteractionMessage(player.getCollisionBounds(), game.getBatch(), camera);
 
         game.getBatch().end();
@@ -328,6 +328,7 @@ public class SalaHipostilaScreen extends BaseScreen implements GameEventContext 
     public void resize(int width, int height) {
         viewport.update(width, height);
         camera.update();
+        game.getUiCamera().setToOrtho(false, width, height);
     }
 
     @Override

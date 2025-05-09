@@ -3,6 +3,7 @@ package com.yestevezd.elsenderodeladuat.core.ui;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.yestevezd.elsenderodeladuat.core.game.GameConfig;
 import com.badlogic.gdx.graphics.Color;
 
 /**
@@ -47,7 +48,7 @@ public class MenuButton {
         String displayText = selected ? "> " + text + " <" : text;
 
         GlyphLayout layout = new GlyphLayout(font, displayText);
-        float x = (float) (com.badlogic.gdx.Gdx.graphics.getWidth() - layout.width) / 2f;
+        float x = (float) (GameConfig.VIRTUAL_WIDTH - layout.width) / 2f;
 
         font.draw(batch, layout, x, y);
     }

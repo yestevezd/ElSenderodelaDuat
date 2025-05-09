@@ -83,7 +83,7 @@ public class KarnakScreen extends BaseScreen {
 
         // Cámara y viewport
         camera = new OrthographicCamera();
-        viewport = MapUtils.setupCameraAndViewport(map, camera, 1920, 1080);
+        viewport = MapUtils.setupCameraAndViewport(map, camera);
 
         // Jugador
         player = game.getPlayer();
@@ -124,9 +124,7 @@ public class KarnakScreen extends BaseScreen {
 
         if (pauseOverlay.isVisible()) {
             pauseOverlay.update();
-            batch.begin();
             pauseOverlay.render(batch);
-            batch.end();
             return;
         }
     
@@ -193,7 +191,9 @@ public class KarnakScreen extends BaseScreen {
             character.render(game.getBatch());
         }
         doorManager.renderInteractionMessage(player.getCollisionBounds(), game.getBatch(), camera);
+        game.getBatch().setProjectionMatrix(game.getUiCamera().combined); 
         textBox.render(game.getBatch());
+        game.getBatch().setProjectionMatrix(camera.combined);
         guardianPrompt.setVisible(!guardiaDialogoIniciado && distancia < 60f);
         guardianPrompt.render(game.getBatch(), AssetLoader.get("fonts/ui_font.fnt", BitmapFont.class), camera);
         game.getBatch().end();
@@ -206,6 +206,7 @@ public class KarnakScreen extends BaseScreen {
     public void resize(int width, int height) {
         viewport.update(width, height);
         camera.update();
+        game.getUiCamera().setToOrtho(false, width, height);
     }
 
     @Override

@@ -2,6 +2,7 @@ package com.yestevezd.elsenderodeladuat.core.ui;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -24,8 +25,11 @@ public class HUD {
     private float popupTimer = 0f;
     private Item[] popupItems;
 
-    public HUD(Inventory inventory) {
+    private final OrthographicCamera uiCamera;
+
+    public HUD(Inventory inventory, OrthographicCamera uiCamera) {
         this.inventory = inventory;
+        this.uiCamera = uiCamera;
         shapeRenderer = new ShapeRenderer();
         font = new BitmapFont();
     }
@@ -85,6 +89,9 @@ public class HUD {
 
         shapeRenderer.end();
 
+        batch.setProjectionMatrix(uiCamera.combined);
+        shapeRenderer.setProjectionMatrix(uiCamera.combined);
+
         batch.begin();
         font.setColor(Color.WHITE);
         font.draw(batch, currentHealth + " / " + maxHealth, barX + barWidth / 2f - 20, barY + barHeight - 6);
@@ -126,6 +133,9 @@ public class HUD {
             shapeRenderer.setColor(Color.WHITE);
             shapeRenderer.rect(popupX, popupY, popupWidth, popupHeight);
             shapeRenderer.end();
+
+            batch.setProjectionMatrix(uiCamera.combined);
+            shapeRenderer.setProjectionMatrix(uiCamera.combined);
         
             batch.begin();
             batch.draw(papiroTexture, popupX, popupY, popupWidth, popupHeight);
@@ -136,6 +146,9 @@ public class HUD {
             shapeRenderer.setColor(new Color(0.8f, 0.6f, 0.2f, 1f));
             shapeRenderer.rect(popupX, popupY, popupWidth, popupHeight);
             shapeRenderer.end();
+
+            batch.setProjectionMatrix(uiCamera.combined);
+            shapeRenderer.setProjectionMatrix(uiCamera.combined);
         
             batch.begin();
         

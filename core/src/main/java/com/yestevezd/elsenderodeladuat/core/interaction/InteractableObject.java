@@ -2,6 +2,7 @@ package com.yestevezd.elsenderodeladuat.core.interaction;
 
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Polygon;
+import com.badlogic.gdx.math.Vector2;
 
 /**
  * Representa un objeto interactuable del mapa.
@@ -70,4 +71,18 @@ public class InteractableObject {
             renderer.line(x1, y1, x2, y2);
         }
     }
+
+    public Vector2 getCenter() {
+    float[] vertices = shape.getTransformedVertices();
+    float sumX = 0f, sumY = 0f;
+    int count = vertices.length / 2;
+
+    for (int i = 0; i < vertices.length; i += 2) {
+        sumX += vertices[i];
+        sumY += vertices[i + 1];
+    }
+
+    return new Vector2(sumX / count, sumY / count);
+}
+
 }

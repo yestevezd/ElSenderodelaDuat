@@ -6,9 +6,13 @@ package com.yestevezd.elsenderodeladuat.core.game;
  */
 public class GameConfig {
 
+    // Resolución real de ventana (usada por el launcher)
+    public static final int SCREEN_WIDTH = 1920;
+    public static final int SCREEN_HEIGHT = 1080;
+
     // Resolución de pantalla
-    public static final int SCREEN_WIDTH = 1920;   // Ancho virtual del juego
-    public static final int SCREEN_HEIGHT = 1080;  // Alto virtual del juego
+    public static final int VIRTUAL_WIDTH = 1920;   // Ancho virtual del juego
+    public static final int VIRTUAL_HEIGHT = 1080;  // Alto virtual del juego
 
     // Configuraciones gráficas
     public static final boolean FULLSCREEN = true;  // Modo pantalla completa
