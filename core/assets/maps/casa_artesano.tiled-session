@@ -14,6 +14,9 @@
         "#Tebas_karnak": {
             "scaleInDock": 0.0625
         },
+        "#el_valle_los_reyes": {
+            "scaleInDock": 0.0625
+        },
         "#room_pixel050325": {
             "scaleInDock": 0.0625
         },
@@ -102,9 +105,20 @@
             "scaleInDock": 0.0625
         }
     },
+    "last.imagePath": "F:/ESTUDIOS/Ingenieria Informatica/ASIGNATURAS ACTUALES/TFG/videojuego/ElSenderodelaDuat/core/assets/maps",
+    "map.height": 27,
+    "map.lastUsedFormat": "tmx",
+    "map.tileHeight": 40,
+    "map.tileWidth": 40,
+    "map.width": 48,
     "openFiles": [
     ],
     "project": "",
     "recentFiles": [
-    ]
+    ],
+    "tileset.embedInMap": true,
+    "tileset.tileSize": {
+        "height": 40,
+        "width": 40
+    }
 }

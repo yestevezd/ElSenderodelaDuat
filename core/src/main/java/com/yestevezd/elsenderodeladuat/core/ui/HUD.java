@@ -14,6 +14,7 @@ import com.yestevezd.elsenderodeladuat.core.engine.AssetLoader;
 public class HUD {
     private final ShapeRenderer shapeRenderer;
     private final BitmapFont font;
+    private final BitmapFont popupFont; 
 
     private final int maxHealth = 100;
     private int currentHealth = 100;
@@ -32,6 +33,13 @@ public class HUD {
         this.uiCamera = uiCamera;
         shapeRenderer = new ShapeRenderer();
         font = new BitmapFont();
+
+        popupFont = new BitmapFont(
+            Gdx.files.internal("fonts/ui_font.fnt"),
+            Gdx.files.internal("fonts/ui_font.png"),
+            false
+        );
+        popupFont.getData().setScale(0.8f);
     }
 
     public void showPopupMessage(String message, Item... items) {
@@ -108,9 +116,6 @@ public class HUD {
         if (popupTimer > 0) {
             popupTimer -= Gdx.graphics.getDeltaTime();
         
-            BitmapFont popupFont = AssetLoader.get("fonts/ui_font.fnt", BitmapFont.class);
-            popupFont.getData().setScale(0.8f);
-        
             float textMargin = 30f;
             float iconSize = 48f;
             float iconSpacing = 20f;
@@ -159,14 +164,16 @@ public class HUD {
                         popupX + popupWidth / 2f - 120f,
                         popupY + popupHeight - 20f);
             }
-        
+
             // Texto principal
             popupFont.setColor(new Color(0.35f, 0.22f, 0.1f, 1f));
             popupFont.draw(batch, popupMessage,
-                    popupX + textMargin,
-                    popupY + popupHeight - 70f,
-                    textWidth,
-                    1, true);
+                popupX + textMargin,
+                popupY + popupHeight - 70f,
+                textWidth,
+                1,
+                true
+            );
         
             // Dibujar iconos de objetos
             if (popupItems != null && popupItems.length > 0) {

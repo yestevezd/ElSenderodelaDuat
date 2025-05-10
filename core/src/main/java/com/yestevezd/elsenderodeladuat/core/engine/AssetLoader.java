@@ -125,7 +125,14 @@ public class AssetLoader {
     // VALLE DE LOS REYES
 
     public static void loadValleyAssets() {
-        
+        manager.setLoader(TiledMap.class, new TmxMapLoader(new InternalFileHandleResolver()));
+
+        manager.load("maps/valle_de_los_reyes.tmx", TiledMap.class); 
+        manager.load("characters/personaje_principal.png", Texture.class); 
+        manager.load("sounds/sonido_viento.mp3", Sound.class);
+        manager.load("others/fondo_configuracion.jpg", Texture.class); 
+        manager.load("fonts/ui_font.fnt", BitmapFont.class);
+        manager.load("fonts/ui_font.png", Texture.class);    
     }
 
     // DUAT (INFIERNO EGIPCIO)
@@ -227,7 +234,13 @@ public static void unloadKarnakSalaHipostilaAssets() {
 }
 
 public static void unloadValleyAssets() {
-    
+    unload("maps/valle_de_los_reyes.tmx");
+    unload("characters/personaje_principal.png");
+    unload("sounds/sonido_puerta.mp3");
+    unload("sounds/sonido_viento.mp3");
+    unload("others/fondo_configuracion.jpg");
+    unload("fonts/ui_font.fnt");
+    unload("fonts/ui_font.png");
 }
 
 public static void unloadDuatAssets() {

@@ -113,13 +113,6 @@ public class SalaHipostilaScreen extends BaseScreen implements GameEventContext 
         sacerdote.setName("Sacerdote de Karnak");
         sacerdote.setScale(2.5f);
         sacerdote.setGameContext(this);
-        if (EventFlags.sacerdoteDerrotado) {
-            sacerdote.setPosition(1550, 280);
-            sacerdote.setDirection(Direction.DOWN);
-            sacerdote.getStateMachine().changeState(NPCState.HABLAR);
-        } else {
-            sacerdote.getStateMachine().changeState(NPCState.PATRULLAR);
-        }
 
         textBox = new DialogueBox();
 
@@ -244,6 +237,7 @@ public class SalaHipostilaScreen extends BaseScreen implements GameEventContext 
                 getGame().getHUD().showPopupMessage("¡Has conseguido recuperar objetos sagrados sobornando!", estatua, escarabajo);
                 EventFlags.sacerdoteEventoCompletado = true;
                 sacerdote.getStateMachine().changeState(NPCState.PATRULLAR);
+                textBox.hide();
                 freezePlayer = false;
                 dialogueManager = null;
 

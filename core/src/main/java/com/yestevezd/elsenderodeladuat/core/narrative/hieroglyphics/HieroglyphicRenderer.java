@@ -1,6 +1,5 @@
 package com.yestevezd.elsenderodeladuat.core.narrative.hieroglyphics;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.yestevezd.elsenderodeladuat.core.game.GameConfig;

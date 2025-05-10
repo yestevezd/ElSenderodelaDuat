@@ -143,14 +143,14 @@
         {
           "id": "respuesta_honor",
           "speaker": "Guardia",
-          "translation": "Gracias por tu preocupación. Ojalá más gente pensara como tú. Ten cuidado si entras.",
+          "translation": "Gracias por tu preocupación. Ojalá más gente pensara como tú. Ten cuidado si entras y habla conmigo al salir.",
           "type": "DIALOGUE",
           "nextId": "fin"
         },
         {
           "id": "respuesta_indiferente",
           "speaker": "Guardia",
-          "translation": "Hmm... Cada quien con sus prioridades. Pero no digas que no te advertí.",
+          "translation": "Hmm... Cada quien con sus prioridades. Pero no digas que no te advertí. Cuando salgas ven a hablar conmigo.",
           "type": "DIALOGUE",
           "nextId": "fin"
         },
@@ -170,7 +170,7 @@
           "translation": "Has regresado... ¿Qué ocurrió dentro del templo?",
           "type": "DIALOGUE",
           "options": [
-            { "text": "Derroté al sacerdote corrupto y recuperé estos objetos sagrados.", "nextId": "respuesta_combate" },
+            { "text": "Derroté al sacerdote corrupto y recuperé estos objetos sagrados, te los entrego.", "nextId": "respuesta_combate" },
             { "text": "He charlado con un sacerdote y parecia nervioso, podrías ser corrupto.", "nextId": "respuesta_soborno" }
           ]
         },
@@ -205,14 +205,14 @@
         {
           "id": "mision",
           "speaker": "Guardia",
-          "translation": "Antes de que te vayas... Encontré un papiro extraño roto en pedazos en la sala principal. Está lleno de cartuchos.",
+          "translation": "Antes de que te vayas... Encontré un papiro extraño en la sala principal. Está lleno de cartuchos.",
           "type": "DIALOGUE",
           "nextId": "invitar_mision"
         },
         {
           "id": "invitar_mision",
           "speaker": "Guardia",
-          "translation": "¿Podrías ayudarme a ordenarlos? Podría darnos pistas sobre el origen de los saqueos.",
+          "translation": "¿Podrías echarle un vistazo? Podría darnos pistas sobre el origen de los saqueos.",
           "type": "DIALOGUE",
           "options": [
             { "text": "Claro. Déjame echarle un vistazo.", "nextId": "aceptar" }
@@ -221,7 +221,7 @@
         {
           "id": "aceptar",
           "speaker": "Guardia",
-          "translation": "Aquí tienes los pedazos, espero que lo consigas.",
+          "translation": "Aquí tienes, a ver si entiendes algo.",
           "type": "DIALOGUE",
           "nextId": "descubrimiento"
         }

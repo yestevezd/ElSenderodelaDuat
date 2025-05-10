@@ -6,6 +6,7 @@ import com.yestevezd.elsenderodeladuat.core.screens.DeirElMedinaScreen;
 import com.yestevezd.elsenderodeladuat.core.screens.HouseScreen;
 import com.yestevezd.elsenderodeladuat.core.screens.KarnakScreen;
 import com.yestevezd.elsenderodeladuat.core.screens.SalaHipostilaScreen;
+import com.yestevezd.elsenderodeladuat.core.screens.ValleDeLosReyesScreen;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -59,5 +60,10 @@ public class DoorRegistry {
         register("puerta_templo_karnak", game -> new SalaHipostilaScreen(game, 300, 300, "puerta_templo_karnak"));
         // Sala_hipostila → Karnak
         register("puerta_templo_karnak_dentro", game -> new KarnakScreen(game, 700, 605, "puerta_templo_karnak_dentro"));
+        //Pueblo → Valle de los Reyes
+        register("puerta_camino_2", game -> new ValleDeLosReyesScreen(game, 1700, 20, "puerta_camino_2"));
+        // Valle de los Reyes → Pueblo
+        register("puerta_camino_4", game -> new DeirElMedinaScreen(game, 200, 1000, "puerta_camino_4"));
+
     }
 }

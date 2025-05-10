@@ -34,47 +34,47 @@ public class DialogueBox extends TextBox {
     }
 
     @Override
-public void render(SpriteBatch batch) {
-    super.render(batch);
+    public void render(SpriteBatch batch) {
+        super.render(batch);
 
-    if (!isVisible() || options == null || !optionsVisible) return;
+        if (!isVisible() || options == null || !optionsVisible) return;
 
-    BitmapFont font = getFont();
-    int boxX = getBoxX();
-    int boxY = getBoxY();
-    int boxW = getBoxWidth();
-    float boxH = getBoxHeight();
-    int pad = getPadding();
-    float textHeight = getTextHeight();
+        BitmapFont font = getFont();
+        int boxX = getBoxX();
+        int boxY = getBoxY();
+        int boxW = getBoxWidth();
+        float boxH = getBoxHeight();
+        int pad = getPadding();
+        float textHeight = getTextHeight();
 
-    float baseY = boxY + boxH - pad - textHeight - 30;
-    float optionX = boxX + boxW / 2f;
+        float baseY = boxY + boxH - pad - textHeight - 30;
+        float optionX = boxX + boxW / 2f;
 
-    if (fadeInActive) {
-        fadeInAlpha += Gdx.graphics.getDeltaTime() * 2f;
-        if (fadeInAlpha >= 1f) {
+        if (fadeInActive) {
+            fadeInAlpha += Gdx.graphics.getDeltaTime() * 2f;
+            if (fadeInAlpha >= 1f) {
+                fadeInAlpha = 1f;
+                fadeInActive = false;
+            }
+        } else {
             fadeInAlpha = 1f;
-            fadeInActive = false;
         }
-    } else {
-        fadeInAlpha = 1f;
+
+        for (int i = 0; i < options.size(); i++) {
+            boolean isSelected = (i == selectedOption);
+            String prefix = isSelected ? "> " : "  ";
+            String fullText = prefix + options.get(i).getText();
+
+            Color baseColor = isSelected ? Color.ROYAL : new Color(0.2f, 0.1f, 0f, 1f);
+            font.setColor(baseColor.r, baseColor.g, baseColor.b, fadeInAlpha);
+
+            GlyphLayout layout = new GlyphLayout(font, fullText);
+            float centeredX = optionX - layout.width / 2f;
+            float y = baseY - i * 35;
+
+            font.draw(batch, layout, centeredX, y);
+        }
     }
-
-    for (int i = 0; i < options.size(); i++) {
-        boolean isSelected = (i == selectedOption);
-        String prefix = isSelected ? "> " : "  ";
-        String fullText = prefix + options.get(i).getText();
-
-        Color baseColor = isSelected ? Color.ROYAL : new Color(0.2f, 0.1f, 0f, 1f);
-        font.setColor(baseColor.r, baseColor.g, baseColor.b, fadeInAlpha);
-
-        GlyphLayout layout = new GlyphLayout(font, fullText);
-        float centeredX = optionX - layout.width / 2f;
-        float y = baseY - i * 35;
-
-        font.draw(batch, layout, centeredX, y);
-    }
-}
 
     public void update() {
         if (!isVisible() || !optionsVisible) return;
