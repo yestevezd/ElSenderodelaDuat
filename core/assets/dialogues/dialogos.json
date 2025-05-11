@@ -8,8 +8,13 @@
           "translation": "Imhotep, qué bueno verte. He oído algo que deberías saber.",
           "type": "DIALOGUE",
           "options": [
-            { "text": "¿De qué se trata?", "nextId": "respuesta1" },
-            { "text": "No es un buen momento. Hasta luego.", "nextId": "respuesta3" }
+            { "text": "¿De qué se trata?", 
+              "nextId": "respuesta1" 
+            },
+            { "text": "No es un buen momento. Hasta luego.", 
+              "nextId": "respuesta3",
+              "effect":{"value": -1} 
+            }
           ]
         },
         {
@@ -18,8 +23,14 @@
           "translation": "Dicen que han saqueado los templos de Karnak. Los dioses no estarán contentos.",
           "type": "DIALOGUE",
           "options": [
-            { "text": "Debo ir a ver qué ha ocurrido. Esos templos deben ser protegidos.", "nextId": "respuesta2" },
-            { "text": "Seguro que es solo un rumor. No me interesa.", "nextId": "respuesta3" }
+            { "text": "Debo ir a ver qué ha ocurrido. Esos templos deben ser protegidos.", 
+              "nextId": "respuesta2",
+              "effect":{"value": 1}
+            },
+            { "text": "Seguro que es solo un rumor. No me interesa.", 
+              "nextId": "respuesta3",
+              "effect":{"value": -1} 
+            }
           ]
         },
         {
@@ -72,8 +83,14 @@
           "translation": "Shhh... Podemos arreglar esto. Si me das una buena suma, estos artefactos serán tuyos.",
           "type": "DIALOGUE",
           "options": [
-            { "text": "Te pagaré para obtenerlos.", "nextId": "sobornar" },
-            { "text": "¡Jamás! Los devolverás aunque sea por la fuerza.", "nextId": "amenazar" }
+            { "text": "Te pagaré para obtenerlos.", 
+              "nextId": "sobornar",
+              "effect":{"value": -1} 
+            },
+            { "text": "¡Jamás! Los devolverás aunque sea por la fuerza.", 
+              "nextId": "amenazar",
+              "effect":{"value": 1}
+            }
           ]
         },
         {
@@ -136,8 +153,14 @@
           "translation": "Estamos teniendo muchos problemas últimamente. Hay saqueadores y corrupción en los templos.",
           "type": "DIALOGUE",
           "options": [
-            { "text": "¡Qué sacrilegio! Eso no puede permitirse.", "nextId": "respuesta_honor" },
-            { "text": "No es asunto mío.", "nextId": "respuesta_indiferente" }
+            { "text": "¡Qué sacrilegio! Eso no puede permitirse.", 
+              "nextId": "respuesta_honor",
+              "effect":{"value": 1}
+            },
+            { "text": "No es asunto mío.", 
+              "nextId": "respuesta_indiferente",
+              "effect":{"value": -1}
+            }
           ]
         },
         {
@@ -170,8 +193,14 @@
           "translation": "Has regresado... ¿Qué ocurrió dentro del templo?",
           "type": "DIALOGUE",
           "options": [
-            { "text": "Derroté al sacerdote corrupto y recuperé estos objetos sagrados, te los entrego.", "nextId": "respuesta_combate" },
-            { "text": "He charlado con un sacerdote y parecia nervioso, podrías ser corrupto.", "nextId": "respuesta_soborno" }
+            { "text": "Derroté al sacerdote corrupto y recuperé estos objetos sagrados, te los entrego.", 
+              "nextId": "respuesta_combate",
+              "effect":{"value": 2} 
+            },
+            { "text": "He charlado con un sacerdote y parecia nervioso, podrías ser corrupto.", 
+              "nextId": "respuesta_soborno",
+              "effect":{"value": -1} 
+            }
           ]
         },
         {
@@ -207,12 +236,19 @@
           "speaker": "Guardia",
           "translation": "Antes de que te vayas... Encontré un papiro extraño en la sala principal. Está lleno de cartuchos.",
           "type": "DIALOGUE",
+          "nextId": "mision1"
+        },
+        {
+          "id": "mision1",
+          "speaker": "Guardia",
+          "translation": "Creo que tiene que ver con las tumbas del Valle de los Reyes.",
+          "type": "DIALOGUE",
           "nextId": "invitar_mision"
         },
         {
           "id": "invitar_mision",
           "speaker": "Guardia",
-          "translation": "¿Podrías echarle un vistazo? Podría darnos pistas sobre el origen de los saqueos.",
+          "translation": "¿Podrías echarle un vistazo? Podría darte pistas sobre que tumba esta siendo saqueada.",
           "type": "DIALOGUE",
           "options": [
             { "text": "Claro. Déjame echarle un vistazo.", "nextId": "aceptar" }
@@ -221,7 +257,7 @@
         {
           "id": "aceptar",
           "speaker": "Guardia",
-          "translation": "Aquí tienes, a ver si entiendes algo.",
+          "translation": "Aquí tienes, a ver si te sirve de ayuda.",
           "type": "DIALOGUE",
           "nextId": "descubrimiento"
         }

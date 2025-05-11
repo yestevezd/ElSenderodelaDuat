@@ -6,4 +6,6 @@ public class EventFlags {
     public static boolean sacerdoteEventoCompletado = false;
     public static boolean dialogoGuardiaKarnakinicialMostrado = false;
     public static boolean dialogoGuardiaKarnakPostEventoMostrado = false;
+    public static boolean puertaErronea1Intentada = false;
+    public static boolean puertaErronea2Intentada = false;
 }

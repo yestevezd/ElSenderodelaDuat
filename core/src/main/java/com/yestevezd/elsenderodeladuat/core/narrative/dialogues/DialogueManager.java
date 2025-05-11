@@ -3,6 +3,8 @@ package com.yestevezd.elsenderodeladuat.core.narrative.dialogues;
 import com.yestevezd.elsenderodeladuat.core.narrative.NarrativeLine;
 import com.yestevezd.elsenderodeladuat.core.engine.InputManager;
 import com.yestevezd.elsenderodeladuat.core.ui.DialogueBox;
+import com.yestevezd.elsenderodeladuat.core.game.MaatSystem;
+import com.yestevezd.elsenderodeladuat.core.narrative.NarrativeOption;
 
 public class DialogueManager {
 
@@ -47,6 +49,14 @@ public class DialogueManager {
         if (dialogueBox.isOptionsVisible()) {
             if (InputManager.isInteractPressed()) {
                 int selected = dialogueBox.getSelectedOptionIndex();
+
+                // —— Aplicar efecto de Maat al 'corazon' ——
+                NarrativeOption opt = current.getOptions().get(selected);
+                Integer corazonDelta = opt.getCorazonDelta();
+                if (corazonDelta != null) {
+                    MaatSystem.get().addCorazon(corazonDelta);
+                }
+
                 dialogueTree.selectOption(selected);
                 showCurrentLine();
             }

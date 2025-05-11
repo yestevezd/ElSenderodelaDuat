@@ -42,6 +42,8 @@ public class MainGame extends Game {
         player = new PlayerCharacter(playerTexture, 0, 0, 200f);
         player.setScale(2.5f);
 
+        MaatSystem.get().reset();
+
         // Pantalla inicial
         setScreen(new IntroScreen(this));
     }

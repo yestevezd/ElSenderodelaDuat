@@ -21,11 +21,10 @@ import com.yestevezd.elsenderodeladuat.core.entities.PlayerCharacter;
 import com.yestevezd.elsenderodeladuat.core.ui.PauseOverlay;
 
 /**
- * Pantalla del Valle de los Reyes.
- * Carga el mapa y gestiona colisiones del jugador.
- * Compatible con cualquier resolución mediante cámara y viewport.
+ * Pantalla de la tumba KV9 (tumba_kv9.tmx).
+ * Carga el mapa, gestiona colisiones, puertas y pausa.
  */
-public class ValleDeLosReyesScreen extends BaseScreen {
+public class TumbaKv9Screen extends BaseScreen {
     private OrthographicCamera camera;
     private Viewport viewport;
 
@@ -38,36 +37,38 @@ public class ValleDeLosReyesScreen extends BaseScreen {
 
     private PauseOverlay pauseOverlay;
 
-    private String entradaDesdePuerta = null;
-
+    private String entradaDesdePuerta;
     private float spawnX, spawnY;
 
     /**
      * Constructor con posición de aparición.
-     * @param game instancia del juego principal
-     * @param spawnX coordenada X inicial
-     * @param spawnY coordenada Y inicial
      */
-    public ValleDeLosReyesScreen(MainGame game, float spawnX, float spawnY) {
+    public TumbaKv9Screen(MainGame game, float spawnX, float spawnY) {
         super(game);
         this.spawnX = spawnX;
         this.spawnY = spawnY;
     }
 
-    public ValleDeLosReyesScreen(MainGame game, float spawnX, float spawnY, String entradaDesdePuerta) {
+    /**
+     * Constructor con posición de aparición y nombre de puerta de entrada.
+     */
+    public TumbaKv9Screen(MainGame game, float spawnX, float spawnY, String entradaDesdePuerta) {
         this(game, spawnX, spawnY);
         this.entradaDesdePuerta = entradaDesdePuerta;
     }
 
     @Override
     public void show() {
-        AssetLoader.loadValleyAssets();
+        AudioManager.stopMusic();
+
+        // Carga de assets específicos
+        AssetLoader.loadTumbaKv9Assets();
         AssetLoader.finishLoading();
-        // Inicializar overlay de pausa
+
         pauseOverlay = new PauseOverlay(getGame());
 
         // Cargar mapa y colisiones
-        MapLoader mapLoader = new MapLoader("maps/valle_de_los_reyes.tmx");
+        MapLoader mapLoader = new MapLoader("maps/tumba_kv9.tmx");
         map = mapLoader.getTiledMap();
         mapRenderer = new OrthogonalTiledMapRenderer(map);
 
@@ -75,25 +76,19 @@ public class ValleDeLosReyesScreen extends BaseScreen {
         camera = new OrthographicCamera();
         viewport = MapUtils.setupCameraAndViewport(map, camera);
 
-        // Obtener jugador y posición inicial
+        // Inicializar jugador
         player = getGame().getPlayer();
         player.setPosition(spawnX, spawnY);
-
-        if ("puerta_camino_2".equals(entradaDesdePuerta)) {
-            player.setDirection(Direction.UP);
-        }else{
-            player.setDirection(Direction.DOWN);
+        if ("puerta_tumba_correcta".equals(entradaDesdePuerta)) {
+            player.setDirection(Direction.RIGHT);
         }
 
-        // Sistema de colisiones con polígonos del mapa
+        // Colisiones
         collisionSystem = new CollisionSystem();
         collisionSystem.setPolygons(mapLoader.getCollisionPolygons());
 
-        // Inicializar puertas
+        // Puertas
         doorManager = new DoorManager(mapLoader.getDoorTriggers());
-
-        // Música ambiental (opcional)
-        AudioManager.playMusic("sounds/sonido_viento.mp3", true);
     }
 
     @Override
@@ -102,7 +97,7 @@ public class ValleDeLosReyesScreen extends BaseScreen {
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-        // Gestionar pausa
+        // Pausa
         if (pauseOverlay.isVisible()) {
             pauseOverlay.update();
             pauseOverlay.render(batch);
@@ -113,25 +108,24 @@ public class ValleDeLosReyesScreen extends BaseScreen {
             return;
         }
 
-        // Actualizar jugador con colisiones
+        // Movimiento y colisión
         Vector2 oldPos = player.getPosition().cpy();
-        if (!pauseOverlay.isVisible()) {
-            player.update(delta);
-        }
+        player.update(delta);
         if (collisionSystem.isColliding(player.getCollisionBounds())) {
             player.setPosition(oldPos.x, oldPos.y);
         }
 
+        // Transición de puertas
         if (DoorHandler.handleDoorTransition(getGame(), doorManager, player.getCollisionBounds())) {
             return;
         }
 
-        // Dibujar mapa
+        // Render mapa
         camera.update();
         mapRenderer.setView(camera);
         mapRenderer.render();
 
-        // Renderizar jugador
+        // Render jugador y mensaje de interacción
         batch.setProjectionMatrix(camera.combined);
         batch.begin();
         player.render(batch);
@@ -141,8 +135,6 @@ public class ValleDeLosReyesScreen extends BaseScreen {
             camera
         );
         batch.end();
-
-        getGame().getHUD().render(batch);
     }
 
     @Override
@@ -157,7 +149,6 @@ public class ValleDeLosReyesScreen extends BaseScreen {
         map.dispose();
         mapRenderer.dispose();
         AudioManager.stopMusic();
-        AssetLoader.unloadValleyAssets();
-        
+        AssetLoader.unloadTumbaKv9Assets();
     }
 }

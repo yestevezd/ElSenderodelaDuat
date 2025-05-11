@@ -39,7 +39,14 @@ public class NarrativeLineAdapter implements JsonDeserializer<NarrativeLine> {
             JsonArray arr = obj.getAsJsonArray("options");
             for (JsonElement e : arr) {
                 JsonObject opt = e.getAsJsonObject();
-                options.add(new NarrativeOption(opt.get("text").getAsString(), opt.get("nextId").getAsString()));
+                String text   = opt.get("text").getAsString();
+                String nextId = opt.get("nextId").getAsString();
+        
+                Integer delta = null;
+                if (opt.has("effect")) {
+                    delta = opt.getAsJsonObject("effect").get("value").getAsInt();
+                }
+                options.add(new NarrativeOption(text, nextId, delta));
             }
             line.setOptions(options);
         }

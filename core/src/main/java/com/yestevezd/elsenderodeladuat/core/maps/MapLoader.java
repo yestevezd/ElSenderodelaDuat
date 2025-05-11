@@ -37,7 +37,8 @@ public class MapLoader {
         doorMessages.put("puerta_templo_karnak", "¿Quieres entrar al templo de karnak? Pulsa E");
         doorMessages.put("puerta_templo_karnak_dentro", "¿Quieres salir del templo de karnak? Pulsa E");
         doorMessages.put("puerta_camino_2", "¿Quieres ir al Valle de los Reyes? Pulsa E");
-        doorMessages.put("puerta_camino_4", "¿Quieres ir al pueblo Deir el-Medina?");
+        doorMessages.put("puerta_camino_4", "¿Quieres ir al pueblo Deir el-Medina? Pulsa E");
+        doorMessages.put("puerta_tumba_dentro", "¿Quieres salir de la tumba KV9? Pulsa E");
     }
 
     /**

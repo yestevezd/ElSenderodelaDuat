@@ -103,6 +103,34 @@
         },
         "sala_hipostila.tmx#sala_hipostila_karnak": {
             "scaleInDock": 0.0625
+        },
+        "tumba_kv9.tmx": {
+            "expandedObjectLayers": [
+                2
+            ],
+            "scale": 0.5,
+            "selectedLayer": 1,
+            "viewCenter": {
+                "x": 790,
+                "y": 625
+            }
+        },
+        "tumba_kv9.tmx#kv9": {
+            "scaleInDock": 0.0625
+        },
+        "valle_de_los_reyes.tmx": {
+            "expandedObjectLayers": [
+                2
+            ],
+            "scale": 0.5,
+            "selectedLayer": 1,
+            "viewCenter": {
+                "x": 970,
+                "y": 663
+            }
+        },
+        "valle_de_los_reyes.tmx#el_valle_los_reyes": {
+            "scaleInDock": 0.0625
         }
     },
     "last.imagePath": "F:/ESTUDIOS/Ingenieria Informatica/ASIGNATURAS ACTUALES/TFG/videojuego/ElSenderodelaDuat/core/assets/maps",

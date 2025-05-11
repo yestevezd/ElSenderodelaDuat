@@ -135,6 +135,16 @@ public class AssetLoader {
         manager.load("fonts/ui_font.png", Texture.class);    
     }
 
+    public static void loadTumbaKv9Assets() {
+        manager.setLoader(TiledMap.class, new TmxMapLoader(new InternalFileHandleResolver()));
+
+        manager.load("maps/tumba_kv9.tmx", TiledMap.class); 
+        manager.load("characters/personaje_principal.png", Texture.class); 
+        manager.load("others/fondo_configuracion.jpg", Texture.class); 
+        manager.load("fonts/ui_font.fnt", BitmapFont.class);
+        manager.load("fonts/ui_font.png", Texture.class);    
+    }
+
     // DUAT (INFIERNO EGIPCIO)
 
     public static void loadDuatAssets() {
@@ -238,6 +248,14 @@ public static void unloadValleyAssets() {
     unload("characters/personaje_principal.png");
     unload("sounds/sonido_puerta.mp3");
     unload("sounds/sonido_viento.mp3");
+    unload("others/fondo_configuracion.jpg");
+    unload("fonts/ui_font.fnt");
+    unload("fonts/ui_font.png");
+}
+
+public static void unloadTumbaKv9Assets() {
+    unload("maps/tumba_kv9.tmx");
+    unload("characters/personaje_principal.png");
     unload("others/fondo_configuracion.jpg");
     unload("fonts/ui_font.fnt");
     unload("fonts/ui_font.png");
