@@ -1,6 +1,7 @@
 package com.yestevezd.elsenderodeladuat.core.entities;
 
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.yestevezd.elsenderodeladuat.core.engine.InputManager;
@@ -124,6 +125,10 @@ public class PlayerCharacter extends BaseCharacter implements CombatEntity {
 
     public void restoreFullHealth() {
         this.currentHealth = this.maxHealth;
+    }
+
+    public void setCurrentHealth(int hp) {
+        this.currentHealth = MathUtils.clamp(hp, 0, this.maxHealth);
     }
     
 }

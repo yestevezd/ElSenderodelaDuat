@@ -68,6 +68,7 @@ public class DoorHandler {
                 if (!triggered.requiresInteraction()) {
                     AudioManager.playSound("sounds/sonido_puerta.mp3");
                 }
+                game.setCurrentEntryDoor(doorName);
                 Gdx.app.postRunnable(() -> game.setScreen(dest));
             } else {
                 System.out.println("[WARN] Puerta sin destino: " + doorName);

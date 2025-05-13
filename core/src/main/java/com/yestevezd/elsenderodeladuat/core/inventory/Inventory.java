@@ -41,4 +41,10 @@ public class Inventory {
     public Item[] getItems() {
         return slots;
     }
+
+    public void clear() {
+        for (int i = 0; i < slots.length; i++) {
+            slots[i] = null;
+        }
+    }
 }

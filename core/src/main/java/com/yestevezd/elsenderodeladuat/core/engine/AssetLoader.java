@@ -70,6 +70,7 @@ public class AssetLoader {
         manager.load("maps/casa_deir_el_medina.tmx", TiledMap.class);  
         manager.load("sounds/sonido_puerta.mp3", Sound.class); 
         manager.load("others/papiro_hieratic.png", Texture.class);
+        manager.load("others/fondo_configuracion.jpg", Texture.class); 
         manager.load("fonts/ui_font.fnt", BitmapFont.class);
         manager.load("fonts/ui_font.png", Texture.class);
     }
@@ -201,6 +202,7 @@ public static void unloadHouseAssets() {
     unload("maps/casa_deir_el_medina.tmx");
     unload("sounds/sonido_puerta.mp3");
     unload("otehrs/papiro_hieratic.png");
+    unload("others/fondo_configuracion.jpg");
     unload("fonts/ui_font.fnt");
     unload("fonts/ui_font.png");
 }

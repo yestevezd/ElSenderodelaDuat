@@ -11,6 +11,7 @@ import com.yestevezd.elsenderodeladuat.core.interaction.DoorRegistry;
 import com.yestevezd.elsenderodeladuat.core.screens.IntroScreen;
 import com.yestevezd.elsenderodeladuat.core.ui.HUD;
 import com.yestevezd.elsenderodeladuat.core.inventory.Inventory;
+import com.badlogic.gdx.Screen;
 
 public class MainGame extends Game {
 
@@ -19,13 +20,15 @@ public class MainGame extends Game {
     private Inventory inventory;
     private PlayerCharacter player;
     private OrthographicCamera uiCamera;
+    private String currentScreenId;
+    private String currentEntryDoor;
 
     @Override
     public void create() {
         batch = new SpriteBatch();
 
         AssetLoader.loadGlobalAssets();
-        AssetLoader.loadHUDAssets();
+        AssetLoader.loadHUDAssets(); 
         AssetLoader.finishLoading();
 
         uiCamera = new OrthographicCamera();
@@ -77,5 +80,24 @@ public class MainGame extends Game {
 
     public OrthographicCamera getUiCamera() {
         return uiCamera;
+    }
+
+    @Override
+    public void setScreen(Screen screen) {
+        super.setScreen(screen);
+        // Guarda el ID de pantalla cada vez que cambias de pantalla
+        this.currentScreenId = screen.getClass().getSimpleName();
+    }
+
+    public String getCurrentScreenId() {
+        return currentScreenId;
+    }
+
+    public String getCurrentEntryDoor() {
+        return currentEntryDoor;
+    }
+
+    public void setCurrentEntryDoor(String doorName) {
+        this.currentEntryDoor = doorName;
     }
 }

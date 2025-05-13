@@ -77,6 +77,7 @@ public class SalaHipostilaScreen extends BaseScreen implements GameEventContext 
 
     @Override
     public void show() {
+        AudioManager.stopMusic();
         // Cargar recursos
         AssetLoader.loadKarnakSalaHipostilaAssets();
         AssetLoader.finishLoading();
@@ -115,9 +116,6 @@ public class SalaHipostilaScreen extends BaseScreen implements GameEventContext 
         sacerdote.setGameContext(this);
 
         textBox = new DialogueBox();
-
-        // Música de fondo
-        AudioManager.playMusic("sounds/sonido_viento.mp3", true);
     }
 
     @Override

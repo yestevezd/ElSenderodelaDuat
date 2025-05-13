@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.yestevezd.elsenderodeladuat.core.game.EventFlags;
@@ -19,6 +20,7 @@ import com.yestevezd.elsenderodeladuat.core.entities.PlayerCharacter;
 import com.yestevezd.elsenderodeladuat.core.interaction.*;
 import com.yestevezd.elsenderodeladuat.core.maps.MapLoader;
 import com.yestevezd.elsenderodeladuat.core.maps.MapUtils;
+import com.yestevezd.elsenderodeladuat.core.save.SaveManager;
 import com.yestevezd.elsenderodeladuat.core.collision.CollisionSystem;
 import com.yestevezd.elsenderodeladuat.core.ui.FloatingTextPrompt;
 import com.yestevezd.elsenderodeladuat.core.ui.LoreOverlayManager;
@@ -47,8 +49,14 @@ public class HouseScreen extends BaseScreen {
 
     private FloatingTextPrompt mesaCasaPrompt;
     private FloatingTextPrompt cocinaCasaPrompt;
+    private FloatingTextPrompt camaCasaPrompt;
 
     private PauseOverlay pauseOverlay;
+
+    private boolean sleeping = false;
+    private float fadeAlpha = 0f;
+    private int fadeDir = 0;
+    private static final float FADE_SPEED = 1f;
 
     public HouseScreen(MainGame game) {
         super(game);
@@ -96,6 +104,7 @@ public class HouseScreen extends BaseScreen {
 
         mesaCasaPrompt = new FloatingTextPrompt("Pulsa E para abrir el papiro", new Vector2());
         cocinaCasaPrompt = new FloatingTextPrompt("Pulsa E para comer y curarte", new Vector2());
+        camaCasaPrompt = new FloatingTextPrompt("Pulsa E para dormir y guardar", new Vector2());
 
         shapeRenderer = new ShapeRenderer();
 
@@ -117,6 +126,22 @@ public class HouseScreen extends BaseScreen {
 
     @Override
     public void render(float delta) {
+        if (sleeping && fadeDir != 0) {
+            fadeAlpha = MathUtils.clamp(fadeAlpha + fadeDir * delta * FADE_SPEED, 0f, 1f);
+
+            // Llegó a negro
+            if (fadeAlpha >= 1f && fadeDir == 1) {
+                SaveManager.saveGame(game);
+                game.getHUD().showPopupMessage("Has dormido y guardado la partida.");
+                fadeDir = -1; // empezar fade-in
+            }
+            // Volvió a la escena
+            if (fadeAlpha <= 0f && fadeDir == -1) {
+                fadeDir = 0;
+                sleeping = false;
+            }
+        }
+
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
@@ -154,6 +179,7 @@ public class HouseScreen extends BaseScreen {
 
             boolean mesaCerca = false;
             boolean cocinaCerca = false;
+            boolean camaCerca = false;
 
             for (InteractableObject obj : interactionManager.getHighlightedObjects()) {
                 Vector2 center = obj.getCenter();
@@ -176,10 +202,17 @@ public class HouseScreen extends BaseScreen {
                     cocinaCasaPrompt.setVisible(true);
                     cocinaCerca = true;
                 }
+
+                if("cama_casa".equals(obj.getName())){
+                    camaCasaPrompt.setPosition(new Vector2(center.x, center.y + 80));
+                    camaCasaPrompt.setVisible(true);
+                    camaCerca = true;
+                }
             }
 
             if (!mesaCerca) mesaCasaPrompt.setVisible(false);
             if (!cocinaCerca) cocinaCasaPrompt.setVisible(false);
+            if (!camaCerca) camaCasaPrompt.setVisible(false);
 
             // Activar el lore al pulsar E
             if (Gdx.input.isKeyJustPressed(Input.Keys.E) && loreOverlay == null) {
@@ -211,7 +244,11 @@ public class HouseScreen extends BaseScreen {
                             getGame().getHUD().showPopupMessage("Has comido. ¡Qué rico!");
                         }
                         break;
-                    }
+                    }else if("cama_casa".equals(name)){
+                        sleeping = true;
+                        fadeDir = 1;
+                        break;
+                }
                 }
             }
         }
@@ -231,7 +268,7 @@ public class HouseScreen extends BaseScreen {
         if (loreOverlay == null || !loreOverlay.isBlocking()) {
             mesaCasaPrompt.render(batch, AssetLoader.get("fonts/ui_font.fnt", BitmapFont.class), camera);
             cocinaCasaPrompt.render(batch, AssetLoader.get("fonts/ui_font.fnt", BitmapFont.class), camera);
-        }
+            camaCasaPrompt.render(batch, AssetLoader.get("fonts/ui_font.fnt", BitmapFont.class), camera);}
         batch.end();
 
         if (DoorHandler.handleDoorTransition(getGame(), doorManager, player.getCollisionBounds())) {
@@ -244,6 +281,17 @@ public class HouseScreen extends BaseScreen {
 
         // Proyección a pantalla para HUD
         getGame().getHUD().render(batch); 
+
+        if (sleeping || fadeAlpha>0f) {
+            if(batch.isDrawing()){batch.end();}
+            Gdx.gl.glEnable(GL20.GL_BLEND);
+            shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
+            shapeRenderer.setColor(0,0,0, fadeAlpha);
+            shapeRenderer.rect(0,0, GameConfig.SCREEN_WIDTH, GameConfig.SCREEN_HEIGHT);
+            shapeRenderer.end();
+            Gdx.gl.glDisable(GL20.GL_BLEND);
+            if(batch.isDrawing()){batch.begin();}
+        }
     }
 
     @Override

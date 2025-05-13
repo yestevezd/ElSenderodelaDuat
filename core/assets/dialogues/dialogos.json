@@ -20,7 +20,7 @@
         {
           "id": "respuesta1",
           "speaker": "Artesano",
-          "translation": "Dicen que han saqueado los templos de Karnak. Los dioses no estarán contentos.",
+          "translation": "Dicen que han saqueado el templo de Karnak. Los dioses no estarán contentos.",
           "type": "DIALOGUE",
           "options": [
             { "text": "Debo ir a ver qué ha ocurrido. Esos templos deben ser protegidos.", 

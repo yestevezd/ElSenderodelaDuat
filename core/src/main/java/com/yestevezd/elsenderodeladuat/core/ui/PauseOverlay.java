@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.yestevezd.elsenderodeladuat.core.engine.AudioManager;
 import com.yestevezd.elsenderodeladuat.core.game.MainGame;
+import com.yestevezd.elsenderodeladuat.core.save.SaveManager;
 import com.yestevezd.elsenderodeladuat.core.screens.MainMenuScreen;
 
 public class PauseOverlay {
@@ -18,7 +19,7 @@ public class PauseOverlay {
         "CONTINUAR",
         "CONFIGURAR SONIDO",
         "CONTROLES",
-        //"GUARDAR PARTIDA",
+        "GUARDAR PARTIDA",
         "SALIR AL MENÚ"
     };
     private int selected = 0;
@@ -29,6 +30,10 @@ public class PauseOverlay {
     private final ControlsPopup controlsPopup;
     private final GlyphLayout layout = new GlyphLayout();
     private final ShapeRenderer shapeRenderer = new ShapeRenderer();
+
+    private String saveMessage = "";
+    private float saveMessageTimer = 0f;
+    private static final float SAVE_MSG_DURATION = 2f;
 
     public PauseOverlay(MainGame game) {
         this.game = game;
@@ -56,6 +61,13 @@ public class PauseOverlay {
             return;
         }
 
+        if (saveMessageTimer > 0) {
+            saveMessageTimer -= Gdx.graphics.getDeltaTime();
+            if (saveMessageTimer <= 0) {
+                saveMessage = "";
+            }
+        }
+
         if (Gdx.input.isKeyJustPressed(Input.Keys.UP)) {
             selected = (selected - 1 + options.length) % options.length;
             AudioManager.playSound("sounds/sonido_desplazarse_menu.mp3");
@@ -69,7 +81,9 @@ public class PauseOverlay {
                 case "CONFIGURAR SONIDO": soundPopup.show(); break;
                 case "CONTROLES": controlsPopup.show(); break;
                 case "GUARDAR PARTIDA":
-                    // TODO: lógica de guardado
+                    SaveManager.saveGame(game);
+                    saveMessage = "La partida se ha guardado correctamente";
+                    saveMessageTimer = SAVE_MSG_DURATION;
                     break;
                 case "SALIR AL MENÚ": game.setScreen(new MainMenuScreen(game)); break;
             }
@@ -133,6 +147,21 @@ public class PauseOverlay {
             float textX = x + (popupWidth - layout.width) / 2f;
             float textY = baseY - i * spacing;
             font.draw(batch, layout, textX, textY);
+        }
+
+        if (!saveMessage.isEmpty()) {
+            // texto más pequeño y verde
+            font.setColor(Color.GREEN);
+            font.getData().setScale(0.7f);
+            layout.setText(font, saveMessage);
+            // centrado horizontal: x + (popupWidth - layout.width)/2
+            float msgX = x + (popupWidth - layout.width) / 2f;
+            // un poco por debajo del menú: y - 20
+            float msgY = y - 20;
+            font.draw(batch, layout, msgX, msgY);
+            // restauramos escala/color
+            font.getData().setScale(1.1f);
+            font.setColor(Color.WHITE);
         }
     
         batch.end();

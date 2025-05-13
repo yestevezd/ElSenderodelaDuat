@@ -77,4 +77,9 @@ public class MenuUIManager {
         selectedIndex = 0;
         updateSelection();
     }
+
+    public void clearButtons() {
+        buttons.clear();
+        selectedIndex = 0;
+    }
 }

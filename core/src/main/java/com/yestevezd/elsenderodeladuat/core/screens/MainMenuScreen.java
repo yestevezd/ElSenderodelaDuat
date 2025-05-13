@@ -7,7 +7,10 @@ import com.badlogic.gdx.utils.ScreenUtils;
 import com.yestevezd.elsenderodeladuat.core.engine.AssetLoader;
 import com.yestevezd.elsenderodeladuat.core.engine.AudioManager;
 import com.yestevezd.elsenderodeladuat.core.engine.InputManager;
+import com.yestevezd.elsenderodeladuat.core.game.EventFlags;
+import com.yestevezd.elsenderodeladuat.core.game.MaatSystem;
 import com.yestevezd.elsenderodeladuat.core.game.MainGame;
+import com.yestevezd.elsenderodeladuat.core.save.SaveManager;
 import com.yestevezd.elsenderodeladuat.core.ui.MenuButton;
 import com.yestevezd.elsenderodeladuat.core.ui.MenuUIManager;
 import com.yestevezd.elsenderodeladuat.core.utils.TextureUtils;
@@ -38,7 +41,11 @@ public class MainMenuScreen extends BaseScreen {
         font.getData().setScale(1f);
 
         menuUI = new MenuUIManager();
-        menuUI.addButton(new MenuButton("JUGAR", 600f));
+        menuUI.clearButtons();
+        if (SaveManager.hasSave()) {
+            menuUI.addButton(new MenuButton("CONTINUAR PARTIDA", 700f));
+        }
+        menuUI.addButton(new MenuButton("NUEVA PARTIDA", 600f));
         menuUI.addButton(new MenuButton("CONFIGURACION", 500f));
         menuUI.addButton(new MenuButton("SALIR", 400f));
         menuUI.updateSelection();
@@ -81,7 +88,15 @@ public class MainMenuScreen extends BaseScreen {
             AudioManager.playSound("sounds/click_menu.mp3");
 
             switch (menuUI.getSelectedOption()) {
-                case "JUGAR":
+                case "CONTINUAR PARTIDA":
+                    SaveManager.loadGame(game);
+                    break;
+                case "NUEVA PARTIDA":
+                    SaveManager.deleteSave();
+                    EventFlags.resetAll();
+                    MaatSystem.get().reset();
+                    game.getInventory().clear();
+                    game.getPlayer().restoreFullHealth();
                     game.setScreen(new ContextScreen(game));
                     break;
                 case "CONFIGURACION":
