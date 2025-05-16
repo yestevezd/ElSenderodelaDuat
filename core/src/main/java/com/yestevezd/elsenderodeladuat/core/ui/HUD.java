@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.yestevezd.elsenderodeladuat.core.entities.Item;
@@ -20,7 +21,7 @@ public class HUD {
     private int currentHealth = 100;
 
     private final Inventory inventory;
-    private static final int INVENTORY_SLOTS = 5;
+    private static final int INVENTORY_SLOTS = 6;
 
     private String popupMessage;
     private float popupTimer = 0f;
@@ -157,12 +158,20 @@ public class HUD {
         
             batch.begin();
         
-            // Título (solo si hay objetos)
+            // Título dinámico (solo si hay objetos)
             if (popupItems != null && popupItems.length > 0) {
+                // si el texto indica entrega, usamos “Entregados”, si no “Conseguidos”
+                String lower = popupMessage != null ? popupMessage.toLowerCase() : "";
+                String title = lower.contains("entreg") 
+                    ? "¡Objetos Entregados!" 
+                    : "¡Objetos Conseguidos!";
+                
+                GlyphLayout layout = new GlyphLayout(popupFont, title);
+                float titleX = popupX + (popupWidth - layout.width) / 2f;
+                float titleY = popupY + popupHeight - 20f;
+                
                 popupFont.setColor(new Color(0.35f, 0.22f, 0.1f, 1f));
-                popupFont.draw(batch, "¡Objetos Conseguidos!",
-                        popupX + popupWidth / 2f - 120f,
-                        popupY + popupHeight - 20f);
+                popupFont.draw(batch, layout, titleX, titleY);
             }
 
             // Texto principal

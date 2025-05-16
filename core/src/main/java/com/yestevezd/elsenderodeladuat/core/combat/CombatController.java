@@ -32,9 +32,9 @@ public class CombatController {
             0.1f
         );
         this.enemyAttackAnim = new CombatAnimation(
-            "characters/characterAnimations/sacerdote",
-            "atac_sac_",
-            6,
+            enemy.getAnimBasePath(),
+            enemy.getAnimPrefix(),
+            enemy.getAnimFrameCount(),
             0.1f
         );
     }

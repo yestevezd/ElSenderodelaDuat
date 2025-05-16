@@ -125,7 +125,7 @@ public class DeirElMedinaScreen extends BaseScreen implements GameEventContext {
         // Cargar NPC
         if (!EventFlags.artesanoEventoCompletado) {
             Texture artesanoTexture = AssetLoader.get("characters/personaje_aleatorio.png", Texture.class);
-            npcArtesano = new NPCCharacter(artesanoTexture, 800, 300, 100f);
+            npcArtesano = new NPCCharacter(artesanoTexture, 800, 300, 100f,null,null,0);
             npcArtesano.setScale(2.5f);
             npcArtesano.setGameContext(this);
             npcs.add(npcArtesano);

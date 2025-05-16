@@ -13,6 +13,14 @@ import com.badlogic.gdx.Gdx;
  * Estados posibles para un NPC.
  */
 public enum NPCState implements State<NPCCharacter> {
+    ESPERAR {
+        @Override public void enter(NPCCharacter npc) {
+            npc.setVelocity(Vector2.Zero);
+        }
+        @Override public void update(NPCCharacter npc) {
+            // silencio, queda quieto
+        }
+    },
     PATRULLAR {
         private Vector2 pointA = new Vector2(1400, 300);
         private Vector2 pointB = new Vector2(1400, 100);

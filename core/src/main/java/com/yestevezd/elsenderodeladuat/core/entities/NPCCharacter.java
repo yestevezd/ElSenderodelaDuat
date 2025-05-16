@@ -12,6 +12,9 @@ import com.yestevezd.elsenderodeladuat.core.game.GameEventContext;
 public class NPCCharacter extends BaseCharacter implements CombatEntity{
 
     private DefaultStateMachine<NPCCharacter, NPCState> stateMachine;
+    private final String animBasePath;
+    private final String animPrefix;
+    private final int animFrameCount;
     private Vector2 velocity;
     private boolean blocked = false;
     private Vector2 targetPosition;
@@ -22,9 +25,12 @@ public class NPCCharacter extends BaseCharacter implements CombatEntity{
     private int currentHealth = 100;
     private int maxHealth = 100;
 
-    public NPCCharacter(Texture texture, float x, float y, float speed) {
+    public NPCCharacter(Texture texture, float x, float y, float speed, String animBasePath, String animPrefix, int animFrameCount) {
         super(texture, x, y, speed);
         this.velocity = new Vector2();
+        this.animBasePath    = animBasePath;
+        this.animPrefix      = animPrefix;
+        this.animFrameCount  = animFrameCount;
 
         stateMachine = new DefaultStateMachine<>(this, NPCState.PATRULLAR);
     }
@@ -177,6 +183,16 @@ public class NPCCharacter extends BaseCharacter implements CombatEntity{
     
     public Vector2 getCustomDestination() {
         return customDestination;
+    }
+
+    public String getAnimBasePath() {
+        return animBasePath;
+    }
+    public String getAnimPrefix() {
+        return animPrefix;
+    }
+    public int getAnimFrameCount() {
+        return animFrameCount;
     }
 
 }

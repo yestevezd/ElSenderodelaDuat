@@ -35,7 +35,7 @@ public class MainGame extends Game {
         uiCamera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 
         // Crear inventario con 5 slots y HUD que lo use
-        inventory = new Inventory(5);
+        inventory = new Inventory(6);
         hud = new HUD(inventory,uiCamera);
 
         // Registrar transiciones

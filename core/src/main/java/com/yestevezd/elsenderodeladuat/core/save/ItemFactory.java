@@ -15,6 +15,8 @@ public class ItemFactory {
                 return new Anj();
             case"sandalias":
                 return new Sandalias();
+            case "libro_de_los_muertos":
+                return new Libro_de_los_muertos();
             default:
                 throw new IllegalArgumentException("Item desconocido: " + id);
         }

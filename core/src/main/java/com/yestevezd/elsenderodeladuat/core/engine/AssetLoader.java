@@ -143,7 +143,13 @@ public class AssetLoader {
         manager.load("characters/personaje_principal.png", Texture.class); 
         manager.load("others/fondo_configuracion.jpg", Texture.class); 
         manager.load("fonts/ui_font.fnt", BitmapFont.class);
-        manager.load("fonts/ui_font.png", Texture.class);    
+        manager.load("fonts/ui_font.png", Texture.class);
+        manager.load("characters/saqueador.png", Texture.class);
+        manager.load("characters/saqueador_arma.png", Texture.class);
+        manager.load("characters/characterAnimations/saqueador/atac_saq_001.png", Texture.class);
+        manager.load("characters/characterAnimations/saqueador/atac_saq_002.png", Texture.class);
+        manager.load("characters/characterAnimations/saqueador/atac_saq_003.png", Texture.class);
+        manager.load("characters/characterAnimations/saqueador/atac_saq_004.png", Texture.class);    
     }
 
     // DUAT (INFIERNO EGIPCIO)
@@ -160,7 +166,7 @@ public class AssetLoader {
         manager.load("items/anj.png", Texture.class);
         manager.load("items/estatua.png", Texture.class);
         manager.load("items/sandalias.png", Texture.class);
-
+        manager.load("items/papiro_libromuertos.png", Texture.class);
     }
 
 // MÉTODOS DE UNLOAD
@@ -261,6 +267,12 @@ public static void unloadTumbaKv9Assets() {
     unload("others/fondo_configuracion.jpg");
     unload("fonts/ui_font.fnt");
     unload("fonts/ui_font.png");
+    unload("characters/saqueador.png");
+    unload("characters/saqueador_arma.png");
+    unload("characters/characterAnimations/saqueador/atac_saq_001.png");
+    unload("characters/characterAnimations/saqueador/atac_saq_002.png");
+    unload("characters/characterAnimations/saqueador/atac_saq_003.png");
+    unload("characters/characterAnimations/saqueador/atac_saq_004.png");
 }
 
 public static void unloadDuatAssets() {
@@ -273,6 +285,7 @@ public static void unloadHUDAssets() {
     unload("items/anj.png");
     unload("items/estatua.png");
     unload("items/sandalias.png");
+    unload("items/papiro_libromuertos.png");
 }
 
     // MÉTODOS GENERALES

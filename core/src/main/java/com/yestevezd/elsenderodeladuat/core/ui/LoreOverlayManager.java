@@ -15,7 +15,6 @@ import com.yestevezd.elsenderodeladuat.core.engine.AssetLoader;
 public class LoreOverlayManager {
 
     private enum State { INACTIVE, INITIALIZING, ACTIVE, CLOSING, FINISHED }
-
     private State state = State.INACTIVE;
 
     private Texture loreTexture;
@@ -27,53 +26,51 @@ public class LoreOverlayManager {
     private float delayTimer = 0f;
     private float fadeSpeed = 1.5f;
 
+    private float closeTimer = 0f;
     private final float startDelay = 1f;
+    private final float closeDelay = 3f;
+    private final String closePrompt = "Pulsa E para cerrar";
 
     private final int padding = 30;
+    private final int promptMargin = 20;
     private final int boxWidth = 800;
     private final int screenWidth = 1920;
-
     private final Color dialogueColor = new Color(0.2f, 0.1f, 0f, 1);
 
     public LoreOverlayManager() {}
 
     public void trigger(String texturePath, String text) {
-        this.loreTexture = new Texture(Gdx.files.internal(texturePath));
-        this.backgroundTexture = AssetLoader.get("others/fondo_configuracion.jpg", Texture.class);
-        this.font = new BitmapFont(Gdx.files.internal("fonts/ui_font.fnt"));
-        this.font.getData().setScale(0.7f);
-        this.font.setColor(dialogueColor);
+        loreTexture = new Texture(Gdx.files.internal(texturePath));
+        backgroundTexture = AssetLoader.get("others/fondo_configuracion.jpg", Texture.class);
+        font = new BitmapFont(Gdx.files.internal("fonts/ui_font.fnt"));
+        font.getData().setScale(0.7f);
+        font.setColor(dialogueColor);
 
-        this.layout = new GlyphLayout();
-        this.layout.setText(font, text, dialogueColor, boxWidth - 2 * padding, Align.left, true);
+        layout = new GlyphLayout(font, text, dialogueColor, boxWidth - 2 * padding, Align.left, true);
 
         state = State.INITIALIZING;
         alpha = 0f;
         delayTimer = 0f;
+        closeTimer = 0f;
     }
 
     public void update(float delta) {
         if (state == State.FINISHED || state == State.INACTIVE) return;
-
         delayTimer += delta;
-
         switch (state) {
             case INITIALIZING:
                 if (delayTimer >= startDelay) {
                     state = State.ACTIVE;
+                    closeTimer = 0f;
                 }
                 break;
-        
             case ACTIVE:
-                if (alpha < 1f) {
-                    alpha += fadeSpeed * delta;
-                    if (alpha > 1f) alpha = 1f;
-                }
-                if (Gdx.input.isKeyJustPressed(Input.Keys.E)) {
+                closeTimer += delta;
+                if (alpha < 1f) alpha = Math.min(1f, alpha + fadeSpeed * delta);
+                if (closeTimer >= closeDelay && Gdx.input.isKeyJustPressed(Input.Keys.E)) {
                     state = State.CLOSING;
                 }
                 break;
-        
             case CLOSING:
                 alpha -= fadeSpeed * delta;
                 if (alpha <= 0f) {
@@ -82,9 +79,7 @@ public class LoreOverlayManager {
                     dispose();
                 }
                 break;
-        
-            case INACTIVE:
-            case FINISHED: 
+            default:
                 break;
         }
     }
@@ -92,12 +87,12 @@ public class LoreOverlayManager {
     public void render(Batch batch, ShapeRenderer shapeRenderer, OrthographicCamera camera) {
         if (state != State.ACTIVE && state != State.CLOSING) return;
 
+        // Papiro
         float loreWidth = loreTexture.getWidth() * 0.6f;
         float loreHeight = loreTexture.getHeight() * 0.6f;
         float loreX = camera.position.x - loreWidth / 2;
         float loreY = camera.position.y - 140f;
 
-        // Dibujar el papiro
         batch.setProjectionMatrix(camera.combined);
         batch.begin();
         batch.setColor(1, 1, 1, alpha);
@@ -106,15 +101,16 @@ public class LoreOverlayManager {
         batch.end();
 
         if (state == State.ACTIVE && alpha >= 1f) {
-            float visibleBottomOffset = -120f;
-            float loreBottomY = loreY;
-
+            // Crear layout para prompt cada frame (para capturar color dinámico)
+            GlyphLayout promptLayout = new GlyphLayout(font, closePrompt);
+            float promptHeight = promptLayout.height;
             float textHeight = layout.height;
-            float boxHeight = textHeight + 2 * padding;
+            float boxHeight = textHeight + promptHeight + promptMargin + 2 * padding;
 
             float boxX = (screenWidth - boxWidth) / 2f;
-            float boxY = loreBottomY - visibleBottomOffset - boxHeight - 10f;
+            float boxY = loreY - (-120f) - boxHeight - 10f; // visibleBottomOffset
 
+            // Fondos
             shapeRenderer.setProjectionMatrix(camera.combined);
             shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
             shapeRenderer.setColor(Color.GOLD);
@@ -128,10 +124,21 @@ public class LoreOverlayManager {
             batch.draw(backgroundTexture, boxX, boxY, boxWidth, boxHeight);
             batch.setColor(1, 1, 1, 1);
 
+            // Texto principal en diálogo
             font.setColor(dialogueColor.r, dialogueColor.g, dialogueColor.b, alpha);
             float textX = boxX + padding;
             float textY = boxY + boxHeight - padding;
             font.draw(batch, layout, textX, textY);
+
+            // Mostrar prompt tras delay
+            if (closeTimer >= closeDelay) {
+                font.setColor(1f, 0f, 0f, alpha);
+                float promptX = boxX + (boxWidth - promptLayout.width) / 2f;
+                float promptY = textY - textHeight - promptMargin;
+                font.draw(batch, closePrompt, promptX, promptY);
+                // Restaurar color
+                font.setColor(dialogueColor);
+            }
             batch.end();
         }
     }

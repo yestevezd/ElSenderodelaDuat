@@ -110,7 +110,7 @@ public class SalaHipostilaScreen extends BaseScreen implements GameEventContext 
 
         // Sacerdote patrullando
         Texture sacerdoteTexture = AssetLoader.get("characters/sacerdote.png", Texture.class);
-        sacerdote = new NPCCharacter(sacerdoteTexture, 1400, 300, 100f);
+        sacerdote = new NPCCharacter(sacerdoteTexture, 1400, 300, 100f,"characters/characterAnimations/sacerdote", "atac_sac_", 6);
         sacerdote.setName("Sacerdote de Karnak");
         sacerdote.setScale(2.5f);
         sacerdote.setGameContext(this);
@@ -234,6 +234,7 @@ public class SalaHipostilaScreen extends BaseScreen implements GameEventContext 
                 getGame().getInventory().addItem(escarabajo);
                 getGame().getHUD().showPopupMessage("¡Has conseguido recuperar objetos sagrados sobornando!", estatua, escarabajo);
                 EventFlags.sacerdoteEventoCompletado = true;
+                EventFlags.sacerdoteSobornado = true;
                 sacerdote.getStateMachine().changeState(NPCState.PATRULLAR);
                 textBox.hide();
                 freezePlayer = false;
@@ -260,6 +261,7 @@ public class SalaHipostilaScreen extends BaseScreen implements GameEventContext 
             
                 sacerdote.setCustomDestination(new Vector2(1600, 280));
                 sacerdote.getStateMachine().changeState(NPCState.DESAPARECER);
+                EventFlags.sacerdoteSobornado = false;
                 dialogueManager = null;
                 freezePlayer = false;
             }

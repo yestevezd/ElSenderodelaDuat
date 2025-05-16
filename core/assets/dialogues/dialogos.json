@@ -243,23 +243,183 @@
           "speaker": "Guardia",
           "translation": "Creo que tiene que ver con las tumbas del Valle de los Reyes.",
           "type": "DIALOGUE",
-          "nextId": "invitar_mision"
+          "nextId": "enseñar_papiro_cartuchos"
         },
         {
-          "id": "invitar_mision",
+          "id": "enseñar_papiro_cartuchos",
           "speaker": "Guardia",
           "translation": "¿Podrías echarle un vistazo? Podría darte pistas sobre que tumba esta siendo saqueada.",
           "type": "DIALOGUE",
           "options": [
-            { "text": "Claro. Déjame echarle un vistazo.", "nextId": "aceptar" }
+            { "text": "Claro. Déjame echarle un vistazo.", "nextId": "aceptar_ver_papiro_cartuchos" }
           ]
         },
         {
-          "id": "aceptar",
+          "id": "aceptar_ver_papiro_cartuchos",
           "speaker": "Guardia",
           "translation": "Aquí tienes, a ver si te sirve de ayuda.",
           "type": "DIALOGUE",
           "nextId": "descubrimiento"
+        }
+      ]
+    },
+    "dialogo_saqueador": {
+      "lines": [
+        {
+          "id": "inicio",
+          "speaker": "Saqueador",
+          "translation": "(Emergiendo de las sombras) Estos tesoros son míos, vete a buscar en otra tumba.",
+          "type": "DIALOGUE",
+          "options": [
+            {
+              "text": "¡Suelta lo que robaste!",
+              "nextId": "acusar",
+              "effect": { "value": 1 }
+            },
+            {
+              "text": "Podemos llegar a un acuerdo.",
+              "nextId": "sobornar",
+              "effect": { "value": -1 }
+            }
+          ]
+        },
+        {
+          "id": "acusar",
+          "speaker": "Saqueador",
+          "translation": "¡Tú no entiendes nada de antigüedades! Sin mí esas reliquias seguirían olvidadas.",
+          "type": "DIALOGUE",
+          "options": [
+            {
+              "text": "Los dioses exigirán cuentas por tu saqueo.",
+              "nextId": "desafio"
+            }
+          ]
+        },
+        {
+          "id": "sobornar",
+          "speaker": "Saqueador",
+          "translation": "¿Un acuerdo? ¿Qué tienes para ofrecerme?",
+          "type": "DIALOGUE",
+          "options": [
+            {
+              "text": "Te puedo pagar si me los devuelves.",
+              "nextId": "aceptar_soborno"
+            }
+          ]
+        },
+        {
+          "id": "aceptar_soborno",
+          "speaker": "Saqueador",
+          "translation": "(El saqueador sonríe.) Bien, bien. Pero no me hagas perder más tiempo.",
+          "type": "DIALOGUE",
+          "nextId": "fin_soborno"
+        },
+        {
+          "id": "desafio",
+          "speaker": "Saqueador",
+          "translation": "Te arrepentirás de haber puesto un pie aquí.",
+          "type": "DIALOGUE",
+          "nextId": "fin_pelea_saqueador"
+        },
+        {
+          "id": "fin_pelea_saqueador",
+          "speaker": "Sistema",
+          "translation": "(Comienza el combate contra el saqueador.)",
+          "type": "DIALOGUE"
+        },
+        {
+          "id": "fin_soborno",
+          "speaker": "Sistema",
+          "translation": "(Recuperas los tesoros saqueados mediante soborno.)",
+          "type": "DIALOGUE"
+        }
+
+      ]
+    },
+    "dialogo_postcombate_saqueador_victoria": {
+      "lines": [
+        {
+          "id": "inicio",
+          "speaker": "Saqueador",
+          "translation": "(Jadeando) Has ganado... No puedo seguir así.",
+          "type": "DIALOGUE",
+          "nextId": "entregar"
+        },
+        {
+          "id": "entregar",
+          "speaker": "Saqueador",
+          "translation": "Toma tus reliquias. Llévatelas y déjame en paz.",
+          "type": "DIALOGUE",
+          "nextId": "fin_postcombate_saqueador_victoria"
+        },
+        {
+          "id": "fin_postcombate_saqueador_victoria",
+          "speaker": "Sistema",
+          "translation": "(Recuperas los tesoros saqueados.)",
+          "type": "DIALOGUE"
+        }
+      ]
+    },
+    "dialogo_guardia_post_evento_kv9": {
+      "lines": [
+        {
+          "id": "inicio",
+          "speaker": "Guardia",
+          "translation": "Tu otra vez por aquí, Inhotep, ¿Has viajado al Valle de los Reyes?",
+          "type": "DIALOGUE",
+          "options": [
+            {
+              "text": "Sí,me enfrete a un saqueador. Te entrego objetos sagrados que recuperé.",
+              "nextId": "respuesta_combate_saqueador",
+              "effect": { "value": 2 }
+            },
+            {
+              "text": "Sí, y no me encontré nada en absoluto. Parecia estar todo tranquilo.",
+              "nextId": "respuesta_soborno_saqueador",
+              "effect": { "value": -1 }
+            }
+          ]
+        },
+        {
+          "id": "respuesta_combate_saqueador",
+          "speaker": "Guardia",
+          "translation": "¡Impresionante! Has logrado salvar reliquias del templo, los dioses te lo agradecerán.",
+          "type": "DIALOGUE",
+          "nextId": "entregar_objetos_kv9"
+        },
+        {
+          "id": "entregar_objetos_kv9",
+          "speaker": "Sistema",
+          "translation": "(Le entregas al guardia el amuleto de Anj y las sandalias sagradas.)",
+          "type": "DIALOGUE",
+          "nextId": "recompensa_libro_muertos"
+        },
+        {
+          "id": "recompensa_libro_muertos",
+          "speaker": "Guardia",
+          "translation": "Por tu valor te entrego esto: el Libro de los Muertos. Que su sabiduría te guíe en el Duat.",
+          "type": "DIALOGUE",
+          "nextId": "fin"
+        },
+        {
+          "id": "respuesta_soborno_saqueador",
+          "speaker": "Guardia",
+          "translation": "Que raro, ya que ultimamente han habido muchos saqueos en el Valle de los Reyes.",
+          "type": "DIALOGUE",
+          "nextId": "respuesta_soborno_saqueador_2"
+        },
+        {
+          "id": "respuesta_soborno_saqueador_2",
+          "speaker": "Guardia",
+          "translation": "Te agradezco de todas formas la información. Si ves algo sospechoso, no dudes en avisarme.",
+          "type": "DIALOGUE",
+          "nextId": "fin"
+        },
+        {
+          "id": "fin",
+          "speaker": "Guardia",
+          "translation": "Que los dioses te acompañen en tu siguiente viaje.",
+          "type": "DIALOGUE"
         }
       ]
     }
