@@ -83,14 +83,15 @@ Otra opción es descargarse el .exe y directamente ejecutarlo.
 
 ## 📚 Créditos
 
-Proyecto de TFG – Ingeniería Informática
-Desarrollado por: Yago Estévez Davila
-Tutor: Ruth Sofía Contreras Espinosa
-Departamento: Área de videojuegos, UOC
-Año: 2025
+-Proyecto de TFG - Ingeniería Informática
+-Desarrollado por: Yago Estévez Davila
+-Tutor: Ruth Sofía Contreras Espinosa
+-Departamento: Área de videojuegos, UOC
+-Año: 2025
+
 ---
 
 ## ✨ Licencia
 
-Este proyecto es de carácter académico y no comercial.
-Licencia: Reconocimiento-NoComercial-SinObraDerivada 3.0 España.
+-Este proyecto es de carácter académico y no comercial.
+-Licencia: Reconocimiento-NoComercial-SinObraDerivada 3.0 España.
