@@ -73,16 +73,16 @@ public class InteractableObject {
     }
 
     public Vector2 getCenter() {
-    float[] vertices = shape.getTransformedVertices();
-    float sumX = 0f, sumY = 0f;
-    int count = vertices.length / 2;
+        float[] vertices = shape.getTransformedVertices();
+        float sumX = 0f, sumY = 0f;
+        int count = vertices.length / 2;
 
-    for (int i = 0; i < vertices.length; i += 2) {
-        sumX += vertices[i];
-        sumY += vertices[i + 1];
+        for (int i = 0; i < vertices.length; i += 2) {
+            sumX += vertices[i];
+            sumY += vertices[i + 1];
+        }
+
+        return new Vector2(sumX / count, sumY / count);
     }
-
-    return new Vector2(sumX / count, sumY / count);
-}
 
 }

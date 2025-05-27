@@ -10,9 +10,11 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 import com.badlogic.gdx.math.Vector2;
 import com.yestevezd.elsenderodeladuat.core.engine.AssetLoader;
 import com.yestevezd.elsenderodeladuat.core.engine.AudioManager;
+import com.yestevezd.elsenderodeladuat.core.game.EventFlags;
 import com.yestevezd.elsenderodeladuat.core.game.MainGame;
 import com.yestevezd.elsenderodeladuat.core.interaction.DoorHandler;
 import com.yestevezd.elsenderodeladuat.core.interaction.DoorManager;
+import com.yestevezd.elsenderodeladuat.core.interaction.DoorTrigger;
 import com.yestevezd.elsenderodeladuat.core.maps.MapLoader;
 import com.yestevezd.elsenderodeladuat.core.maps.MapUtils;
 import com.yestevezd.elsenderodeladuat.core.collision.CollisionSystem;
@@ -125,7 +127,10 @@ public class ValleDeLosReyesScreen extends BaseScreen {
         if (DoorHandler.handleDoorTransition(getGame(), doorManager, player.getCollisionBounds())) {
             return;
         }
-
+        if(EventFlags.saqueadorEventoCompletado && !EventFlags.mensajeValleDeLosReyesMostrado){
+            EventFlags.mensajeValleDeLosReyesMostrado = true;
+            getGame().getHUD().showPopupMessage("El guardián del Templo de Karnak quiere verte.");
+        }
         // Dibujar mapa
         camera.update();
         mapRenderer.setView(camera);
@@ -135,11 +140,22 @@ public class ValleDeLosReyesScreen extends BaseScreen {
         batch.setProjectionMatrix(camera.combined);
         batch.begin();
         player.render(batch);
-        doorManager.renderInteractionMessage(
-            player.getCollisionBounds(),
-            batch,
-            camera
-        );
+        DoorTrigger nearby = doorManager.getNearbyInteractiveDoor(player.getCollisionBounds());
+        if (nearby != null) {
+            String name = nearby.getName();
+            boolean isErroneousTomb =
+                "puerta_tumba_erronea_1".equals(name) ||
+                "puerta_tumba_erronea_2".equals(name);
+            // Sólo ocultamos el prompt en esas dos puertas erróneas
+            // cuando ya esté completado el saqueador.
+            if (!(isErroneousTomb && EventFlags.saqueadorEventoCompletado)) {
+                doorManager.renderInteractionMessage(
+                    player.getCollisionBounds(),
+                    batch,
+                    camera
+                );
+            }
+        }
         batch.end();
 
         getGame().getHUD().render(batch);

@@ -13,7 +13,7 @@
             },
             { "text": "No es un buen momento. Hasta luego.", 
               "nextId": "respuesta3",
-              "effect":{"value": -1} 
+              "effect":{"value": 1} 
             }
           ]
         },
@@ -25,11 +25,11 @@
           "options": [
             { "text": "Debo ir a ver qué ha ocurrido. Esos templos deben ser protegidos.", 
               "nextId": "respuesta2",
-              "effect":{"value": 1}
+              "effect":{"value": -1}
             },
             { "text": "Seguro que es solo un rumor. No me interesa.", 
               "nextId": "respuesta3",
-              "effect":{"value": -1} 
+              "effect":{"value": 1} 
             }
           ]
         },
@@ -85,11 +85,11 @@
           "options": [
             { "text": "Te pagaré para obtenerlos.", 
               "nextId": "sobornar",
-              "effect":{"value": -1} 
+              "effect":{"value": 1} 
             },
             { "text": "¡Jamás! Los devolverás aunque sea por la fuerza.", 
               "nextId": "amenazar",
-              "effect":{"value": 1}
+              "effect":{"value": -1}
             }
           ]
         },
@@ -155,11 +155,11 @@
           "options": [
             { "text": "¡Qué sacrilegio! Eso no puede permitirse.", 
               "nextId": "respuesta_honor",
-              "effect":{"value": 1}
+              "effect":{"value": -1}
             },
             { "text": "No es asunto mío.", 
               "nextId": "respuesta_indiferente",
-              "effect":{"value": -1}
+              "effect":{"value": 1}
             }
           ]
         },
@@ -195,11 +195,11 @@
           "options": [
             { "text": "Derroté al sacerdote corrupto y recuperé estos objetos sagrados, te los entrego.", 
               "nextId": "respuesta_combate",
-              "effect":{"value": 2} 
+              "effect":{"value": -2} 
             },
             { "text": "He charlado con un sacerdote y parecia nervioso, podrías ser corrupto.", 
               "nextId": "respuesta_soborno",
-              "effect":{"value": -1} 
+              "effect":{"value": 2} 
             }
           ]
         },
@@ -274,12 +274,12 @@
             {
               "text": "¡Suelta lo que robaste!",
               "nextId": "acusar",
-              "effect": { "value": 1 }
+              "effect": { "value": -1}
             },
             {
               "text": "Podemos llegar a un acuerdo.",
               "nextId": "sobornar",
-              "effect": { "value": -1 }
+              "effect": { "value": 1}
             }
           ]
         },
@@ -365,18 +365,18 @@
         {
           "id": "inicio",
           "speaker": "Guardia",
-          "translation": "Tu otra vez por aquí, Inhotep, ¿Has viajado al Valle de los Reyes?",
+          "translation": "Hola, Inhotep, me han contado que has viajado al Valle de los Reyes, ¿qué sucedió?",
           "type": "DIALOGUE",
           "options": [
             {
               "text": "Sí,me enfrete a un saqueador. Te entrego objetos sagrados que recuperé.",
               "nextId": "respuesta_combate_saqueador",
-              "effect": { "value": 2 }
+              "effect": { "value": -2}
             },
             {
               "text": "Sí, y no me encontré nada en absoluto. Parecia estar todo tranquilo.",
               "nextId": "respuesta_soborno_saqueador",
-              "effect": { "value": -1 }
+              "effect": { "value": 2}
             }
           ]
         },
@@ -419,6 +419,86 @@
           "id": "fin",
           "speaker": "Guardia",
           "translation": "Que los dioses te acompañen en tu siguiente viaje.",
+          "type": "DIALOGUE"
+        }
+      ]
+    },
+    "dialogo_demonio": {
+      "lines": [
+        {
+          "id": "inicio",
+          "speaker": "Demonio",
+          "translation": "¡Alto! no puedes avanzar más.",
+          "type": "DIALOGUE",
+          "nextId": "prueba"
+        },
+        {
+          "id": "prueba",
+          "speaker": "Demonio",
+          "translation": "Para que puedas avanzar y llegar al Juicio de Osiris, primero debes superar una prueba.",
+          "type": "DIALOGUE",
+          "options": [
+            {
+              "text": "¿A que prueba te refieres?",
+              "nextId": "prueba_1"
+            }
+          ]
+        },
+        {
+          "id": "prueba_1",
+          "speaker": "Demonio",
+          "translation": "Debes saberte mi nombre para poder avanzar. Si no lo recuerdas, no podrás pasar.",
+          "type": "DIALOGUE",
+          "nextId": "prueba_opciones"
+        },
+        {
+          "id": "prueba_opciones",
+          "speaker": "Demonio",
+          "translation": "Esta son las opciones que tienes:",
+          "type": "DIALOGUE",
+          "options": [
+            {
+              "text": "Anphur-zak",
+              "nextId": "prueba_fallo"
+            },
+            {
+              "text": "Peha-tor",
+              "nextId": "prueba_fallo"
+            },
+            {
+              "text": "Neha-her",
+              "nextId": "prueba_acierto"
+            },
+            {
+              "text": "Teha-ser",
+              "nextId": "prueba_fallo"
+            }
+          ]
+        },
+        {
+          "id": "prueba_fallo",
+          "speaker": "Demonio",
+          "translation": "Has fallado, no puedes avanzar. Hasta aquí ha llegado tu camino.",
+          "type": "DIALOGUE",
+          "nextId": "fin_fallo"
+        },
+        {
+          "id": "fin_fallo",
+          "speaker": "Sistema",
+          "translation": "(Has fallado la prueba del demonio y no puedes avanzar.) Has perdido!",
+          "type": "DIALOGUE"
+        },
+        {
+          "id": "prueba_acierto",
+          "speaker": "Neha-her",
+          "translation": "¡Oh no!¡Que buena memoria! Has superado este desafío. Puedes avanzar al Juicio de Osiris.",
+          "type": "DIALOGUE",
+          "nextId": "fin_acierto"
+        },
+        {
+          "id": "fin_acierto",
+          "speaker": "Sistema",
+          "translation": "(Has superado la prueba del demonio y puedes avanzar.) Accedes al Juicio de Osiris.",
           "type": "DIALOGUE"
         }
       ]

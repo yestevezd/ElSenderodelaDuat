@@ -191,6 +191,11 @@ public class DeirElMedinaScreen extends BaseScreen implements GameEventContext {
             npc.updateConColision(delta, player.getCollisionBounds());
         }
 
+        if(EventFlags.dialogoGuardiaPostEventoKv9Mostrado && !EventFlags.mensajeDormirMostrado){
+            EventFlags.mensajeDormirMostrado = true;
+            getGame().getHUD().showPopupMessage("Se ha hecho tarde, deberías ir a casa a dormir.");
+        }
+
         if (DoorHandler.handleDoorTransition(getGame(), doorManager, player.getCollisionBounds())) {
             return;
         }

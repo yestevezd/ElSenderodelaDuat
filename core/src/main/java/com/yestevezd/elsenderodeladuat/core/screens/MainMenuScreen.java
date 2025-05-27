@@ -97,6 +97,7 @@ public class MainMenuScreen extends BaseScreen {
                     MaatSystem.get().reset();
                     game.getInventory().clear();
                     game.getPlayer().restoreFullHealth();
+                    game.getHUD().setHealth(game.getPlayer().getCurrentHealth());
                     game.setScreen(new ContextScreen(game));
                     break;
                 case "CONFIGURACION":

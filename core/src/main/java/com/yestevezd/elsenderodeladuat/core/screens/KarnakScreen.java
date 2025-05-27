@@ -192,7 +192,8 @@ public class KarnakScreen extends BaseScreen {
                 loreOverlay = new LoreOverlayManager();
                 loreOverlay.trigger(
                     "others/papiro_cartuchos.png",
-                    "Este papiro podría contener información decisiva, es muy importante que lo observes bien y memorices cualquier detalle que te parezca importante."
+                    "Presta mucha atención a todo los detalles que muestra este papiro y recuerda que la carta del familiar hablaba" + 
+                    " de un juicio de un dios, el cual tendrás que recibir en la Duat"
                 );
                 papiroCartuchosMostrado = true;
             }
@@ -215,44 +216,53 @@ public class KarnakScreen extends BaseScreen {
                 amuletoDevuelto = true;
             }
 
-            // Entrega de Anj y Sandalias tras Kv9
+            // Entrega de Anj, Sandalias y libro de los muertos tras Kv9
             if ("entregar_objetos_kv9".equals(node) && !objetosEntregadosKv9) {
                 getGame().getInventory().removeItem(Anj.class);
                 getGame().getInventory().removeItem(Sandalias.class);
+                getGame().getInventory().removeItem(Libro_de_los_muertos.class);
                 getGame().getHUD().showPopupMessage(
                     "Has entregado los objetos sagrados",
-                    new Anj(), new Sandalias()
+                    new Anj(), new Sandalias(), new Libro_de_los_muertos()
                 );
                 objetosEntregadosKv9 = true;
             }
             // Recompensa: Libro de los Muertos
-            if ("recompensa_libro_muertos".equals(node) && !libroDeLosMuertosEntregado) {
+            if ("recompensa_libro_muertos".equals(node) && !libroDeLosMuertosEntregado && !EventFlags.papiroLibroDeLosMuertosMostrado) {
                 getGame().getInventory().addItem(new Libro_de_los_muertos());
                 getGame().getHUD().showPopupMessage(
                     "El guardia te ha regalado el Libro de los Muertos en agradecimiento",
                     new Libro_de_los_muertos()
                 );
+
+                loreOverlay = new LoreOverlayManager();
+                loreOverlay.trigger(
+                    "others/libro_de_los_muertos.png",
+                    "Este papiro podría contener información decisiva, es muy importante que lo observes bien y memorices cualquier detalle que te parezca importante"
+                );
+
+                EventFlags.papiroLibroDeLosMuertosMostrado = true;
                 libroDeLosMuertosEntregado = true;
             }
 
             // Lógica de honestidad (Maat)
             if (!EventFlags.personaje_miente_penalizacion_sacerdote) {
                 if ("respuesta_combate".equals(node) && EventFlags.sacerdoteSobornado) {
-                    MaatSystem.get().addCorazon(-3);
+                    MaatSystem.get().addCorazon(+3);
                     EventFlags.personaje_miente_penalizacion_sacerdote = true;
                 }
                 if ("respuesta_soborno".equals(node) && !EventFlags.sacerdoteSobornado) {
-                    MaatSystem.get().addCorazon(-1);
+                    MaatSystem.get().addCorazon(+1);
                     EventFlags.personaje_miente_penalizacion_sacerdote = true;
                 }
             }
             if (!EventFlags.personaje_miente_penalizacion_saqueador) {
                 if ("respuesta_combate_saqueador".equals(node) && EventFlags.saqueadorSobornado) {
-                    MaatSystem.get().addCorazon(-3);
+                    MaatSystem.get().addCorazon(+3);
                     EventFlags.personaje_miente_penalizacion_saqueador = true;
                 }
                 if ("respuesta_soborno_saqueador".equals(node) && !EventFlags.saqueadorSobornado) {
-                    MaatSystem.get().addCorazon(-1);
+                    MaatSystem.get().addCorazon(+1);
                     EventFlags.personaje_miente_penalizacion_saqueador = true;
                 }
             }

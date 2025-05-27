@@ -105,7 +105,6 @@ public class TumbaKv9Screen extends BaseScreen implements GameEventContext {
         saqueador.setGameContext(this);
         saqueador.getStateMachine().changeState(NPCState.ESPERAR);
         saqueador.setDirection(Direction.UP);
-        // Fin inicialización saqueador
 
         textBox = new DialogueBox();
     }

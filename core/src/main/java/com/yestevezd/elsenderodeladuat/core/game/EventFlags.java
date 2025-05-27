@@ -14,6 +14,10 @@ public class EventFlags {
     public static boolean personaje_miente_penalizacion_sacerdote = false;
     public static boolean personaje_miente_penalizacion_saqueador = false;
     public static boolean dialogoGuardiaPostEventoKv9Mostrado = false;
+    public static boolean mensajeValleDeLosReyesMostrado = false;
+    public static boolean papiroLibroDeLosMuertosMostrado = false;
+    public static boolean mensajeDormirMostrado = false;
+    public static boolean deathContextRequested = false;
 
     public static void resetAll() {
         dialogoGuardiaKarnakinicialMostrado = false;
@@ -29,5 +33,9 @@ public class EventFlags {
         personaje_miente_penalizacion_sacerdote = false;
         personaje_miente_penalizacion_saqueador = false;
         dialogoGuardiaPostEventoKv9Mostrado = false;
+        mensajeValleDeLosReyesMostrado = false;
+        papiroLibroDeLosMuertosMostrado = false;
+        mensajeDormirMostrado = false;
+        deathContextRequested = false;
     }
 }

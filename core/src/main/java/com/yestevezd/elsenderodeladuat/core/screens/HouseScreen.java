@@ -131,9 +131,14 @@ public class HouseScreen extends BaseScreen {
 
             // Llegó a negro
             if (fadeAlpha >= 1f && fadeDir == 1) {
-                SaveManager.saveGame(game);
-                game.getHUD().showPopupMessage("Has dormido y guardado la partida.");
-                fadeDir = -1; // empezar fade-in
+                if (EventFlags.deathContextRequested) {
+                    game.setScreen(new DeathContextScreen(game));
+                    return;
+                }else{
+                    SaveManager.saveGame(game);
+                    game.getHUD().showPopupMessage("Has dormido y guardado la partida.");
+                    fadeDir = -1; // empezar fade-in
+                }
             }
             // Volvió a la escena
             if (fadeAlpha <= 0f && fadeDir == -1) {
@@ -245,12 +250,29 @@ public class HouseScreen extends BaseScreen {
                         }
                         break;
                     }else if("cama_casa".equals(name)){
-                        sleeping = true;
-                        fadeDir = 1;
+                        if (EventFlags.dialogoGuardiaPostEventoKv9Mostrado) {
+                            EventFlags.deathContextRequested = true;
+                            sleeping = true;
+                            fadeDir = 1;
+                        } else {
+                            sleeping = true;
+                            fadeDir = 1;
+                        }
                         break;
-                }
+                    }
                 }
             }
+        }
+
+        if(EventFlags.saqueadorEventoCompletado && EventFlags.mensajeValleDeLosReyesMostrado && EventFlags.dialogoGuardiaPostEventoKv9Mostrado 
+        && !EventFlags.papiroLibroDeLosMuertosMostrado){
+            loreOverlay = new LoreOverlayManager();
+                loreOverlay.trigger(
+                    "others/libro_de_los_muertos.png",
+                    "Observa bien el libro que has recuperado del saqueador ya que es importante y te puede ayudar en tu viaje"
+                );
+
+            EventFlags.papiroLibroDeLosMuertosMostrado = true;
         }
 
         camera.update();
@@ -268,7 +290,8 @@ public class HouseScreen extends BaseScreen {
         if (loreOverlay == null || !loreOverlay.isBlocking()) {
             mesaCasaPrompt.render(batch, AssetLoader.get("fonts/ui_font.fnt", BitmapFont.class), camera);
             cocinaCasaPrompt.render(batch, AssetLoader.get("fonts/ui_font.fnt", BitmapFont.class), camera);
-            camaCasaPrompt.render(batch, AssetLoader.get("fonts/ui_font.fnt", BitmapFont.class), camera);}
+            camaCasaPrompt.render(batch, AssetLoader.get("fonts/ui_font.fnt", BitmapFont.class), camera);
+        }
         batch.end();
 
         if (DoorHandler.handleDoorTransition(getGame(), doorManager, player.getCollisionBounds())) {

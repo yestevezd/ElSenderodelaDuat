@@ -56,6 +56,7 @@ public class AssetLoader {
         manager.load("fonts/jeroglificos2_font.png", Texture.class);
         manager.load("fonts/jeroglificos3_font.fnt", BitmapFont.class);
         manager.load("fonts/jeroglificos3_font.png", Texture.class);
+        manager.load("others/estela_inhotep.png", Texture.class);
     }
 
     //GLOBAL
@@ -155,7 +156,14 @@ public class AssetLoader {
     // DUAT (INFIERNO EGIPCIO)
 
     public static void loadDuatAssets() {
-        
+        manager.setLoader(TiledMap.class, new TmxMapLoader(new InternalFileHandleResolver()));
+
+        manager.load("maps/inframundo.tmx", TiledMap.class); 
+        manager.load("characters/personaje_principal.png", Texture.class); 
+        manager.load("others/fondo_configuracion.jpg", Texture.class); 
+        manager.load("fonts/ui_font.fnt", BitmapFont.class);
+        manager.load("fonts/ui_font.png", Texture.class);
+        manager.load("characters/neha-her.png", Texture.class);          
     }
 
     // HUD / INTERFAZ
@@ -167,6 +175,38 @@ public class AssetLoader {
         manager.load("items/estatua.png", Texture.class);
         manager.load("items/sandalias.png", Texture.class);
         manager.load("items/papiro_libromuertos.png", Texture.class);
+    }
+
+    //GAME OVER
+    public static void loadGameOverAssets() {
+        manager.load("characters/Inhotep_pierde.png", Texture.class);
+        manager.load("sounds/sonido_gameover.mp3", Sound.class);
+        manager.load("fonts/ui_font.fnt", BitmapFont.class);
+        manager.load("fonts/ui_font.png", Texture.class);
+    }
+
+    //BALANZA
+    public static void loadJudgmentAssets() {
+        manager.load("fonts/ui_font.fnt", BitmapFont.class);
+        manager.load("fonts/ui_font.png", Texture.class);
+        manager.load("end/balanza_neutra.jpg", Texture.class);
+        manager.load("end/balanza_ganar.png", Texture.class);
+        manager.load("end/balanza_perder.png", Texture.class);
+    }
+
+    //PANTALLA DERROTA
+    public static void loadBeastAmmitAssets() { 
+        manager.load("fonts/ui_font.fnt", BitmapFont.class);
+        manager.load("fonts/ui_font.png", Texture.class);
+        manager.load("characters/bestia_ammit.png", Texture.class);
+        manager.load("sounds/sonido_ammit.mp3", Sound.class);  
+    }
+
+    //PANTALLA VICTORIA
+    public static void loadVictoryAssets() {
+        manager.load("fonts/ui_font.fnt", BitmapFont.class);
+        manager.load("fonts/ui_font.png", Texture.class);
+        manager.load("characters/Inhotep_gana.png", Texture.class);  
     }
 
 // MÉTODOS DE UNLOAD
@@ -202,6 +242,7 @@ public static void unloadContextAssets() {
     unload("fonts/jeroglificos2_font.png");
     unload("fonts/jeroglificos3_font.fnt");
     unload("fonts/jeroglificos3_font.png");
+    unload("others/estela_inhotep.png");
 }
 
 public static void unloadHouseAssets() {
@@ -276,7 +317,12 @@ public static void unloadTumbaKv9Assets() {
 }
 
 public static void unloadDuatAssets() {
-    
+    unload("maps/inframundo.tmx");
+    unload("characters/personaje_principal.png");
+    unload("others/fondo_configuracion.jpg");
+    unload("fonts/ui_font.fnt");
+    unload("fonts/ui_font.png");
+    unload("characters/neha-her.png");
 }
 
 public static void unloadHUDAssets() {
@@ -286,6 +332,34 @@ public static void unloadHUDAssets() {
     unload("items/estatua.png");
     unload("items/sandalias.png");
     unload("items/papiro_libromuertos.png");
+}
+
+public static void unloadGameOverAssets() {
+    unload("sounds/sonido_gameover.mp3");
+    unload("fonts/ui_font.fnt");
+    unload("fonts/ui_font.png");
+    unload("characters/Inhotep_pierde.png");
+}
+
+public static void unloadJudgmentAssets() {
+    unload("fonts/ui_font.fnt");
+    unload("fonts/ui_font.png");
+    unload("end/balanza_neutra.jpg");
+    unload("end/balanza_ganar.png");
+    unload("end/balanza_perder.png");
+}
+
+public static void unloadBeastAmmitAssets() {
+    unload("fonts/ui_font.fnt");
+    unload("fonts/ui_font.png");
+    unload("characters/bestia_ammit.png");
+    unload("sounds/sonido_ammit.mp3");
+}
+
+public static void unloadVictoryAssets() {
+    unload("fonts/ui_font.fnt");
+    unload("fonts/ui_font.png");
+    unload("characters/Inhotep_gana.png");
 }
 
     // MÉTODOS GENERALES
