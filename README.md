@@ -12,7 +12,7 @@ El jugador encarna a un artesano de Deir el-Medina que, al recibir una misterios
 - **libGDX** (con LWJGL3)
 - **Gradle** para gestión de dependencias
 - **gdx-liftoff** como generador inicial
-- **Modularidad** y arquitectura escalable basada en pantallas y managers
+- **Modularidad** y arquitectura escalable basada en pantallas, sistemas y managers
 
 ---
 
@@ -20,19 +20,25 @@ El jugador encarna a un artesano de Deir el-Medina que, al recibir una misterios
 
 ```
 /core
-│── /assets              # Recursos gráficos, sonidos, animaciones...
+│── /assets                # Recursos gráficos, sonidos, animaciones...
 │── /src
 │    ├── /core
-│    │   ├── /engine     # Carga de recursos, audio, input
-│    │   ├── /entities   # Jugador, NPCs, enemigos
-│    │   ├── /game       # MainGame, configuración global, gestores
-│    │   ├── /screens    # Pantallas del juego (Intro, Menú, Juego, etc.)
-│    │   ├── /systems    # Combate, exploración, puzzles, karma
-│    │   ├── /ui         # HUD, diálogos, inventario
-│    │   └── /utils      # Funciones comunes (textos, matemáticas, animaciones)
-│    └── /docs           # Documentación del juego
-/gradle                 # Configuración y scripts de Gradle
-/lwjgl3                # Plataforma desktop (PC)
+|    |   |-- /collision    # CollisionSystem
+|    |   |-- /combat       # CombatSystem
+│    │   ├── /engine       # Carga de recursos, audio, input
+│    │   ├── /entities     # Jugador, NPCs, enemigos,items
+│    │   ├── /game         # MainGame, configuración global, gestores, flags, sistema de Maat
+|    |   |-- /interacction # Sistema de puertas, objetos interactuables
+|    |   |-- /inventory    # Inventario
+|    |   |-- /maps         # Sistema de carga de mapas
+|    |   |-- /narrative    # Sistema de dialogos, sistema de jerooglíficos, sistema de narrativa
+|    |   |-- /save         # Sistema de guardado
+│    │   ├── /screens      # Pantallas del juego (Intro, Menú, Juego, etc.)
+│    │   ├── /ui           # HUD, CombatHUD, botones, sliders, popUps, menu de pausa
+│    │   └── /utils        # Funciones comunes (textos, matemáticas, animaciones)
+│    └── /docs            # Documentación del juego
+/gradle                  # Configuración y scripts de Gradle
+/lwjgl3                 # Plataforma desktop (PC)
 ```
 
 ---
@@ -47,6 +53,7 @@ Comando para ejecutar desde consola:
 ```bash
 ./gradlew lwjgl3:run
 ```
+Otra opción es descargarse el .exe y directamente ejecutarlo.
 
 ---
 
@@ -56,32 +63,34 @@ Comando para ejecutar desde consola:
 - [x] Sistema de carga de assets dividido por bloques funcionales
 - [x] Pantalla de introducción animada con video (frames + audio)
 - [x] Transición a Menú Principal con texto parpadeante
-- [ ] Pantalla de menú principal interactiva
-- [ ] Implementación del inicio del juego (casa del artesano)
-- [ ] Sistema de decisiones y karma
-- [ ] Exploración en Karnak y Valle de los Reyes
-- [ ] Juicio de Osiris y finales múltiples
+- [X] Pantalla de menú principal interactiva
+- [x] Sistema de colisiones en todos los mapas
+- [X] Casa del artesano: diálogo, comer, dormir (guardado)
+- [X] Exploración en Deir el-Medina, Karnak y Valle de los Reyes, Sala Hipóstila y Tumba Kv9
+- [X] Sistema de puertas y transiciones
+- [X] Diálogos con elecciones y karma (Maat)
+- [X] Combate en tiempo real contra NPCs
+- [X]  Guardado y carga de partidas
+- [X]  Juicio de Osiris con múltiples finales
 
 ---
 
 ## 📌 Pendientes técnicos
 
-- Implementar navegación en menú principal
-- Cargar mapas reales con Tiled
-- Sistema de combate y puzzles
-- Guardado de progreso
-- Sistema de diálogos con elecciones
+- Futuras mejoras e implementaciones para continuar el videojuego
 
 ---
 
 ## 📚 Créditos
 
-Proyecto de TFG – Ingeniería Informática  
-Desarrollado por: Yago Estévez Davila  
+Proyecto de TFG – Ingeniería Informática
+Desarrollado por: Yago Estévez Davila
+Tutor: Ruth Sofía Contreras Espinosa
+Departamento: Área de videojuegos, UOC
 Año: 2025
-
 ---
 
 ## ✨ Licencia
 
 Este proyecto es de carácter académico y no comercial.
+Licencia: Reconocimiento-NoComercial-SinObraDerivada 3.0 España.
