@@ -85,7 +85,7 @@
           "options": [
             { "text": "Te pagaré para obtenerlos.", 
               "nextId": "sobornar",
-              "effect":{"value": 1} 
+              "effect":{"value": 4} 
             },
             { "text": "¡Jamás! Los devolverás aunque sea por la fuerza.", 
               "nextId": "amenazar",
@@ -279,7 +279,7 @@
             {
               "text": "Podemos llegar a un acuerdo.",
               "nextId": "sobornar",
-              "effect": { "value": 1}
+              "effect": { "value": 4}
             }
           ]
         },

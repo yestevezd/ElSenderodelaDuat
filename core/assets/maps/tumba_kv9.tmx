@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.11.0" orientation="orthogonal" renderorder="right-down" width="48" height="27" tilewidth="40" tileheight="40" infinite="0" nextlayerid="3" nextobjectid="7">
+<map version="1.10" tiledversion="1.11.0" orientation="orthogonal" renderorder="right-down" width="48" height="27" tilewidth="40" tileheight="40" infinite="0" nextlayerid="3" nextobjectid="9">
  <tileset firstgid="1" name="kv9" tilewidth="40" tileheight="40" tilecount="1296" columns="48">
   <image source="kv9.png" width="1920" height="1080"/>
  </tileset>
@@ -38,20 +38,17 @@
   <object id="1" x="248" y="525.333">
    <polygon points="0,0 0,93.3333 1412,90.6667 1412,-4"/>
   </object>
-  <object id="2" x="1660" y="620">
-   <polygon points="0,0 2.66667,426.667 -5.33333,426.667 -12,-5.33333"/>
-  </object>
   <object id="3" x="1654" y="1044">
    <polygon points="0,0 -1406,3 -1406,-6 0,-10"/>
   </object>
-  <object id="4" x="251" y="874">
-   <polygon points="0,0 11,0 12,162 -3,161"/>
-  </object>
-  <object id="5" x="249" y="619">
-   <polygon points="0,0 1,166 10,166 11,0"/>
-  </object>
   <object id="6" name="puerta_tumba_dentro" x="249" y="787">
    <polygon points="0,0 1,84 33,85 31,-2"/>
+  </object>
+  <object id="7" x="1663" y="523">
+   <polygon points="0,0 -7,523 260,525 257,0"/>
+  </object>
+  <object id="8" x="254" y="621">
+   <polygon points="0,0 -3,415 -252,421 -252,-4"/>
   </object>
  </objectgroup>
 </map>

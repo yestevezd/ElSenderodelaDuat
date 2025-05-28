@@ -68,7 +68,7 @@ public class VictoryScreen extends BaseScreen {
         // Lista de créditos (orden lista, luego invertimos para scroll ascendente)
         credits = Arrays.asList(
             "Autor: Yago Estévez Davila",
-            "Tutor: Ruth Sofía Contreras Espinosa",
+            "Tutora: Ruth Sofía Contreras Espinosa",
             "Departamento: Área de videojuegos, UOC",
             "Diseño de juego: Yago Estévez Davila",
             "Programación: Yago Estévez Davila",

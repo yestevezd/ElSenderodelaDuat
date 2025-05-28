@@ -248,7 +248,7 @@ public class KarnakScreen extends BaseScreen {
             // Lógica de honestidad (Maat)
             if (!EventFlags.personaje_miente_penalizacion_sacerdote) {
                 if ("respuesta_combate".equals(node) && EventFlags.sacerdoteSobornado) {
-                    MaatSystem.get().addCorazon(+3);
+                    MaatSystem.get().addCorazon(+4);
                     EventFlags.personaje_miente_penalizacion_sacerdote = true;
                 }
                 if ("respuesta_soborno".equals(node) && !EventFlags.sacerdoteSobornado) {
@@ -258,7 +258,7 @@ public class KarnakScreen extends BaseScreen {
             }
             if (!EventFlags.personaje_miente_penalizacion_saqueador) {
                 if ("respuesta_combate_saqueador".equals(node) && EventFlags.saqueadorSobornado) {
-                    MaatSystem.get().addCorazon(+3);
+                    MaatSystem.get().addCorazon(+4);
                     EventFlags.personaje_miente_penalizacion_saqueador = true;
                 }
                 if ("respuesta_soborno_saqueador".equals(node) && !EventFlags.saqueadorSobornado) {
