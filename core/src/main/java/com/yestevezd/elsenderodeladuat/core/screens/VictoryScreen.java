@@ -78,7 +78,12 @@ public class VictoryScreen extends BaseScreen {
             "Lenguaje: Java 17",
             "Programas: VSCode, Photoshop, Tiled, Hiero V5, GDX-Liftoff, GitHub Desktop",
             "Control de versiones: GitHub",
-            "Testers: Inmaculada D. González, Noelia E. Davila, Sara, Diego A. Davila",
+            "Testers:", 
+                "Inmaculada Delage González",
+                "Noelia Estévez Davila",
+                "Sara Navaz Ayesa", 
+                "Diego Alonso Davila",
+                "Manu Freiria Davila",
             "Agradecimientos especiales: Inmaculada Delage González, Noelia Estévez Davila",
             "Licencia del proyecto: Reconocimiento-NoComercial-SinObraDerivada 3.0 España",  
             "Copyright © 2025 Yago Estévez Davila"
